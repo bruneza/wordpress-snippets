@@ -1,6 +1,7 @@
 <?php
 
 namespace MTN_FEATURES;
+use MTN_FEATURES\CPT\MTN_teams_cpt;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -81,7 +82,11 @@ final class MTN_Features {
         // Register Widget Scripts
         add_action("elementor/frontend/after_enqueue_scripts", [$this, 'frontend_assets_scripts']);
 
-		// Require Post Queries
+		// Include Custom Post Type
+
+		include_once MTN_DIR . '/includes/post-types/CPT/mtn-team-cpt.php';
+
+		$this->team_cpt = MTN_teams_cpt::instance();
 
 
 	}
@@ -216,6 +221,7 @@ final class MTN_Features {
         wp_enqueue_style("mtn-bootstrap-css", MTN_ASSETS . 'css/bootstrap.min.css');
         wp_enqueue_style("mtn-owlcarousel-css", MTN_ASSETS . 'css/owl.carousel.min.css');
         wp_enqueue_style("mtn-mtn-css", MTN_ASSETS . 'css/mtn-style.css', array(), rand(1,1000));
+        wp_enqueue_style("mtn-test-css", MTN_ASSETS . 'css/test-css.css', array(), rand(1,1000));
     }
 
     /*
@@ -227,6 +233,7 @@ final class MTN_Features {
         wp_enqueue_script("mtn-bootstrap-js", MTN_ASSETS . 'js/bootstrap.min.js', array('jquery'), VERSION, true);
         wp_enqueue_script("mtn-owlcarousel-js", MTN_ASSETS . 'js/owl.carousel.min.js', array('jquery'), VERSION, true);
         wp_enqueue_script("mtn-mtn-js", MTN_ASSETS . 'js/mtn-script.js', array('jquery'), rand(1,1000), true);
+        wp_enqueue_script("mtn-test-js", MTN_ASSETS . 'js/test-js.js', array('jquery'), rand(1,1000), true);
     }
 	/**
 	 * Register Widgets
@@ -240,9 +247,13 @@ final class MTN_Features {
 	public function register_widgets( $widgets_manager ) {
 		require_once( MTN_DIR . '/includes/widgets/mtn-deals-widget.php' );
 		require_once( MTN_DIR . '/includes/widgets/mtn-products-widget.php' );
+		require_once( MTN_DIR . '/includes/widgets/mtn-viewed-topics.php' );
+		require_once( MTN_DIR . '/includes/widgets/mtn-team-widget.php' );
         
         $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Deals_Carousel());
         $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Products_Carousel());
+        $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Viewed_Topics());
+        $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());
 
 	}
 

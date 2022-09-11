@@ -61,96 +61,152 @@ if (!defined('ABSPATH')) {
 			return 'post';
 		}
 
-		
+		protected function register_controls()
+		{
+
+			$this->start_controls_section(
+				'content_section',
+				[
+					'label' => esc_html__('Post Content Layout', 'mtn'),
+					'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				]
+			);
+			$this->end_controls_section();
+
+			$this->start_controls_section(
+				'Title_style',
+				[
+					'label' => esc_html__('Title Style', 'mtn'),
+					'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+				]
+			);
+
+			$this->add_control(
+				'title_color',
+				[
+					'label' => esc_html__('Title Color', 'mtn'),
+					'type' => \Elementor\Controls_Manager::COLOR,
+					'default' => '#000000',
+					'selectors' => [
+						'{{WRAPPER}} .product-title' => 'color: {{VALUE}}',
+					],
+				]
+			);
+			$this->add_group_control(
+				\Elementor\Group_Control_Typography::get_type(),
+				[
+					'name' => 'title_typography',
+					'selector' => '{{WRAPPER}} .product-title',
+				]
+			);
+
+			$this->end_controls_section();
+			$this->start_controls_section(
+				'allbtn_style',
+				[
+					'label' => esc_html__('Main Button Style', 'mtn'),
+					'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+				]
+			);
+
+			$this->add_control(
+				'allbtn_color',
+				[
+					'label' => esc_html__('Color', 'mtn'),
+					'type' => \Elementor\Controls_Manager::COLOR,
+					'default' => '#000000',
+					'selectors' => [
+						'{{WRAPPER}} .all-product-btn' => 'color: {{VALUE}}',
+					],
+				]
+			);
+			$this->add_group_control(
+				\Elementor\Group_Control_Background::get_type(),
+				[
+					'name' => 'allbtn_background',
+					'types' => [ 'classic', 'gradient' ],
+					'exclude' => [ 'image' ],
+					'selector' => '{{WRAPPER}} .all-product-btn',
+					'fields_options' => [
+						'background' => [
+							'default' => 'classic',
+						],
+						'color' => [
+							'dynamic' => [],
+						],
+						'color_b' => [
+							'dynamic' => [],
+						],
+					],
+				]
+			);
+			$this->add_group_control(
+				\Elementor\Group_Control_Typography::get_type(),
+				[
+					'name' => 'allbtn_typography',
+					'selector' => '{{WRAPPER}} .all-product-btn',
+				]
+			);
+	
+			$this->add_group_control(
+				\Elementor\Group_Control_Border::get_type(),
+				[
+					'name' => 'allbtn_border',
+					'label' => esc_html__( 'Border', 'mtn' ),
+					'selector' => '{{WRAPPER}} .all-product-btn',
+				]
+			);
+
+			$this->add_control(
+				'allbtn_border_radius',
+				[
+					'label' => esc_html__( 'Button Radius', 'mtn' ),
+					'type' => \Elementor\Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', '%', 'em' ],
+					'selectors' => [
+						'{{WRAPPER}} .all-product-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+			$this->add_responsive_control(
+				'allbtn_padding',
+				[
+					'label' => esc_html__( 'Padding', 'mtn' ),
+					'type' => \Elementor\Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em', '%' ],
+					'selectors' => [
+						'{{WRAPPER}} .all-product-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+					'separator' => 'before',
+				]
+			);
+	
+			$this->end_controls_section();
+	
+
+		}
+
 		protected function render()
 		{
+
 			$posts = mtn_posts();
 			$screens = array_chunk($posts,6);
-			// $screens = array(
-			// 	//screen 2
-			// 		array(
-			// 			array(
-			// 				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 				"link" => "google.com",
-			// 			),
-			// 			array(
-			// 				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 				"link" => "google.com",
-			// 			),
-			// 			array(
-			// 				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 				"link" => "google.com",
-			// 			),
-			// 			array(
-			// 				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 				"link" => "google.com",
-			// 			),array(
-			// 				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 				"link" => "google.com",
-			// 			)
-			// 			),
-				
-			// 			//screen 2
-				
-			// 			array(
-			// 				array(
-			// 					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 					"link" => "google.com",
-			// 				),
-			// 				array(
-			// 					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 					"link" => "google.com",
-			// 				),
-			// 				array(
-			// 					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 					"link" => "google.com",
-			// 				),
-			// 				array(
-			// 					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 					"link" => "google.com",
-			// 				),array(
-			// 					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 					"link" => "google.com",
-			// 				)
-			// 				),
-				
-			// 				//screen 3
-			// 				array(
-			// 					array(
-			// 						"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 						"link" => "google.com",
-			// 					),
-			// 					array(
-			// 						"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 						"link" => "google.com",
-			// 					),
-			// 					array(
-			// 						"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 						"link" => "google.com",
-			// 					),
-			// 					array(
-			// 						"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 						"link" => "google.com",
-			// 					),array(
-			// 						"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_SME_473699302.jpg",
-			// 						"link" => "google.com",
-			// 					)
-			// 					),
-					
-			// 	);
+
 			// $settings = $this->get_settings_for_display();
 			/*** Start Content Section ***/
 			echo '
-			<div class="title-section" >
-				<div><h3 class="deal-tital">Products</h3></div>
-				<button class="deal-btn">All Products</button>
+			
+		  <div class="mtn-products-carousel-section">
+		  <div class="title-section" >
+				<div><h3 class="product-title">Products</h3></div>
+				<a href="" class="btn btn-primary all-product-btn">All Products</a>
       		</div>
-		  <div class="mtn-products-carousel-section d-flex services-item owl-carousel products-carousel owl-theme" style="margin:60px 0">';
+			<div class="d-flex services-item owl-carousel products-carousel owl-theme" style="margin:60px 0">';
+
             // Code GOES HERE
 			
           foreach ($screens as $screen)
-          {
-			print_r($screen);
+          {	
             ?>
 			<div class="col-md-12">
             <div class="row main-galery">
@@ -176,7 +232,7 @@ if (!defined('ABSPATH')) {
                 </div>
 
                 <div class="col-md-4">
-                    <a  hre="<?=$screen[2]['post-link'];?>" class="full-imgs" style="background-image: url('<?=$screen[2]['thumb'];?>'); 
+                    <a  hre="<?=$screen[2]['post-link'];?>" class="full-imgs" style="background-image: url('<?=$screen[2]['thumbnail'];?>'); 
                         background-size:cover; 
                         overflow:hidden;background-position:50% 30%;
                         display:flex;align-items:flex-end">
@@ -196,7 +252,7 @@ if (!defined('ABSPATH')) {
                             </a>
                         </div>
                         <div class="col-md-12">
-                            <a hre="<?=$screen[4]['post-link'];?>" class="half-img" style="background-image: url('<?=$screen[4]['thumb'];?>'); 
+                            <a hre="<?=$screen[4]['post-link'];?>" class="half-img" style="background-image: url('<?=$screen[4]['thumbnail'];?>'); 
                                 background-size:cover; 
                                 overflow:hidden;background-position:50% 30%;
                                 display:flex;align-items:flex-end">

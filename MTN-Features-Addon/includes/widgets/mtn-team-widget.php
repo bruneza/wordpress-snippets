@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-	class MTN_Deals_Carousel  extends \Elementor\Widget_Base
+	class MTN_Team_Grid  extends \Elementor\Widget_Base
 	{
 
 		/**
@@ -15,12 +15,12 @@ if (!defined('ABSPATH')) {
 		 * Retrieve test widget name.
 		 *
 		 * @since 1.0.0
-		 * @access public 
+		 * @access public
 		 * @return string Widget name.
 		 */
 		public function get_name()
 		{
-			return 'Deals Carousel';
+			return 'MTN Team';
 		}
 		/**
 		 * Get widget title.
@@ -33,7 +33,7 @@ if (!defined('ABSPATH')) {
 		 */
 		public function get_title()
 		{
-			return esc_html__('Deals Carousel', 'mtn');
+			return esc_html__('MTN Team', 'mtn');
 		}
 
 		/**
@@ -60,13 +60,14 @@ if (!defined('ABSPATH')) {
 		{
 			return 'post';
 		}
+
 		protected function register_controls()
 		{
 
 			$this->start_controls_section(
 				'content_section',
 				[
-					'label' => esc_html__('Post Content Layout', 'kura'),
+					'label' => esc_html__('Post Content Layout', 'mtn'),
 					'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 				]
 			);
@@ -75,7 +76,7 @@ if (!defined('ABSPATH')) {
 			$this->start_controls_section(
 				'Title_style',
 				[
-					'label' => esc_html__('Title Style', 'kura'),
+					'label' => esc_html__('Title Style', 'mtn'),
 					'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 				]
 			);
@@ -83,20 +84,19 @@ if (!defined('ABSPATH')) {
 			$this->add_control(
 				'title_color',
 				[
-					'label' => esc_html__('Title Color', 'kura'),
+					'label' => esc_html__('Title Color', 'mtn'),
 					'type' => \Elementor\Controls_Manager::COLOR,
 					'default' => '#000000',
 					'selectors' => [
-						'{{WRAPPER}} .deal-title' => 'color: {{VALUE}}',
+						'{{WRAPPER}} .product-title' => 'color: {{VALUE}}',
 					],
 				]
 			);
-			
 			$this->add_group_control(
 				\Elementor\Group_Control_Typography::get_type(),
 				[
 					'name' => 'title_typography',
-					'selector' => '{{WRAPPER}} .deal-title',
+					'selector' => '{{WRAPPER}} .product-title',
 				]
 			);
 
@@ -104,7 +104,7 @@ if (!defined('ABSPATH')) {
 			$this->start_controls_section(
 				'allbtn_style',
 				[
-					'label' => esc_html__('Main Button Style', 'kura'),
+					'label' => esc_html__('Main Button Style', 'mtn'),
 					'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 				]
 			);
@@ -112,22 +112,21 @@ if (!defined('ABSPATH')) {
 			$this->add_control(
 				'allbtn_color',
 				[
-					'label' => esc_html__('Color', 'kura'),
+					'label' => esc_html__('Color', 'mtn'),
 					'type' => \Elementor\Controls_Manager::COLOR,
 					'default' => '#000000',
 					'selectors' => [
-						'{{WRAPPER}} .all-deal-btn' => 'color: {{VALUE}}',
+						'{{WRAPPER}} .all-viewedtopics-btn' => 'color: {{VALUE}}',
 					],
 				]
 			);
-
 			$this->add_group_control(
 				\Elementor\Group_Control_Background::get_type(),
 				[
 					'name' => 'allbtn_background',
 					'types' => [ 'classic', 'gradient' ],
 					'exclude' => [ 'image' ],
-					'selector' => '{{WRAPPER}} .all-deal-btn',
+					'selector' => '{{WRAPPER}} .all-viewedtopics-btn',
 					'fields_options' => [
 						'background' => [
 							'default' => 'classic',
@@ -145,16 +144,16 @@ if (!defined('ABSPATH')) {
 				\Elementor\Group_Control_Typography::get_type(),
 				[
 					'name' => 'allbtn_typography',
-					'selector' => '{{WRAPPER}} .all-deal-btn',
+					'selector' => '{{WRAPPER}} .all-viewedtopics-btn',
 				]
 			);
-
+	
 			$this->add_group_control(
 				\Elementor\Group_Control_Border::get_type(),
 				[
 					'name' => 'allbtn_border',
 					'label' => esc_html__( 'Border', 'mtn' ),
-					'selector' => '{{WRAPPER}} .all-deal-btn',
+					'selector' => '{{WRAPPER}} .all-viewedtopics-btn',
 				]
 			);
 
@@ -165,7 +164,7 @@ if (!defined('ABSPATH')) {
 					'type' => \Elementor\Controls_Manager::DIMENSIONS,
 					'size_units' => [ 'px', '%', 'em' ],
 					'selectors' => [
-						'{{WRAPPER}} .all-deal-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						'{{WRAPPER}} .all-viewedtopics-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
 			);
@@ -176,41 +175,29 @@ if (!defined('ABSPATH')) {
 					'type' => \Elementor\Controls_Manager::DIMENSIONS,
 					'size_units' => [ 'px', 'em', '%' ],
 					'selectors' => [
-						'{{WRAPPER}} .all-deal-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						'{{WRAPPER}} .all-viewedtopics-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 					'separator' => 'before',
 				]
 			);
-
+	
 			$this->end_controls_section();
+	
 
 		}
-		
+
 		protected function render()
 		{
+
 			// $settings = $this->get_settings_for_display();
-
-            $posts = mtn_posts();
-
 			/*** Start Content Section ***/
-			echo '<div class="mtn-deals-carousel-section">';
-            echo '
-		  <div class="title-deal" >
-        <div><h3 class="deal-title">Deals</h3></div>
-        <a href="" class="btn btn-primary all-deal-btn">All deal</a>
-      </div>
-		  <div class="d-flex deals-item owl-carousel deal-carousel owl-theme" style="margin:60px 0">';
-            foreach ($posts as $post)
-          {?>
-              <div class="deals filter" style="background-image: url('<?echo $post['thumbnail']; ?>'); 
-              background-size:cover; height:100%; overflow:hidden; background-position:cover ; display:flex; align-items:flex-end">
-                      <div class="deals-contents">
-                          <a class="read-more-btn" href="<?=$post['post-link'];?>">Read More &nbsp;<i class="fa fa-angle-right"></i></a>
-                      </div>
-              </div>
-<?php
-}
-			echo '</div></div>';
+			echo '
+			
+		  <div class="mtn-team-grid-section">';
+		  
+            // Code GOES HERE
+
+		    echo '</div>';
 			/*** End Content Section ***/
 		}
 	}

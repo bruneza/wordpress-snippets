@@ -1,7 +1,9 @@
 <?php
 
 namespace MTN_FEATURES;
-use MTN_FEATURES\CPT\MTN_teams_cpt;
+use MTN_FEATURES\CPT\MTN_Team_Cpt;
+use MTN_FEATURES\CPT\MTN_Product_Cpt;
+use MTN_FEATURES\CPT\MTN_Deal_Cpt;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -85,8 +87,12 @@ final class MTN_Features {
 		// Include Custom Post Type
 
 		include_once MTN_DIR . '/includes/post-types/CPT/mtn-team-cpt.php';
+		include_once MTN_DIR . '/includes/post-types/CPT/mtn-deals-cpt.php';
+		include_once MTN_DIR . '/includes/post-types/CPT/mtn-products-cpt.php';
 
-		$this->team_cpt = MTN_teams_cpt::instance();
+		$this->team_cpt = MTN_Team_Cpt::instance();
+		$this->team_cpt = MTN_Product_Cpt::instance();
+		$this->team_cpt = MTN_Deal_Cpt::instance();
 
 
 	}

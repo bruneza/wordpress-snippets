@@ -65,95 +65,84 @@ if (!defined('ABSPATH')) {
 		{
 
 			$this->start_controls_section(
-				'content_section',
+				'dot_style',
 				[
-					'label' => esc_html__('Post Content Layout', 'mtn'),
-					'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-				]
-			);
-			$this->end_controls_section();
-
-			$this->start_controls_section(
-				'Title_style',
-				[
-					'label' => esc_html__('Title Style', 'mtn'),
+					'label' => esc_html__('Carousel dot Style', 'mtn'),
 					'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 				]
 			);
 
-			$this->add_control(
-				'title_color',
+			$this->add_responsive_control(
+				'dot_vertical_position',
 				[
-					'label' => esc_html__('Title Color', 'mtn'),
-					'type' => \Elementor\Controls_Manager::COLOR,
-					'default' => '#000000',
+					'label' => esc_html__('Vertical Position', 'mtn'),
+					'type' => \Elementor\Controls_Manager::SLIDER,
+					'size_units' => ['%', 'px'],
+					'default' => [
+						'unit' => 'px',
+						'size' => -60
+					],
+					'range' => [
+						'px' => [
+							'min' => -150,
+							'max' => 150,
+						],
+						'%' => [
+							'min' => -100,
+							'max' => 100,
+						],
+					],
 					'selectors' => [
-						'{{WRAPPER}} .product-title' => 'color: {{VALUE}}',
+						'{{WRAPPER}} {{CURRENT_ITEM}} .owl-dots' => 'top: {{SIZE}}{{UNIT}};',
 					],
 				]
 			);
-			$this->add_group_control(
-				\Elementor\Group_Control_Typography::get_type(),
+
+			$this->start_controls_tabs( 'tabs_dot_style' );
+			$this->start_controls_tab(
+				'tab_dot_normal',
 				[
-					'name' => 'title_typography',
-					'selector' => '{{WRAPPER}} .product-title',
+					'label' => esc_html__( 'Normal', 'elementor' ),
 				]
 			);
 
-			$this->end_controls_section();
-			$this->start_controls_section(
-				'allbtn_style',
-				[
-					'label' => esc_html__('Main Button Style', 'mtn'),
-					'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-				]
-			);
-
-			$this->add_control(
-				'allbtn_color',
-				[
-					'label' => esc_html__('Color', 'mtn'),
-					'type' => \Elementor\Controls_Manager::COLOR,
-					'default' => '#000000',
-					'selectors' => [
-						'{{WRAPPER}} .all-product-btn' => 'color: {{VALUE}}',
-					],
-				]
-			);
 			$this->add_group_control(
 				\Elementor\Group_Control_Background::get_type(),
 				[
-					'name' => 'allbtn_background',
-					'types' => [ 'classic', 'gradient' ],
-					'exclude' => [ 'image' ],
-					'selector' => '{{WRAPPER}} .all-product-btn',
-					'fields_options' => [
-						'background' => [
-							'default' => 'classic',
-						],
-						'color' => [
-							'dynamic' => [],
-						],
-						'color_b' => [
-							'dynamic' => [],
-						],
-					],
+					'name' => 'dot_background',
+					'label' => esc_html__( 'Dot Background', 'plugin-name' ),
+					'types' => [ 'classic', 'gradient', 'video' ],
+					'selector' => '{{WRAPPER}} .owl-dots span',
 				]
 			);
-			$this->add_group_control(
-				\Elementor\Group_Control_Typography::get_type(),
+
+			$this->end_controls_tab();
+			$this->start_controls_tab(
+				'tab_dot_hover',
 				[
-					'name' => 'allbtn_typography',
-					'selector' => '{{WRAPPER}} .all-product-btn',
+					'label' => esc_html__( 'Hover', 'elementor' ),
 				]
 			);
-	
+
+			$this->add_group_control(
+				\Elementor\Group_Control_Background::get_type(),
+				[
+					'name' => 'dot_hover_background',
+					'label' => esc_html__( 'Dot Background', 'plugin-name' ),
+					'types' => [ 'classic', 'gradient', 'video' ],
+					'selector' => '{{WRAPPER}} .owl-dots .active span',
+				]
+			);
+
+			$this->end_controls_tab();
+			$this->end_controls_tabs();
+
 			$this->add_group_control(
 				\Elementor\Group_Control_Border::get_type(),
 				[
-					'name' => 'allbtn_border',
-					'label' => esc_html__( 'Border', 'mtn' ),
-					'selector' => '{{WRAPPER}} .all-product-btn',
+					'name' => 'dot_border',
+					'label' => esc_html__( 'Dot Border', 'mtn' ),
+					'selector' => '{{WRAPPER}} .owl-dot span',
 				]
 			);
 
@@ -164,26 +153,11 @@ if (!defined('ABSPATH')) {
 					'type' => \Elementor\Controls_Manager::DIMENSIONS,
 					'size_units' => [ 'px', '%', 'em' ],
 					'selectors' => [
-						'{{WRAPPER}} .all-product-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						'{{WRAPPER}} .owl-dot span' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
 			);
-			$this->add_responsive_control(
-				'allbtn_padding',
-				[
-					'label' => esc_html__( 'Padding', 'mtn' ),
-					'type' => \Elementor\Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', 'em', '%' ],
-					'selectors' => [
-						'{{WRAPPER}} .all-product-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					],
-					'separator' => 'before',
-				]
-			);
-	
 			$this->end_controls_section();
-	
-
 		}
 
 		protected function render()
@@ -197,11 +171,7 @@ if (!defined('ABSPATH')) {
 			echo '
 			
 		  <div class="mtn-products-carousel-section">
-		  <div class="title-section" >
-				<div><h3 class="product-title">Products</h3></div>
-				<a href="" class="btn btn-primary all-product-btn">All Products</a>
-      		</div>
-			<div class="d-flex services-item owl-carousel products-carousel owl-theme" style="margin:60px 0">';
+			<div class="d-flex services-item owl-carousel products-carousel owl-theme">';
 
             // Code GOES HERE
 			

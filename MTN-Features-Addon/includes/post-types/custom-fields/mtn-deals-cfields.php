@@ -5,8 +5,8 @@ namespace MTN_FEATURES\Custom_Field;
 // Exit if accessed directly.
 if (!defined('ABSPATH')) exit;
 
-if (!class_exists('MTN_Team_Fields')) :
-    class MTN_Team_Fields
+if (!class_exists('MTN_Deal_fields')) :
+    class MTN_Deal_fields
     {
 
         private static $instance = null;
@@ -16,27 +16,14 @@ if (!class_exists('MTN_Team_Fields')) :
          */
 
         private $screen = array(
-            'mtn_teams'
+            'mtn_deals'
         );
     
         private $meta_fields = array(
-
                     array(
-                        'label' => 'Short BIO',
-                        'id' => '_mtn_description',
-                        'placeholder' => 'eg: this team is about...',
-                        'type' => 'textarea',
-                    ),
-                    array(
-                        'label' => 'Job Title',
-                        'id' => '_mtn_job_title',
-                        'placeholder' => 'eg: CEO',
-                        'type' => 'text',
-                    ),
-                    array(
-                        'label' => 'Linkedin Url',
-                        'id' => '_mtn_linkdin_url',
-                        'placeholder' => 'eg: https://linkedin.com/...',
+                        'label' => 'External Link',
+                        'id' => '_mtn_external_url',
+                        'placeholder' => 'eg: https://mtn.co.rw/...',
                         'type' => 'url',
                     ),
         );
@@ -61,8 +48,8 @@ if (!class_exists('MTN_Team_Fields')) :
         public function add_meta_boxes() {
             foreach ( $this->screen as $single_screen ) {
                 add_meta_box(
-                    'MTNTeam',
-                    __( 'MTN Team', 'mtn' ),
+                    'MTNDeal',
+                    __( 'MTN Deal', 'mtn' ),
                     array( $this, 'meta_box_callback' ),
                     $single_screen,
                     'normal',
@@ -72,7 +59,7 @@ if (!class_exists('MTN_Team_Fields')) :
         }
     
         public function meta_box_callback( $post ) {
-            wp_nonce_field( 'MTNTeam_data', 'MTNTeam_nonce' );
+            wp_nonce_field( 'MTNDeal_data', 'MTNDeal_nonce' );
                     echo 'Wordshops and Trainings';
             $this->field_generator( $post );
         }
@@ -119,10 +106,10 @@ if (!class_exists('MTN_Team_Fields')) :
         }
     
         public function save_fields( $post_id ) {
-            if ( ! isset( $_POST['MTNTeam_nonce'] ) )
+            if ( ! isset( $_POST['MTNDeal_nonce'] ) )
                 return $post_id;
-            $nonce = $_POST['MTNTeam_nonce'];
-            if ( !wp_verify_nonce( $nonce, 'MTNTeam_data' ) )
+            $nonce = $_POST['MTNDeal_nonce'];
+            if ( !wp_verify_nonce( $nonce, 'MTNDeal_data' ) )
                 return $post_id;
             if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
                 return $post_id;

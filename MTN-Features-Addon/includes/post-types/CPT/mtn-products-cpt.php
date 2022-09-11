@@ -2,19 +2,19 @@
 
 namespace MTN_FEATURES\CPT;
 
-use \MTN_FEATURES\Custom_Field\MTN_Team_Fields;
+use \MTN_FEATURES\Custom_Field\MTN_Product_Fields;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) exit;
 
-if (!class_exists('MTN_Team_Cpt')) :
-    class MTN_Team_Cpt
+if (!class_exists('MTN_Product_Cpt')) :
+    class MTN_Product_Cpt
     {
 
         private static $instance = null;
 
         /**
-         * Variables for Team Custom Post Type
+         * Variables for Products Custom Post Type
          */
 
         public static function instance()
@@ -32,9 +32,9 @@ if (!class_exists('MTN_Team_Cpt')) :
         {
             add_action('init', [$this, 'register_WorkShop_cpt'], 0);
 
-            require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-team-cfields.php';
+            require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-products-cfields.php';
 			
-			MTN_Team_Fields::instance();
+			mtn_Product_fields::instance();
 
 
         }
@@ -42,51 +42,51 @@ if (!class_exists('MTN_Team_Cpt')) :
 
 
         /**
-         * Create Teams Post Type
+         * Create Products Post Type
          */
         public function register_WorkShop_cpt()
         {
             /**
-             * Create Teams CPT
+             * Create Products CPT
              */
-            if (post_type_exists('mtn_teams')) {
+            if (post_type_exists('mtn_products')) {
                 return;
             }
             register_post_type(
-                'mtn_teams',
+                'mtn_products',
                 array(
                     'labels' => array(
-                        'name' => __('Teams', 'mtn'),
-                        'singular_name' => __('Team', 'mtn'),
+                        'name' => __('Products', 'mtn'),
+                        'singular_name' => __('Products', 'mtn'),
                     ),
                     'show_ui' => true,
                     'show_in_menu' => true,
                     'show_in_admin_bar' => true,
                     'show_in_nav_menus' => true,
                     'show_in_rest' => true,
-                    'description' => __('Lists of available Teams', 'mtn'),
-                    'menu_icon' => 'dashicons-groups',
+                    'description' => __('Lists of available Products', 'mtn'),
+                    'menu_icon' => 'dashicons-products',
                     'public' => true,
                     'hierarchy' => false,
                     'supports' => array('title','revisions','thumbnail', 'excerpt'),
                     'taxonomies' => array('post_tag'),
                     'capability_type' => 'post',
-                    'rewrite' => array('slug' => 'teams'),
+                    'rewrite' => array('slug' => 'products'),
                 )
             );
 
 
             /**
-             * Create Teams Category Taxonomy
+             * Create Products Category Taxonomy
              */
-            if (taxonomy_exists('mtn_team_category')) {
+            if (taxonomy_exists('mtn_product_category')) {
                 return;
             }
-            register_taxonomy('mtn_team_category', ["mtn_teams"], array(
-                "label" => __("Team Categories", "mtn"),
+            register_taxonomy('mtn_product_category', ["mtn_products"], array(
+                "label" => __("Products Categories", "mtn"),
                 'labels'                     => array(
-                    'name'                       => _x('Team Categories', 'Taxonomy General Name', 'mtn'),
-                    'singular_name'              => _x('Team Category', 'Taxonomy Singular Name', 'mtn'),
+                    'name'                       => _x('Products Categories', 'Taxonomy General Name', 'mtn'),
+                    'singular_name'              => _x('Products Category', 'Taxonomy Singular Name', 'mtn'),
                 ),
                 'hierarchical'               => true,
                 'public'                     => true,
@@ -96,10 +96,10 @@ if (!class_exists('MTN_Team_Cpt')) :
                 'show_admin_column'          => true,
                 'show_in_nav_menus'          => true,
                 'query_var'                  => true,
-                'rewrite'                    => array('slug' => 'team-categories', 'with_front' => true,),
+                'rewrite'                    => array('slug' => 'product-categories', 'with_front' => true,),
                 "show_in_rest" => true,
                 "show_tagcloud" => false,
-                "rest_base" => "bru_team_category",
+                "rest_base" => "bru_product_category",
                 "rest_controller_class" => "WP_REST_Terms_Controller",
                 "rest_namespace" => "wp/v2",
                 "show_in_quick_edit" => false,

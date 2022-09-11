@@ -1,5 +1,37 @@
 
- .owl-dots {
+.mnt-yellow{
+color:var(--e-global-color-primary)
+}
+.mtn-gray{
+color:var(--e-global-color-secondary);
+}
+.mtn-green{
+   color:var(--e-global-color-21111c6) 
+}
+
+.mtn-primary-font{
+   font-family:  var(--e-global-typography-primary-font-family);
+   font-size:  var(--e-global-typography-primary-font-size);
+   font-weight:  var(--e-global-typography-primary-font-weight);
+}
+.mtn-secondary-font{
+    font-family:  var(--e-global-typography-secondary-font-family);
+    font-size:  var(--e-global-typography-secondary-font-size);
+    font-weight:  var(--e-global-typography-secondary-font-weight);    
+}
+.mtn-text-font{
+    font-family:  var(--e-global-typography-text-font-family);
+    font-size:  var(--e-global-typography-text-font-size);
+    font-weight:  var(--e-global-typography-text-font-weight);
+}
+.mtn-accent-font{
+    font-family:  var(--e-global-typography-accent-font-family);
+    font-size:  var(--e-global-typography-accent-font-size);
+    font-weight:  var(--e-global-typography-accent-font-weight);
+}
+
+/*** OWL CAROUSEL ***/
+.products-carousel .owl-dots, .deal-carousel .owl-dots {
     margin-top: 30px;
     text-align: center;
     -webkit-tap-highlight-color: transparent;
@@ -7,6 +39,7 @@
     top: -60px;
     left: 0!important;
 }
+/*** OWL CAROUSEL - Controls ***/
 .owl-dot {
     display: inline-block;
     zoom: 1;
@@ -25,65 +58,52 @@
     border-radius: 30px;
     cursor: pointer;
 }
-.title-section{
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    display: flex;
-    justify-content: space-between;
-    width: 45%;
-}
-.title-deal{
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    display: flex;
-    justify-content: space-between;
-    width: 45%;
 
+/*** General Button ***/
+.mtn-btn{
+    padding: 20px 0;
+    background: #fcd818;
+    background: linear-gradient(180deg, #fce068 0%, #fcd818 100%);
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 16%);
+    color: #202020;
+    border: 0;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 16%);
 }
-.deal-btn{
-    background-color: transparent;
-    padding: 5px 30px;
-    border-radius: 20px;
-    float: right;
-    right: 45px;
-    color: black;
-    border: 1px solid black;
+.btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.deal-btn:hover{
-    background-color: #ffcc00;
+
+.btn:hover{
+    background-color: var(--e-global-color-primary);
 }
 
 .owl-dots .active span {
-    background-color: #ffcc00;
+    background-color: var(--e-global-color-primary);
     border: none;
     width: 14px;
     height: 14px;
 }
-.deals{
-    min-height: 400px!important;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    /* align-items: flex-end; */
-    
-    padding: 30px;
-    margin: 0 15px;
-    overflow: hidden!important;
-}
 
-
-    .d-flex{
-        display: flex!important;
-    }
+    /***
+    ** DEALS CAROUSEL
+    **/
     .mtn-deals-carousel-section{
         min-height: 400px!important;
         border-radius: 20px;
         display: flex;
         justify-content: center;
         /* align-items: flex-end; */
-        
+        padding: 30px;
+        margin: 0 15px;
+    }
+    .deals{
+        min-height: 400px!important;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        /* align-items: flex-end; */
         padding: 30px;
         margin: 0 15px;
         overflow: hidden!important;

@@ -90,6 +90,7 @@ final class MTN_Features {
 		include_once MTN_DIR . '/includes/post-types/CPT/mtn-deals-cpt.php';
 		include_once MTN_DIR . '/includes/post-types/CPT/mtn-products-cpt.php';
 
+
 		$this->team_cpt = MTN_Team_Cpt::instance();
 		$this->team_cpt = MTN_Product_Cpt::instance();
 		$this->team_cpt = MTN_Deal_Cpt::instance();
@@ -255,11 +256,15 @@ final class MTN_Features {
 		require_once( MTN_DIR . '/includes/widgets/mtn-products-widget.php' );
 		require_once( MTN_DIR . '/includes/widgets/mtn-viewed-topics.php' );
 		require_once( MTN_DIR . '/includes/widgets/mtn-team-widget.php' );
+		require_once( MTN_DIR . '/includes/widgets/mtn-flex-widget.php' );
+		require_once( MTN_DIR . '/includes/widgets/mtn-news-widget.php' );
         
         $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Deals_Carousel());
         $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Products_Carousel());
         $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Viewed_Topics());
         $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());
+        $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Flex_Grid());
+        $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_News_Grid());
 
 	}
 

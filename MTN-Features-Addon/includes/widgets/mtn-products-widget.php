@@ -2,6 +2,9 @@
 
 namespace MTN_FEATURES\Widgets;
 
+use ElementorPro\Modules\QueryControl\Module as Module_Query;
+use ElementorPro\Modules\QueryControl\Controls\Group_Control_Related;
+
 if (!defined('ABSPATH')) {
 	exit;
 }
@@ -63,6 +66,41 @@ if (!defined('ABSPATH')) {
 
 		protected function register_controls()
 		{
+			$this->start_controls_section(
+				'content_section',
+				[
+					'label' => esc_html__('Post Content', 'mtn'),
+					'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				]
+			);
+	
+			$this->add_control(
+				'grid_num_posts',
+				[
+					'label' => esc_html__('Number of Posts', 'mtn'),
+					'type' => \Elementor\Controls_Manager::NUMBER,
+					'default' => -1,
+				]
+			);
+			$this->end_controls_section();
+			$this->start_controls_section(
+				'section_query',
+				[
+					'label' => esc_html__('Query', 'elementor-pro'),
+					'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				]
+			);
+	
+			$this->add_group_control(
+				Group_Control_Related::get_type(),
+				[
+					'name' => 'mtn_posts',
+				]
+			);
+	
+			$this->end_controls_section();
+	
+			/*** Style COntrol ***/
 
 			$this->start_controls_section(
 				'dot_style',
@@ -163,10 +201,9 @@ if (!defined('ABSPATH')) {
 		protected function render()
 		{
 
-			$posts = mtn_posts();
+			$settings = $this->get_settings_for_display();
+			$posts = postsRender($settings);
 			$screens = array_chunk($posts,6);
-
-			// $settings = $this->get_settings_for_display();
 			/*** Start Content Section ***/
 			echo '
 			
@@ -183,7 +220,7 @@ if (!defined('ABSPATH')) {
                 <div class="col-md-4">
                     <div class="col">
                         <div class="col-md-12">
-                            <a hre="<?=$screen[0]['post-link'];?>" class="half-img" style="background-image: url('<?=$screen[0]['thumbnail']?>;?>'); 
+                            <a href="<?=$screen[0]['post-link'];?>" class="half-img" style="background-image: url('<?=$screen[0]['thumbnail']?>;?>'); 
                                 background-size:cover; 
                                 overflow:hidden;background-position:50% 30%;
                                 display:flex;align-items:flex-end">
@@ -191,7 +228,7 @@ if (!defined('ABSPATH')) {
                             </a>
                         </div>
                         <div class="col-md-12">
-                            <a hre="<?=$screen[1]['post-link'];?>" class="half-img" style="background-image: url('<?=$screen[1]['thumbnail'];?>'); 
+                            <a href="<?=$screen[1]['post-link'];?>" class="half-img" style="background-image: url('<?=$screen[1]['thumbnail'];?>'); 
                                 background-size:cover; 
                                 overflow:hidden;background-position:50% 30%;
                                 display:flex;align-items:flex-end">
@@ -202,7 +239,7 @@ if (!defined('ABSPATH')) {
                 </div>
 
                 <div class="col-md-4">
-                    <a  hre="<?=$screen[2]['post-link'];?>" class="full-imgs" style="background-image: url('<?=$screen[2]['thumbnail'];?>'); 
+                    <a  href="<?=$screen[2]['post-link'];?>" class="full-imgs" style="background-image: url('<?=$screen[2]['thumbnail'];?>'); 
                         background-size:cover; 
                         overflow:hidden;background-position:50% 30%;
                         display:flex;align-items:flex-end">
@@ -214,7 +251,7 @@ if (!defined('ABSPATH')) {
                 <div class="col-md-4">
                     <div class="col">
                         <div class="col-md-12">
-                            <a hre="<?=$screen[3]['post-link'];?>" class="half-img" style="background-image: url('<?=$screen[3]['thumbnail'];?>'); 
+                            <a href="<?=$screen[3]['post-link'];?>" class="half-img" style="background-image: url('<?=$screen[3]['thumbnail'];?>'); 
                                 background-size:cover; 
                                 overflow:hidden;background-position:50% 30%;
                                 display:flex;align-items:flex-end">
@@ -222,7 +259,7 @@ if (!defined('ABSPATH')) {
                             </a>
                         </div>
                         <div class="col-md-12">
-                            <a hre="<?=$screen[4]['post-link'];?>" class="half-img" style="background-image: url('<?=$screen[4]['thumbnail'];?>'); 
+                            <a href="<?=$screen[4]['post-link'];?>" class="half-img" style="background-image: url('<?=$screen[4]['thumbnail'];?>'); 
                                 background-size:cover; 
                                 overflow:hidden;background-position:50% 30%;
                                 display:flex;align-items:flex-end">

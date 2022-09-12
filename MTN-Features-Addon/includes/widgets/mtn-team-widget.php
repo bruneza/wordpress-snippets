@@ -188,16 +188,94 @@ if (!defined('ABSPATH')) {
 
 		protected function render()
 		{
+			$profiles = array(
+				array(
+					"name" => "R Shuter",
+					"title" => "Group President and CEO",
+					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+					"desc" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos distinctio molestiae architecto quas corrupti magnam voluptatibus est, facilis harum reprehenderit aliquam sed, dolores magni expedita officiis saepe vitae. Nam, repellendus?",
+					"link" => "google.com",
+				),
+				array(
+					"name" => "R Shuter",
+					"title" => "Group President and CEO",
+					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+					"desc" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos distinctio molestiae architecto quas corrupti magnam voluptatibus est, facilis harum reprehenderit aliquam sed, dolores magni expedita officiis saepe vitae. Nam, repellendus?",
+					"link" => "google.com",
+				),
+				array(
+					"name" => "R Shuter",
+					"title" => "Group President and CEO",
+					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+					"desc" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos distinctio molestiae architecto quas corrupti magnam voluptatibus est, facilis harum reprehenderit aliquam sed, dolores magni expedita officiis saepe vitae. Nam, repellendus?",
+					"link" => "google.com",
+				),
+				array(
+					"name" => "R Shuter",
+					"title" => "Group President and CEO",
+					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+					"desc" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos distinctio molestiae architecto quas corrupti magnam voluptatibus est, facilis harum reprehenderit aliquam sed, dolores magni expedita officiis saepe vitae. Nam, repellendus?",
+					"link" => "google.com",
+				),
+				array(
+					"name" => "R Shuter",
+					"title" => "Group President and CEO",
+					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+					"desc" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos distinctio molestiae architecto quas corrupti magnam voluptatibus est, facilis harum reprehenderit aliquam sed, dolores magni expedita officiis saepe vitae. Nam, repellendus?",
+					"link" => "google.com",
+				),
+			   
+		);
 
 			// $settings = $this->get_settings_for_display();
 			/*** Start Content Section ***/
 			echo '
 			
-		  <div class="mtn-team-grid-section">';
+		  <div class="mtn-team-grid-section">
+		  <div class="col-md-12">
+		  <div class="row">';
+		  foreach($profiles as $profile)
+            {
+				?>
+                <div class="col-md-4">
+                    <div class="profile-card">
+                        <div class="col">
+                            <div class="col-md-12 profile-title">
+                                <div class="d-flex">
+                                    <div class="col-md-4">
+                                        <div class="profile-picture" style="background-image: url(<?=$profile['image'];?>);">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h2><?=$profile['name'];?></h2>
+                                        <span><?=$profile['title'];?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="profile-body">
+                                    <p>
+                                        <?=$profile['desc'];?>
+                                    </p>
+                                    <a href="<?=$profile['link'];?>" class="social-mdia-section">
+                                        <span class="icon"><i class="fab fa-linkedin"></i></span>
+                                        
+                                        <span class="icon-desc">View LinkedIn profile</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <?php
 		  
             // Code GOES HERE
-
-		    echo '</div>';
+}
+		    echo '
+			</div></div></div>';
 			/*** End Content Section ***/
 		}
 	}

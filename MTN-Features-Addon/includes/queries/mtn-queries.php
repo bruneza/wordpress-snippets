@@ -64,7 +64,7 @@ function mtn_terms_options($postType = 'post')
         }
     } else {
         foreach ($terms as $slug => $term) {
-            $output[$term['taxonomy'] . ':' . $slug . ':' . $term['post-count']] = $term['label'] . ' : ' . $term['name'];
+            $output[$term['taxonomy'] . ':' . $slug . ':' . $term['post-count']] = esc_html($term['label'] . ':' . $term['name']);
         }
     }
 
@@ -90,7 +90,7 @@ function mtn_posts($args = null, $terms = null)
         foreach ($terms as $key => $value) {
             array_push($selectedTerms, array(
                 'taxonomy' => $key,
-                'field' => 'slug',
+                'field' => 'term_id',
                 'terms' => $value,
             ));
         }
@@ -122,6 +122,31 @@ function mtn_posts($args = null, $terms = null)
         return apply_filters('mtn_posts', $finalOutput);
     } else {
         return null;
+    }
+}
+
+/*** Process Query */
+function postsRender($settings)
+{
+    if(isset($settings['grid_num_posts']))
+    $pnp = $settings['grid_num_posts'];
+    else
+    $pnp = -1;
+
+    $args = [
+        'post_type' => $settings['mtn_posts_post_type'],
+        'posts_per_page' => $pnp,
+    ];
+
+    if (isset($settings['mtn_posts_include_term_ids']) && $settings['mtn_posts_include_term_ids']) {
+        foreach ($settings['mtn_posts_include_term_ids'] as $key => $termIds) {
+            $termInfo = get_term($termIds);
+            $terms[$termInfo->taxonomy] = $termIds;
+        }
+        return $posts = mtn_posts($args,$terms);
+    }
+    else{
+        return $posts = mtn_posts($args);
     }
 }
 

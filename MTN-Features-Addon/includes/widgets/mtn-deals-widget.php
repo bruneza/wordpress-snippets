@@ -2,6 +2,9 @@
 
 namespace MTN_FEATURES\Widgets;
 
+use ElementorPro\Modules\QueryControl\Module as Module_Query;
+use ElementorPro\Modules\QueryControl\Controls\Group_Control_Related;
+
 if (!defined('ABSPATH')) {
 	exit;
 }
@@ -62,6 +65,41 @@ if (!defined('ABSPATH')) {
 		}
 		protected function register_controls()
 		{
+			$this->start_controls_section(
+				'content_section',
+				[
+					'label' => esc_html__('Post Content', 'mtn'),
+					'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				]
+			);
+	
+			$this->add_control(
+				'grid_num_posts',
+				[
+					'label' => esc_html__('Number of Posts', 'mtn'),
+					'type' => \Elementor\Controls_Manager::NUMBER,
+					'default' => -1,
+				]
+			);
+			$this->end_controls_section();
+			$this->start_controls_section(
+				'section_query',
+				[
+					'label' => esc_html__('Query', 'elementor-pro'),
+					'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				]
+			);
+	
+			$this->add_group_control(
+				Group_Control_Related::get_type(),
+				[
+					'name' => 'mtn_posts',
+				]
+			);
+	
+			$this->end_controls_section();
+	
+			/*** Style COntrol ***/
 
 			$this->start_controls_section(
 				'dot_style',
@@ -160,12 +198,13 @@ if (!defined('ABSPATH')) {
 
 			
 		}
+
+		
 		
 		protected function render()
 		{
-			// $settings = $this->get_settings_for_display();
-
-            $posts = mtn_posts();
+			$settings = $this->get_settings_for_display();
+            $posts = postsRender($settings);
 
 			/*** Start Content Section ***/
 			echo '<div class="mtn-deals-carousel-section">';

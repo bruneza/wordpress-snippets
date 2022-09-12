@@ -152,3 +152,35 @@ color:var(--e-global-color-secondary);
 max-height: 500px;
 min-height: 500px;
     }
+
+    /**** FLex Grid****/
+    .mtn-flex-grid-section{
+        overflow: hidden;
+        position: relative;
+    }
+    .flex-column{
+        position: relative;
+        height: 100%;
+    }
+    .flex-card{
+        position: relative;
+        border-radius: 20px;
+    }
+    .flex-card img{
+        object-fit: cover;
+    }
+
+    .flex-card-content{
+        display: flex;
+        position: absolute;
+        top:0;
+        left:0;
+        width: 100%;
+        height: 100%;
+    }
+    .flex-column .img-fluid{
+        width: 100%;
+        height: 100%;
+
+    }
+    

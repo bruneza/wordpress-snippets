@@ -2,6 +2,9 @@
 
 namespace MTN_FEATURES\Widgets;
 
+use ElementorPro\Modules\QueryControl\Module as Module_Query;
+use ElementorPro\Modules\QueryControl\Controls\Group_Control_Related;
+
 if (!defined('ABSPATH')) {
 	exit;
 }
@@ -67,14 +70,41 @@ if (!defined('ABSPATH')) {
 			$this->start_controls_section(
 				'content_section',
 				[
-					'label' => esc_html__('Post Content Layout', 'mtn'),
+					'label' => esc_html__('Post Content', 'mtn'),
 					'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 				]
 			);
+	
+			$this->add_control(
+				'grid_num_posts',
+				[
+					'label' => esc_html__('Number of Posts', 'mtn'),
+					'type' => \Elementor\Controls_Manager::NUMBER,
+					'default' => -1,
+				]
+			);
 			$this->end_controls_section();
+			$this->start_controls_section(
+				'section_query',
+				[
+					'label' => esc_html__('Query', 'elementor-pro'),
+					'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				]
+			);
+	
+			$this->add_group_control(
+				Group_Control_Related::get_type(),
+				[
+					'name' => 'mtn_posts',
+				]
+			);
+	
+			$this->end_controls_section();
+	
+			/*** Style COntrol ***/
 
 			$this->start_controls_section(
-				'Title_style',
+				'Content_style',
 				[
 					'label' => esc_html__('Title Style', 'mtn'),
 					'tab' => \Elementor\Controls_Manager::TAB_STYLE,
@@ -88,7 +118,7 @@ if (!defined('ABSPATH')) {
 					'type' => \Elementor\Controls_Manager::COLOR,
 					'default' => '#000000',
 					'selectors' => [
-						'{{WRAPPER}} .product-title' => 'color: {{VALUE}}',
+						'{{WRAPPER}} h3.team-member-name' => 'color: {{VALUE}}',
 					],
 				]
 			);
@@ -96,13 +126,53 @@ if (!defined('ABSPATH')) {
 				\Elementor\Group_Control_Typography::get_type(),
 				[
 					'name' => 'title_typography',
-					'selector' => '{{WRAPPER}} .product-title',
+					'label' => esc_html__('Title Font', 'mtn'),
+					'selector' => '{{WRAPPER}} h3.team-member-name',
+				]
+			);
+			$this->add_control(
+				'job_color',
+				[
+					'label' => esc_html__('Job Title Color', 'mtn'),
+					'type' => \Elementor\Controls_Manager::COLOR,
+					'default' => '#000000',
+					'selectors' => [
+						'{{WRAPPER}} .job-title' => 'color: {{VALUE}}',
+					],
+				]
+			);
+			$this->add_group_control(
+				\Elementor\Group_Control_Typography::get_type(),
+				[
+					'name' => 'job_typography',
+					'label' => esc_html__('Job Title Font', 'mtn'),
+					'selector' => '{{WRAPPER}} .job-title',
+				]
+			);
+			$this->add_control(
+				'excerpt_color',
+				[
+					'label' => esc_html__('Excerpt Color', 'mtn'),
+					'type' => \Elementor\Controls_Manager::COLOR,
+					'default' => '#000000',
+					'selectors' => [
+						'{{WRAPPER}} .team-excerpt' => 'color: {{VALUE}}',
+					],
+				]
+			);
+			$this->add_group_control(
+				\Elementor\Group_Control_Typography::get_type(),
+				[
+					'name' => 'excerpt_typography',
+					'label' => esc_html__('Job Title Font', 'mtn'),
+					'selector' => '{{WRAPPER}} .team-excerpt',
 				]
 			);
 
 			$this->end_controls_section();
+
 			$this->start_controls_section(
-				'allbtn_style',
+				'socialmedia_style',
 				[
 					'label' => esc_html__('Main Button Style', 'mtn'),
 					'tab' => \Elementor\Controls_Manager::TAB_STYLE,
@@ -110,23 +180,23 @@ if (!defined('ABSPATH')) {
 			);
 
 			$this->add_control(
-				'allbtn_color',
+				'socialmedia_color',
 				[
 					'label' => esc_html__('Color', 'mtn'),
 					'type' => \Elementor\Controls_Manager::COLOR,
 					'default' => '#000000',
 					'selectors' => [
-						'{{WRAPPER}} .all-viewedtopics-btn' => 'color: {{VALUE}}',
+						'{{WRAPPER}} .team-more-btn' => 'color: {{VALUE}}',
 					],
 				]
 			);
 			$this->add_group_control(
 				\Elementor\Group_Control_Background::get_type(),
 				[
-					'name' => 'allbtn_background',
+					'name' => 'socialmedia_background',
 					'types' => [ 'classic', 'gradient' ],
 					'exclude' => [ 'image' ],
-					'selector' => '{{WRAPPER}} .all-viewedtopics-btn',
+					'selector' => '{{WRAPPER}} .team-more-btn',
 					'fields_options' => [
 						'background' => [
 							'default' => 'classic',
@@ -143,39 +213,39 @@ if (!defined('ABSPATH')) {
 			$this->add_group_control(
 				\Elementor\Group_Control_Typography::get_type(),
 				[
-					'name' => 'allbtn_typography',
-					'selector' => '{{WRAPPER}} .all-viewedtopics-btn',
+					'name' => 'socialmedia_typography',
+					'selector' => '{{WRAPPER}} .team-more-btn',
 				]
 			);
 	
 			$this->add_group_control(
 				\Elementor\Group_Control_Border::get_type(),
 				[
-					'name' => 'allbtn_border',
+					'name' => 'socialmedia_border',
 					'label' => esc_html__( 'Border', 'mtn' ),
-					'selector' => '{{WRAPPER}} .all-viewedtopics-btn',
+					'selector' => '{{WRAPPER}} .team-more-btn',
 				]
 			);
 
 			$this->add_control(
-				'allbtn_border_radius',
+				'socialmedia_border_radius',
 				[
 					'label' => esc_html__( 'Button Radius', 'mtn' ),
 					'type' => \Elementor\Controls_Manager::DIMENSIONS,
 					'size_units' => [ 'px', '%', 'em' ],
 					'selectors' => [
-						'{{WRAPPER}} .all-viewedtopics-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						'{{WRAPPER}} .team-more-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
 			);
 			$this->add_responsive_control(
-				'allbtn_padding',
+				'socialmedia_padding',
 				[
 					'label' => esc_html__( 'Padding', 'mtn' ),
 					'type' => \Elementor\Controls_Manager::DIMENSIONS,
 					'size_units' => [ 'px', 'em', '%' ],
 					'selectors' => [
-						'{{WRAPPER}} .all-viewedtopics-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						'{{WRAPPER}} .team-more-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 					'separator' => 'before',
 				]
@@ -188,53 +258,16 @@ if (!defined('ABSPATH')) {
 
 		protected function render()
 		{
-			$profiles = array(
-				array(
-					"name" => "R Shuter",
-					"title" => "Group President and CEO",
-					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
-					"desc" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos distinctio molestiae architecto quas corrupti magnam voluptatibus est, facilis harum reprehenderit aliquam sed, dolores magni expedita officiis saepe vitae. Nam, repellendus?",
-					"link" => "google.com",
-				),
-				array(
-					"name" => "R Shuter",
-					"title" => "Group President and CEO",
-					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
-					"desc" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos distinctio molestiae architecto quas corrupti magnam voluptatibus est, facilis harum reprehenderit aliquam sed, dolores magni expedita officiis saepe vitae. Nam, repellendus?",
-					"link" => "google.com",
-				),
-				array(
-					"name" => "R Shuter",
-					"title" => "Group President and CEO",
-					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
-					"desc" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos distinctio molestiae architecto quas corrupti magnam voluptatibus est, facilis harum reprehenderit aliquam sed, dolores magni expedita officiis saepe vitae. Nam, repellendus?",
-					"link" => "google.com",
-				),
-				array(
-					"name" => "R Shuter",
-					"title" => "Group President and CEO",
-					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
-					"desc" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos distinctio molestiae architecto quas corrupti magnam voluptatibus est, facilis harum reprehenderit aliquam sed, dolores magni expedita officiis saepe vitae. Nam, repellendus?",
-					"link" => "google.com",
-				),
-				array(
-					"name" => "R Shuter",
-					"title" => "Group President and CEO",
-					"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
-					"desc" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos distinctio molestiae architecto quas corrupti magnam voluptatibus est, facilis harum reprehenderit aliquam sed, dolores magni expedita officiis saepe vitae. Nam, repellendus?",
-					"link" => "google.com",
-				),
-			   
-		);
+			$settings = $this->get_settings_for_display();
+            $posts = postsRender($settings);
 
-			// $settings = $this->get_settings_for_display();
 			/*** Start Content Section ***/
 			echo '
 			
 		  <div class="mtn-team-grid-section">
 		  <div class="col-md-12">
 		  <div class="row">';
-		  foreach($profiles as $profile)
+		  foreach($posts as $post)
             {
 				?>
                 <div class="col-md-4">
@@ -243,25 +276,23 @@ if (!defined('ABSPATH')) {
                             <div class="col-md-12 profile-title">
                                 <div class="d-flex">
                                     <div class="col-md-4">
-                                        <div class="profile-picture" style="background-image: url(<?=$profile['image'];?>);">
+                                        <div class="profile-picture" style="background-image: url(<?=$post['thumbnail'];?>);">
                                             
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h2><?=$profile['name'];?></h2>
-                                        <span><?=$profile['title'];?></span>
+                                        <h3 class="team-member-name"><?=$post['title'];?></h3>
+                                        <span class="job-title"><?=$post['cpt-jobtitle'];?></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="profile-body">
-                                    <p>
-                                        <?=$profile['desc'];?>
+                                    <p class="team-excerpt">
+                                        <?=$post['excerpt'];?>
                                     </p>
-                                    <a href="<?=$profile['link'];?>" class="social-mdia-section">
-                                        <span class="icon"><i class="fab fa-linkedin"></i></span>
-                                        
-                                        <span class="icon-desc">View LinkedIn profile</span>
+                                    <a href="<?=$post['post-link'];?>" class="team-more-btn">
+                                        <span class="icon-desc">Learn More</span>
                                     </a>
                                 </div>
                             </div>

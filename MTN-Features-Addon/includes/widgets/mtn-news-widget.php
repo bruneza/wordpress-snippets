@@ -188,16 +188,100 @@ if (!defined('ABSPATH')) {
 
 		protected function render()
 		{
+			$fullDesign = True;
+			$inlineDesign = True;
+			$inlineCounts = "6";
+			$fullCounts = "1";
+			$news = array(
+			array(
+				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+				"desc" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, ?",
+				"link" => "https://mtn.inoventyk.rw/single-news/",
+			),array(
+				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+				"desc" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, ?",
+				"link" => "https://mtn.inoventyk.rw/single-news/",
+			),array(
+				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+				"desc" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, ?",
+				"link" => "https://mtn.inoventyk.rw/single-news/",
+			),array(
+				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+				"desc" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, ?",
+				"link" => "https://mtn.inoventyk.rw/single-news/",
+			),array(
+				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+				"desc" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, ?",
+				"link" => "https://mtn.inoventyk.rw/single-news/",
+			),array(
+				"image" => "https://mtn.inoventyk.rw/wp-content/uploads/2022/09/MTN_Youth.jpg",
+				"desc" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, ?",
+				"link" => "https://mtn.inoventyk.rw/single-news/",
+			),);
+		// $settings = $this->get_settings_for_display();
+		/*** Start Content Section ***/
+		echo '
+		
+	  <div class="mtn-news-grid-section">
+	  <div class="col-md-12">
+		<div class="row">';
+			if($fullDesign)
+			{
+				foreach($news as $new)
+				{
+					if($fullCounts == 0)
+						break;
+						?>
+						
+				<div class="col-md-12 news-full-container">
+							<div class="d-flex">
+								<div class="col-md-8" style="background-image: url(<?=$new['image']?>);"></div>
+								<div class="col-md-4">
+									<div class="latest-contents">
+										<p>
+											<?=$new['desc']?>
+										</p>
+										<a href="<?=$new['link']?>">Read More</a>
+									</div>
+								</div>
+							</div>
+							<div class="latest-new-12">
 
-			// $settings = $this->get_settings_for_display();
-			/*** Start Content Section ***/
-			echo '
-			
-		  <div class="mtn-news-grid-section">';
-		  
-            // Code GOES HERE
+							</div>
+						</div>
+						<?php
+					$fullCounts--;
+				}
+			}
+		?>
+		<?php
+		if($inlineDesign){
+		foreach($news as $new)
+		{
+			if($inlineCounts == 0)
+						break;
+		?>
 
-		    echo '</div>';
+				
+
+			<div class="col-md-6">
+				<div class="latest-new-6 news-container" style="background-image: url(<?=$new['image']?>);">
+					<div class="latest-contents">
+						<p>
+							<?=$new['desc']?>
+						</p>
+						<a href="<?=$new['link']?>">Read More</a>
+					</div>
+				</div>
+			</div>
+
+		
+		<?php
+			$inlineCounts--;
+			}
+		}
+		echo '</div>
+	</div></div>';
 			/*** End Content Section ***/
 		}
 	}

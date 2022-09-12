@@ -114,7 +114,13 @@ function mtn_posts($args = null, $terms = null)
             $output['categories'] = get_the_category($post_id);
             $output['post-link'] = get_permalink();
             $output['date'] = esc_attr(get_the_date());
-            $output['posted-date'] = esc_html($initDate); 
+            $output['posted-date'] = esc_html($initDate);
+            $output['cpt-description'] = meta_validator($post_id, '_mtn_description');
+            $output['cpt-jobtitle'] = meta_validator($post_id, '_mtn_job_title');
+            $output['cpt-linkedin'] = meta_validator($post_id, '_mtn_linkdin_url');
+
+            /* 
+            */
 
             /*** OUTPUT ALL ***/
             array_push($finalOutput, $output);
@@ -128,10 +134,10 @@ function mtn_posts($args = null, $terms = null)
 /*** Process Query */
 function postsRender($settings)
 {
-    if(isset($settings['grid_num_posts']))
-    $pnp = $settings['grid_num_posts'];
+    if (isset($settings['grid_num_posts']))
+        $pnp = $settings['grid_num_posts'];
     else
-    $pnp = -1;
+        $pnp = -1;
 
     $args = [
         'post_type' => $settings['mtn_posts_post_type'],
@@ -143,18 +149,26 @@ function postsRender($settings)
             $termInfo = get_term($termIds);
             $terms[$termInfo->taxonomy] = $termIds;
         }
-        return $posts = mtn_posts($args,$terms);
-    }
-    else{
+        return $posts = mtn_posts($args, $terms);
+    } else {
         return $posts = mtn_posts($args);
     }
 }
 
 function mtn_get_thumbnail($post)
 {
-    
-    if (isset($post['thumbnail']) && $post['thumbnail']){
+
+    if (isset($post['thumbnail']) && $post['thumbnail']) {
         echo '<img class="img-fluid" src="' . esc_url($post['thumbnail']) . '" alt="' . $post['title'] . '" />';
-     }else
+    } else
         null;
+}
+
+function meta_validator($post_id, $field)
+{
+    $postMeta = get_post_meta($post_id, $field,true);
+    if (isset($postMeta) && $postMeta)
+        return esc_attr($postMeta);
+    else
+        return null;
 }

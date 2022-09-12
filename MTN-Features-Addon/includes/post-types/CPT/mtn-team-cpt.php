@@ -68,7 +68,7 @@ if (!class_exists('MTN_Team_Cpt')) :
                     'menu_icon' => 'dashicons-groups',
                     'public' => true,
                     'hierarchy' => false,
-                    'supports' => array('title','revisions','thumbnail', 'excerpt'),
+                    'supports' => array('title','revisions','editor','thumbnail', 'excerpt'),
                     'taxonomies' => array('post_tag'),
                     'capability_type' => 'post',
                     'rewrite' => array('slug' => 'teams'),

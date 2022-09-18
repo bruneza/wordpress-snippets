@@ -162,13 +162,18 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
 
         $this->add_responsive_control(
             'grid_padding',
-            padding_control($label = 'Content Padding', '.post-wrapper')
+            padding_control($label = 'Content Padding', '.post-content')
         );
 
         $this->add_responsive_control(
 			'grid_height',
-			height_control('Grid Height', '.post-wrapper', 350)
+			slider_control('Grid Height', '.post-wrapper','height', 350)
 		);
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            background_control('backgroud_overlay', '.post-content')
+        );
     
         $this->end_controls_section();
 
@@ -178,6 +183,20 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
                 'label' => esc_html__('Filter Style', 'mtn'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             ]
+        );
+
+        $this->add_responsive_control(
+			'filter_tab_height',
+			slider_control('Tab Height', '.posts-filter .nav-link','height', 80, array('max-px'=>200))
+		);
+        $this->add_responsive_control(
+			'filter_tab_width',
+			slider_control('Tab Width', '.posts-filter .nav-link','width', 80, array('max-px'=>200))
+		);
+
+        $this->add_responsive_control(
+            'tab_space_between',
+            space_between_control('.nav-item',20)
         );
 
         // NORMAL STATE
@@ -221,6 +240,11 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
             \Elementor\Group_Control_Typography::get_type(),
             typography_control('filter_title_typography','.nav-link')
         );
+
+        $this->add_control(
+			'fitler_icon_heading',
+            heading_control('Icon')
+		);
     
 
         $this->end_controls_tab();
@@ -347,18 +371,6 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
         $this->end_controls_section();
     }
 
-    protected function processIcon($settings){
-        /*filter_selected_icon
-filter_icons*/
-        // print_r($settings['filter_icons']);
-
-        foreach($settings['filter_icons'] as $item){
-            // $library = $item['library'];
-            // $url = $item['url'];
-            print_r($item);
-
-        }
-    }
     protected function render()
     {
 
@@ -366,8 +378,7 @@ filter_icons*/
         $postType = getPostType($settings);
         $selectedKeys = array();
 
-        $this->processIcon($settings);
-
+        $icon = processIcon($settings);
 
         $terms = mtn_get_terms($postType, $settings);
 
@@ -375,14 +386,15 @@ filter_icons*/
 
         <?php if (!empty($terms)) {
             $i = 0; ?>
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <ul class="nav nav-pills posts-filter mb-3" id="pills-tab" role="tablist">
 
                 <?php foreach ($terms as $key => $value) {
                     array_push($selectedKeys, array($value['id'], $key)); ?>
 
                     <li class="nav-item" role="presentation">
                         <a class="nav-link <?php if ($i == 0) echo 'active'; ?>" id="pills-<?= $key; ?>-tab" data-bs-toggle="pill" data-bs-target="#pills-<?= $key; ?>" role="tab" aria-controls="pills-<?= $key; ?>" aria-selected="<?= $key; ?>">
-                            <span class="filter-tab-title"><?= $value['name']; ?></span>
+                        <?php if($icon) echo $icon[$i]; ?>    
+                        <span class="filter-tab-title"><?= $value['name']; ?></span>
                         </a>
                     </li>
 
@@ -391,7 +403,7 @@ filter_icons*/
                 } ?>
             </ul>
         <?php } ?>
-        <div class="tab-content" id="pills-tabContent">
+        <div class="tab-content post-filter-content" id="pills-tabContent">
             <?php
             foreach ($selectedKeys as $key => $value) {
             ?>

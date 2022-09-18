@@ -57,9 +57,11 @@ if (!function_exists('space_between_control')) {
         return apply_filters('mtn_space_between', $arr);
     }
 }
-if (!function_exists('height_control')) {
-    function height_control($label ='Height', $selector, $default = 300)
+if (!function_exists('slider_control')) {
+    function slider_control($label ='Height', $selector, $props, $default = 300,$extra = null)
     {
+        if(!isset($extra['min-px'])) $extra['min-px'] = 0;
+        if(!isset($extra['max-px'])) $extra['max-px'] = 1000;
         $arr =  [
             'label' => esc_html__($label, 'mtn'),
             'type' => \Elementor\Controls_Manager::SLIDER,
@@ -70,8 +72,8 @@ if (!function_exists('height_control')) {
             ],
             'range' => [
                 'px' => [
-                    'min' => 300,
-                    'max' => 1000,
+                    'min' => $extra['min-px'],
+                    'max' => $extra['max-px'],
                 ],
                 '%' => [
                     'min' => 0,
@@ -79,11 +81,11 @@ if (!function_exists('height_control')) {
                 ],
             ],
             'selectors' => [
-                '{{WRAPPER}} '.$selector => 'height: {{SIZE}}{{UNIT}} !important',
+                '{{WRAPPER}} '.$selector => $props.': {{SIZE}}{{UNIT}} !important',
             ],
         ];
 
-        return apply_filters('mtn_height_control', $arr);
+        return apply_filters('mtn_slider_control', $arr);
     }
 }
 if (!function_exists('padding_control')) {

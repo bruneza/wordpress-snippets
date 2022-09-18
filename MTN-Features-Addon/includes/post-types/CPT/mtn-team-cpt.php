@@ -30,7 +30,7 @@ if (!class_exists('MTN_Team_Cpt')) :
          */
         public function __construct()
         {
-            add_action('init', [$this, 'register_WorkShop_cpt'], 0);
+            add_action('init', [$this, 'register_cpt'], 0);
 
             require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-team-cfields.php';
 			
@@ -44,7 +44,7 @@ if (!class_exists('MTN_Team_Cpt')) :
         /**
          * Create Teams Post Type
          */
-        public function register_WorkShop_cpt()
+        public function register_cpt()
         {
             /**
              * Create Teams CPT

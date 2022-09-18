@@ -61,7 +61,7 @@ if (!class_exists('MTN_Faq_Cpt')) :
                     'show_in_nav_menus' => true,
                     'show_in_rest' => true,
                     'description' => __('Lists of available Faq', 'mtn'),
-                    'menu_icon' => 'dashicons-tag',
+                    'menu_icon' => 'dashicons-editor-help',
                     'public' => true,
                     'hierarchy' => false,
                     'supports' => array('title','revisions','editor','thumbnail', 'excerpt'),

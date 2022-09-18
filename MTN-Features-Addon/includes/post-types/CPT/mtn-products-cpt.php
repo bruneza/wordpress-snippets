@@ -30,7 +30,7 @@ if (!class_exists('MTN_Product_Cpt')) :
          */
         public function __construct()
         {
-            add_action('init', [$this, 'register_WorkShop_cpt'], 0);
+            add_action('init', [$this, 'register_cpt'], 0);
 
             require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-products-cfields.php';
 			
@@ -44,7 +44,7 @@ if (!class_exists('MTN_Product_Cpt')) :
         /**
          * Create Products Post Type
          */
-        public function register_WorkShop_cpt()
+        public function register_cpt()
         {
             /**
              * Create Products CPT
@@ -100,6 +100,34 @@ if (!class_exists('MTN_Product_Cpt')) :
                 "show_in_rest" => true,
                 "show_tagcloud" => false,
                 "rest_base" => "bru_product_category",
+                "rest_controller_class" => "WP_REST_Terms_Controller",
+                "rest_namespace" => "wp/v2",
+                "show_in_quick_edit" => false,
+                "sort" => false,
+                "show_in_graphql" => false,
+            ));
+            
+            if (taxonomy_exists('mtn_product_amenity')) {
+                return;
+            }
+            register_taxonomy('mtn_product_amenity', ["mtn_products"], array(
+                "label" => __("Products Amenities", "mtn"),
+                'labels'                     => array(
+                    'name'                       => _x('Products Amenities', 'Taxonomy General Name', 'mtn'),
+                    'singular_name'              => _x('Products Amenity', 'Taxonomy Singular Name', 'mtn'),
+                ),
+                'hierarchical'               => true,
+                'public'                     => true,
+                "publicly_queryable" => true,
+                'show_ui'                    => true,
+                "show_in_menu" => true,
+                'show_admin_column'          => true,
+                'show_in_nav_menus'          => true,
+                'query_var'                  => true,
+                'rewrite'                    => array('slug' => 'product-categories', 'with_front' => true,),
+                "show_in_rest" => true,
+                "show_tagcloud" => false,
+                "rest_base" => "bru_product_amenity",
                 "rest_controller_class" => "WP_REST_Terms_Controller",
                 "rest_namespace" => "wp/v2",
                 "show_in_quick_edit" => false,

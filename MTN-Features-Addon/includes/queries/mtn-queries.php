@@ -200,3 +200,27 @@ function meta_validator($post_id, $field)
     else
         return null;
 }
+
+
+function processIcon($settings){
+    $output = null;
+    foreach($settings['filter_icons'] as $key=>$item){
+        $value= $item['filter_selected_icon']['value'];
+        $library = $item['filter_selected_icon']['library'];
+
+        if ( empty( $library ) ) {
+			return false;
+		}
+
+        if ( 'svg' === $library ) {
+            if ( ! isset( $value['id'] ) ) return '';
+
+            $output[$key] = get_post_meta( $value['id'], '_elementor_inline_svg', true );
+		} else{
+            $output[$key] = '<i aria-hidden="true" class="'.$value.'"></i>';
+        }
+    }
+
+    return apply_filters('post_filter_icon', $output);
+
+}

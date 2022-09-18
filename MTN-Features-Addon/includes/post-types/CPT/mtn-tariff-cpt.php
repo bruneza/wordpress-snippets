@@ -30,7 +30,7 @@ if (!class_exists('MTN_Tariff_Cpt')) :
          */
         public function __construct()
         {
-            add_action('init', [$this, 'register_WorkShop_cpt'], 0);
+            add_action('init', [$this, 'register_cpt'], 0);
 
             // require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-tariffs-cfields.php';
 			
@@ -44,7 +44,7 @@ if (!class_exists('MTN_Tariff_Cpt')) :
         /**
          * Create Tariffs Post Type
          */
-        public function register_WorkShop_cpt()
+        public function register_cpt()
         {
             /**
              * Create Tariffs CPT

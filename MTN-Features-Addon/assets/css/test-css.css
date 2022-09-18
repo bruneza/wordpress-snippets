@@ -17,8 +17,8 @@
     text-align: center;
     -webkit-tap-highlight-color: transparent;
     position: absolute;
-    bottom: 0!important;
-    left: 48%!important;
+    top: 0!important;
+    left: 0 !important;
 }
 
 .topic-owl-carousel .owl-dots .active span {
@@ -116,8 +116,6 @@
 }
 
 
-
-
 /* newsroom */
 
 .news-container {
@@ -178,4 +176,71 @@
 
 .news-full-container .d-flex {
     width: 100%;
+}
+
+
+/* MTN filter */
+
+.busines-items-novigator {
+    margin: 30px 0;
+}
+
+.business-item {
+    background-size: cover;
+    display: flex;
+    max-height: 350.6px;
+    min-height: 350.6px;
+    border-radius: 20px;
+    align-items: flex-end;
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+.business-item .business-item-contents {
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: linear-gradient( transparent, hsla(0, 0%, 0%, 1));
+    width: 100%;
+    padding: 30px;
+    height: 100%;
+}
+
+.business-item .business-item-contents a {
+    background: #ffcc00;
+    color: #000;
+    text-decoration: none;
+    padding: 3px 20px 3px 10px;
+    border-radius: 20px;
+}
+
+.business-item .business-item-contents h4,
+.business-item .business-item-contents p {
+    color: #fff;
+}
+
+.business-item .business-item-contents span {
+    background-color: #fff;
+    padding: 2px 5px;
+    font-size: 12px;
+}
+
+.down-icon-filter {
+    padding: 0!important;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.filter-button {
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-button:hover {
+    background-color: #000!important;
+    color: #fff!important;
+    margin-bottom: 0!important;
 }

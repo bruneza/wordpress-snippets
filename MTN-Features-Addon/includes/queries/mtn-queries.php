@@ -26,28 +26,48 @@ function mtn_get_taxonomies($postType = 'post')
     return $taxonomies;
 }
 
-function mtn_get_terms($postType = 'post')
+function mtn_get_terms($postType = 'post', $settings = null)
 {
 
     $taxonomies = mtn_get_taxonomies($postType);
 
+    // if(!$postType)
+
+
     $output = array();
+    if (!$settings) {
+        foreach ($taxonomies as $key => $label) {
+            $terms = get_terms(array('taxonomy' => $key));
 
-    foreach ($taxonomies as $key => $label) {
-        $terms = get_terms(array('taxonomy' => $key));
-
-        foreach ($terms as $term) {
-            $output[$term->slug] = [
-                'id' => $term->term_id,
-                'name' => $term->name,
-                'taxonomy' => $term->taxonomy,
-                'label' => $label,
-                'post-count' => $term->count,
-            ];
+            foreach ($terms as $term) {
+                $output[$term->slug] = [
+                    'id' => $term->term_id,
+                    'name' => $term->name,
+                    'taxonomy' => $term->taxonomy,
+                    'label' => $label,
+                    'post-count' => $term->count,
+                ];
+            }
         }
-    }
+    } else {
+        $termId = $settings['mtn_posts_include_term_ids'];
+        $terms = array();
+        if ($termId) {
+            foreach ($termId as $id) {
 
-    return apply_filters('mtn_term_options', $output, $postType);
+                $terms = get_term($id);
+                $output[$terms->slug] = [
+                    'id' => $id,
+                    'name' => $terms->name,
+                    'taxonomy' => $terms->taxonomy,
+                    'label' =>  $terms->label,
+                    'post-count' =>  $terms->count,
+                ];
+            }
+        }
+
+        return apply_filters('mtn_term_options', $output, $postType);
+    }
 }
 
 function mtn_terms_options($postType = 'post')
@@ -132,6 +152,14 @@ function mtn_posts($args = null, $terms = null)
 }
 
 /*** Process Query */
+
+function getPostType($settings)
+{
+    if ($settings['mtn_posts_post_type'])
+        return $settings['mtn_posts_post_type'];
+    else
+        return null;
+}
 function postsRender($settings)
 {
     if (isset($settings['grid_num_posts']))
@@ -166,7 +194,7 @@ function mtn_get_thumbnail($post)
 
 function meta_validator($post_id, $field)
 {
-    $postMeta = get_post_meta($post_id, $field,true);
+    $postMeta = get_post_meta($post_id, $field, true);
     if (isset($postMeta) && $postMeta)
         return esc_attr($postMeta);
     else

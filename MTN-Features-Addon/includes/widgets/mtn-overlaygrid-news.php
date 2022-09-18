@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-	class MTN_Viewed_Topics  extends \Elementor\Widget_Base
+	class MTN_Post_Filter  extends \Elementor\Widget_Base
 	{
 
 		/**
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 		 */
 		public function get_name()
 		{
-			return 'Viewed Topics';
+			return 'Post Filter';
 		}
 		/**
 		 * Get widget title.
@@ -33,7 +33,7 @@ if (!defined('ABSPATH')) {
 		 */
 		public function get_title()
 		{
-			return esc_html__('Viewed Topics', 'mtn');
+			return esc_html__('Post Filter', 'mtn');
 		}
 
 		/**
@@ -188,65 +188,12 @@ if (!defined('ABSPATH')) {
 
 		protected function render()
 		{
-			$topics = array(
-				array(
-					"title" => "Product Campaign",
-					"body" => "Untouchable, a doer plugged on 4G. Upgrade to 4G with a free SIM swap at any Mtn Service Centre.",
-					"link" => "google.com",
-				),
-				array(
-					"title" => "Product Campaign",
-					"body" => "Untouchable, a doer plugged on 4G. Upgrade to 4G with a free SIM swap at any Mtn Service Centre.",
-					"link" => "google.com",
-				),
-				array(
-					"title" => "Product Campaign",
-					"body" => "Untouchable, a doer plugged on 4G. Upgrade to 4G with a free SIM swap at any Mtn Service Centre.",
-					"link" => "google.com",
-				),
-				array(
-					"title" => "Product Campaign",
-					"body" => "Untouchable, a doer plugged on 4G. Upgrade to 4G with a free SIM swap at any Mtn Service Centre.",
-					"link" => "google.com",
-				)
-		);
+						
+		// $settings = $this->get_settings_for_display();
+		/*** Start Content Section ***/
+		echo '<div class="mtn-news-grid-section">';
 
-			// $settings = $this->get_settings_for_display();
-			/*** Start Content Section ***/
-			echo '
-			<div class="title-Topic" >
-        <h2 class="mtn-primary-font">Most-viewed Topics</h2>
-      </div>
-		  <div class="mtn-home-topics-carousel-section owl-carousel topic-owl-carousel owl-theme" style="margin: 60px 0;">';
-		  
-		  $topics = $topics;
-          foreach ($topics as $topic)
-          {
-            ?>
-          
-          <div class="col-md-12">
-          
-            <div class="row">
-                <div class="col-md-11"><span class="curve1"></span>
-                    <div class="topic">
-                         <span class="topic-title mtn-secondary-font"><h1><?=$topic['title'];?></h1></span> 
-                         <div class="topic-body">
-                            <p class="mtn-text-font">
-                                <?=$topic['body'];?>
-                            </p>
-                         </div>
-                         <a class="mtn-accent-font" href="<?=$topic['link'];?>">Read More &nbsp;<i class=" fa fa-caret-right"></i></a>
-                    
-                </div><span class="curve"></span>
-                </div>
-            </div>
-            
-          </div>
-          <?php
-}
-          
-
-		    echo '</div>';
+				echo '</div>';
 			/*** End Content Section ***/
 		}
 	}

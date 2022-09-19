@@ -273,6 +273,9 @@ final class MTN_Features
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Tariffs_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Device_Filter1());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Posts_Filter());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Level_Up());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Faqs());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Single_Faqs());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Vacancies());
 	}
 }

@@ -2,8 +2,6 @@
 
 namespace MTN_FEATURES\CPT;
 
-use \MTN_FEATURES\Custom_Field\MTN_Tariff_fields;
-
 // Exit if accessed directly.
 if (!defined('ABSPATH')) exit;
 
@@ -32,9 +30,9 @@ if (!class_exists('MTN_Tariff_Cpt')) :
         {
             add_action('init', [$this, 'register_cpt'], 0);
 
-            // require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-tariffs-cfields.php';
+            require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-tariffs-cfields.php';
 			
-			// MTN_Tariff_fields::instance();
+			\MTN_FEATURES\Custom_Field\MTN_Tariff_fields::instance();
 
 
         }
@@ -68,7 +66,7 @@ if (!class_exists('MTN_Tariff_Cpt')) :
                     'menu_icon' => 'dashicons-tag',
                     'public' => true,
                     'hierarchy' => false,
-                    'supports' => array('title','revisions', 'excerpt'),
+                    'supports' => array('title','editor','revisions', 'excerpt'),
                     'taxonomies' => array('post_tag'),
                     'capability_type' => 'post',
                     'rewrite' => array('slug' => 'tariffs'),

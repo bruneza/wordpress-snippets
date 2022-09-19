@@ -244,3 +244,197 @@
     color: #fff!important;
     margin-bottom: 0!important;
 }
+
+
+/* device filter */
+
+.deals-item {
+    height: 400px;
+    padding: 30px;
+    box-shadow: 2px 2px 23px 2px;
+    margin: 20px 0;
+    border-radius: 20px;
+}
+
+.btm-down-section {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btm-down-section p {
+    flex: 5;
+}
+
+.btm-upper-section h1 {
+    color: #ffcc00;
+}
+
+.btm-down-section .deal-items-icon {
+    background-color: #ffcc00;
+    color: #000;
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.btm-down-section {
+    padding-top: 20px;
+}
+
+.filter-first-btn,
+.filter-scnd-btn {
+    flex: 1;
+}
+
+.filter-one,
+.filter-two {
+    border: 1px solid black;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.see-all-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.see-all-btn a {
+    background-color: #ffcc00;
+    padding: 5px 40px;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+}
+
+.hidden {
+    display: none!important;
+}
+
+/* faq page */
+
+.section-navigator-faq {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    width: 100%;
+    box-shadow: 3px 0px 10px 1px;
+    border-radius: 40px;
+    padding: 10px;
+}
+
+.section-navigator-faq li {
+    padding: 10px 30px;
+}
+
+.section-navigator-faq a {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer!important;
+}
+
+.section-navigator-faq .active-navigator-title {
+    background-color: #000;
+    color: #fff;
+    border-radius: 20px;
+}
+
+.section-navigator-faq a:hover {
+    background-color: #ffcc00;
+    color: #fff;
+    border-radius: 20px;
+}
+
+.section-contents-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigator-button {
+    border-bottom: #ffcc00 solid .2px;
+}
+
+
+/* single faq */
+
+.section-navigator-single-faq {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    width: 100%;
+    box-shadow: 3px 0px 10px 1px;
+    border-radius: 20px;
+    padding: 0;
+    overflow: hidden
+}
+
+.section-navigator-single-faq li {
+    padding: 10px 30px;
+}
+
+.section-navigator-single-faq a {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer!important;
+}
+
+.section-navigator-single-faq a.active-navigator-button {
+    background-color: #000;
+    color: #fff;
+    border-radius: 20px;
+}
+
+.section-navigator-single-faq li:hover {
+    background-color: #ffcc00;
+    color: #fff;
+    border-radius: 20px;
+}
+
+.back-btn {
+    background-color: #f2f2f2;
+    color: #000;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 30px;
+    cursor: pointer;
+}
+
+.section-contents-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+/* vacancies */
+
+.vacancies {
+    padding: 30px;
+    box-shadow: 0px 0px 8px 0px;
+    margin: 20px 0;
+    border-radius: 20px;
+}
+
+.vacancies .col-md-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deal-items-icon {
+    background-color: #ffcc00;
+    color: #000;
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}

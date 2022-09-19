@@ -67,7 +67,7 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
     protected function register_controls()
     {
         $count_to_ten = range(1, 10);
-		$count_to_ten = array_combine($count_to_ten, $count_to_ten);
+        $count_to_ten = array_combine($count_to_ten, $count_to_ten);
 
         $this->start_controls_section(
             'content_section',
@@ -77,50 +77,36 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
             ]
         );
 
-        $this->add_control(
-            'grid_num_posts',
-            [
-                'label' => esc_html__('Number of Posts', 'mtn'),
-                'type' => \Elementor\Controls_Manager::NUMBER,
-                'default' => -1,
-            ]
-        );
-        $this->add_control(
-			'num_of_col',
-            column_number_control($count_to_ten, $default = 3)
-        );
+        number_control($this, 'grid_num_posts', 'Number of Posts', '-1');
 
-        $this->add_control(
-            'icon_section',
-            heading_control('Icons')
-        );
+
+        column_number_control($this, 'num_of_col', $count_to_ten, $default = 3);
+
+        heading_control($this, 'icon_section', 'Icons');
 
         $repeater = new \Elementor\Repeater();
-        
-        $repeater->add_control(
-			'filter_selected_icon',
-			icon_control('Icon')
-		);
+
+        icon_control($repeater, 'filter_selected_icon', 'Icon');
 
 
         $this->add_control(
-			'filter_icons',
-			[
-				'label' => esc_html__( 'Items', 'mtn' ),
-				'type' => \Elementor\Controls_Manager::REPEATER,
-				'fields' => $repeater->get_controls(),
-				'default' => [
-					[
-						'filter_icons_Title' => esc_html__( 'List Item', 'mtn' ),
-						'filter_selected_icon' => [
-							'value' => 'fas fa-times',
-							'library' => 'fa-solid',
-						],
-					],
-				],
-				'title_field' => '{{{ elementor.helpers.renderIcon( this, filter_selected_icon, {}, "i", "panel" ) || \'<i class="{{ icon }}" aria-hidden="true"></i>\' }}}',
-			]
-		);
+            'filter_icons',
+            [
+                'label' => esc_html__('Items', 'mtn'),
+                'type' => \Elementor\Controls_Manager::REPEATER,
+                'fields' => $repeater->get_controls(),
+                'default' => [
+                    [
+                        'filter_icons_Title' => esc_html__('List Item', 'mtn'),
+                        'filter_selected_icon' => [
+                            'value' => 'fas fa-times',
+                            'library' => 'fa-solid',
+                        ],
+                    ],
+                ],
+                'title_field' => '{{{ elementor.helpers.renderIcon( this, filter_selected_icon, {}, "i", "panel" ) || \'<i class="{{ icon }}" aria-hidden="true"></i>\' }}}',
+            ]
+        );
 
 
         $this->end_controls_section();
@@ -150,31 +136,13 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
             ]
         );
 
-        $this->add_responsive_control(
-            'grid_border_radius',
-            border_radius_control('.post-wrapper')
-        );
 
-        $this->add_responsive_control(
-            'space_between',
-            space_between_control('.post-card',20)
-        );
+        border_radius_control($this, 'grid_border_radius', '.post-wrapper');
+        space_between_control($this, 'space_between', '.post-card', 20);
+        padding_control($this, 'grid_padding', 'Content Padding', '.post-content');
+        slider_control($this, 'grid_height', 'Grid Height', array('.post-wrapper', 'height'), 350);
+        background_control($this, 'backgroud_overlay', 'Overlay', '.post-content');
 
-        $this->add_responsive_control(
-            'grid_padding',
-            padding_control($label = 'Content Padding', '.post-content')
-        );
-
-        $this->add_responsive_control(
-			'grid_height',
-			slider_control('Grid Height', '.post-wrapper','height', 350)
-		);
-
-        $this->add_group_control(
-            \Elementor\Group_Control_Background::get_type(),
-            background_control('backgroud_overlay', '.post-content')
-        );
-    
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -185,77 +153,64 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
             ]
         );
 
-        $this->add_responsive_control(
-			'filter_tab_height',
-			slider_control('Tab Height', '.posts-filter .nav-link','height', 80, array('max-px'=>200))
-		);
-        $this->add_responsive_control(
-			'filter_tab_width',
-			slider_control('Tab Width', '.posts-filter .nav-link','width', 80, array('max-px'=>200))
-		);
 
-        $this->add_responsive_control(
-            'tab_space_between',
-            space_between_control('.nav-item',20)
-        );
+        slider_control($this, 'filter_tab_height', 'Tab Height', array('.posts-filter .nav-link', 'height'), 80, array('max-px' => 200));
+        slider_control($this, 'filter_tab_width', 'Tab Width', array('.posts-filter .nav-link', 'width'), 80, array('max-px' => 200));
+
+
+        space_between_control($this, 'tab_space_between', '.nav-item', 20);
+
+        typography_control($this, 'filter_title_typography', '.nav-link');
+
+
+        slider_control($this, 'filter_svg_size', 'SVG Icon Size', array('.nav-link svg', 'width'), 30, array('max-px' => 200));
+
+        slider_control($this, 'filter_icon_size', 'Icon Font Size', array('.nav-link i', 'font-size'), 30, array('max-px' => 200));
 
         // NORMAL STATE
         $this->start_controls_tabs(
             'filter_btn_tabs'
         );
-        
+
         $this->start_controls_tab(
             'filter_normal_tab',
             [
-                'label' => esc_html__( 'Normal', 'mtn' ),
+                'label' => esc_html__('Normal', 'mtn'),
             ]
         );
 
-        $this->add_control(
-			'fitler_btn_heading',
-            heading_control('Button pill')
-		);
-        
-        $this->add_group_control(
-            \Elementor\Group_Control_Border::get_type(),
-            border_control('filter_btn_border', 'Border', '.nav-link')
-        );
 
-        $this->add_group_control(
-            \Elementor\Group_Control_Background::get_type(),
-            background_control('filter_btn_background', '.nav-link')
-        );
+        heading_control($this, 'fitler_btn_heading', 'Button pill');
+        border_control($this, 'filter_btn_border', 'Border', '.nav-link');
 
-        $this->add_control(
-			'fitler_title_heading',
-            heading_control('Title')
-		);
+        background_control($this, 'filter_btn_background', 'Button Background', '.nav-link');
 
-        $this->add_control(
-            'fitler_title_color',
-            color_control('.nav-link')
-        );
+        heading_control($this, 'fitler_title_heading', 'Tab Content');
 
-        $this->add_group_control(
-            \Elementor\Group_Control_Typography::get_type(),
-            typography_control('filter_title_typography','.nav-link')
-        );
-
-        $this->add_control(
-			'fitler_icon_heading',
-            heading_control('Icon')
-		);
-    
+        color_control($this, 'fitler_title_color', 'Color', '.nav-link');
 
         $this->end_controls_tab();
         // HOVER STATE;
         $this->start_controls_tab(
             'filter_hover_tab',
             [
-                'label' => esc_html__( 'Hover', 'mtn' ),
+                'label' => esc_html__('Hover', 'mtn'),
             ]
         );
 
+
+        heading_control($this, 'fitler_btn_heading_hover', 'Button pill');
+
+        border_control($this, 'filter_btn_border_hover', 'Border', '.nav-link:hover');
+
+
+        background_control($this, 'filter_btn_background_hover', 'Background', '.nav-link:hover');
+
+
+
+        heading_control($this, 'fitler_title_heading_hover', 'Tab Content');
+
+        color_control($this, 'fitler_title_color_hover', 'Color', '.nav-link:hover');
 
         $this->end_controls_tab();
 
@@ -263,16 +218,24 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
         $this->start_controls_tab(
             'filter_active_tab',
             [
-                'label' => esc_html__( 'Hover', 'mtn' ),
+                'label' => esc_html__('Active', 'mtn'),
             ]
         );
 
+        heading_control($this, 'fitler_btn_heading_active', 'Button pill');
+
+        border_control($this, 'filter_btn_border_active', 'Border', '.nav-link.active');
+        background_control($this, 'filter_btn_background_active', 'Button Background', '.nav-link.active');
+
+
+        heading_control($this, 'fitler_title_heading_active', 'Tab Content');
+        color_control($this, 'fitler_title_color_active', 'Color', '.nav-link.active');
 
         $this->end_controls_tab();
-        
+
         $this->end_controls_tabs();
 
-        
+
 
         $this->end_controls_section();
         $this->start_controls_section(
@@ -283,89 +246,53 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
             ]
         );
 
-        $this->add_control(
-			'title_heading',
-            heading_control('Title')
-		);
 
-        $this->add_control(
-            'title_color',
-            color_control('h4.post-title')
-        );
+        heading_control($this, 'title_heading', 'Title');
 
-        $this->add_group_control(
-            \Elementor\Group_Control_Typography::get_type(),
-            typography_control('title_typography','h4.post-title')
-        );
+        color_control($this, 'title_color', 'title_color', 'h4.post-title');
 
-        $this->add_control(
-			'readmore_heading',
-			heading_control('Read More Button')
-		);
+        typography_control($this, 'title_typography', 'h4.post-title');
 
-        $this->add_responsive_control(
-            'btn_border_radius',
-            border_radius_control('.post-readmore')
-        );
 
-        $this->add_group_control(
-            \Elementor\Group_Control_Typography::get_type(),
-            typography_control('btn_typography','.post-readmore')
-        );
+        heading_control($this, 'readmore_heading', 'Read More Button');
 
-        $this->add_responsive_control(
-            'btn_padding',
-            padding_control($label = 'Padding', '.post-readmore')
-        );
+
+        border_radius_control($this, 'btn_border_radius', '.post-readmore');
+
+        typography_control($this, 'btn_typography', '.post-readmore');
+
+
+        padding_control($this, 'btn_padding', $label = 'Padding', '.post-readmore');
+
         // NORMAL STATE
         $this->start_controls_tabs(
             'style_btn_tabs'
         );
-        
+
         $this->start_controls_tab(
             'style_normal_tab',
             [
-                'label' => esc_html__( 'Normal', 'mtn' ),
+                'label' => esc_html__('Normal', 'mtn'),
             ]
         );
-        $this->add_control(
-            'btn_color',
-            color_control('.post-readmore')
-        );
 
-        $this->add_group_control(
-            \Elementor\Group_Control_Border::get_type(),
-            border_control('btn_border', 'Border', '.post-readmore')
-        );
-
-        $this->add_group_control(
-            \Elementor\Group_Control_Background::get_type(),
-            background_control('btn_background', '.post-readmore')
-        );
-
+        color_control($this, 'btn_color', 'Color', '.post-readmore');
+        border_control($this, 'btn_border', 'Border', '.post-readmore');
+        background_control($this, 'btn_background', 'Background', '.post-readmore');
+        
         $this->end_controls_tab();
         // HOVER STATE;
         $this->start_controls_tab(
             'style_hover_tab',
             [
-                'label' => esc_html__( 'Hover', 'mtn' ),
+                'label' => esc_html__('Hover', 'mtn'),
             ]
         );
-        $this->add_control(
-            'btn_hover_color',
-            color_control('.post-readmore:hover')
-        );
-        $this->add_group_control(
-            \Elementor\Group_Control_Border::get_type(),
-            border_control('btn_hover_border', 'Border', '.post-readmore:hover')
-        );
-        $this->add_group_control(
-            \Elementor\Group_Control_Background::get_type(),
-            background_control('btn_hover_background', '.post-readmore:hover')
-        );
-
+        color_control($this, 'btn_hover_color', 'Color', '.post-readmore:hover');
+        border_control($this, 'btn_hover_border', 'Border', '.post-readmore:hover');
+        background_control($this, 'btn_hover_background', 'Background', '.post-readmore:hover');
         $this->end_controls_tab();
-        
+
         $this->end_controls_tabs();
 
         $this->end_controls_section();
@@ -393,8 +320,8 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
 
                     <li class="nav-item" role="presentation">
                         <a class="nav-link <?php if ($i == 0) echo 'active'; ?>" id="pills-<?= $key; ?>-tab" data-bs-toggle="pill" data-bs-target="#pills-<?= $key; ?>" role="tab" aria-controls="pills-<?= $key; ?>" aria-selected="<?= $key; ?>">
-                        <?php if($icon) echo $icon[$i]; ?>    
-                        <span class="filter-tab-title"><?= $value['name']; ?></span>
+                            <?php if ($icon) echo $icon[$i]; ?>
+                            <span class="filter-tab-title"><?= $value['name']; ?></span>
                         </a>
                     </li>
 
@@ -410,14 +337,14 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
 
                 <div class="tab-pane show <?php if ($key == 0) echo 'active'; ?>" id="pills-<?= $value[1]; ?>" role="tabpanel" aria-labelledby="pills-<?= $value[1]; ?>-tab">
                     <div class="row">
-                        
+
                         <?php $settings['mtn_posts_include_term_ids'] = array($value[0]);
 
                         $posts = postsRender($settings);
                         if (isset($posts)) {
                             foreach ($posts as $post) {
                         ?>
-                                <div class="col-md-<?=intval(12 / $settings['num_of_col']); ?> post-card">
+                                <div class="col-md-<?= intval(12 / $settings['num_of_col']); ?> post-card">
                                     <div class="post-wrapper" style="background-image: url(<?= $post['thumbnail']; ?>);">
                                         <div class="post-content">
                                             <h4 class="post-title"><?= $post['title']; ?></h4>
@@ -427,6 +354,9 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
                                 </div>
                         <?php }
                         } ?>
+                    </div>
+                    <div class="post-call-to-action">
+                        <a href="<?php echo $terms[$value[1]]['term-link']; ?>">View Solution</a>
                     </div>
                 </div>
 

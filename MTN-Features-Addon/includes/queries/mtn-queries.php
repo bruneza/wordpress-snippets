@@ -40,6 +40,7 @@ function mtn_get_terms($postType = 'post', $settings = null)
             $terms = get_terms(array('taxonomy' => $key));
 
             foreach ($terms as $term) {
+                
                 $output[$term->slug] = [
                     'id' => $term->term_id,
                     'name' => $term->name,
@@ -54,7 +55,6 @@ function mtn_get_terms($postType = 'post', $settings = null)
         $terms = array();
         if ($termId) {
             foreach ($termId as $id) {
-
                 $terms = get_term($id);
                 $output[$terms->slug] = [
                     'id' => $id,
@@ -62,6 +62,7 @@ function mtn_get_terms($postType = 'post', $settings = null)
                     'taxonomy' => $terms->taxonomy,
                     'label' =>  $terms->label,
                     'post-count' =>  $terms->count,
+                    'term-link' => get_term_link($terms, $terms->taxonomy)
                 ];
             }
         }

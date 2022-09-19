@@ -196,6 +196,19 @@ a,
   z-index: 0;
 }
 
+.posts-filter .nav-item .active:after{
+	content:"";
+	position:absolute;
+	bottom:-10px;
+	left:40%;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right:10px solid transparent;
+	border-top: 10px solid #000000;
+	z-index:0;
+}
+
 .posts-filter .nav-link {
   position: relative;
   display: flex;
@@ -222,7 +235,23 @@ a,
   max-width: 30px;
   height: auto;
 }
-
+.post-call-to-action{
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  
+}
+.post-call-to-action a{
+  border-radius: 24px;
+  text-align: center;
+  background: var(--e-global-color-primary);
+  padding: 10px 80px;
+}
+.post-call-to-action a:hover{
+  background: #000000;
+  color: #FFFFFF;
+  padding: 10px 80px;
+}
 /***
     **CAROUSEL
     **/
@@ -369,8 +398,30 @@ p .team-excerpt {
   text-align: center;
 }
 /**
-** Tariffs
+** Accordion styles
 **/
+.mtn-accordion .mtn-accordion-content{
+  min-height: 400px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.section-navigator a {
+  color: #000;
+}
+
+.section-navigator a.active {
+  background-color: #000;
+  color: #fff;
+  border-radius: 20px;
+}
+
+.section-navigator li:hover {
+  background-color: #ffcc00;
+  color: #fff;
+  border-radius: 20px;
+}
+
 
 /**
 ** Responsiveness

@@ -33,21 +33,22 @@ function mtn_get_terms($postType = 'post', $settings = null)
 
     // if(!$postType)
 
-
+    
     $output = array();
-    if (!$settings) {
+    if (!isset($settings['mtn_posts_include_term_ids'])) {
         foreach ($taxonomies as $key => $label) {
             $terms = get_terms(array('taxonomy' => $key));
-
+    
             foreach ($terms as $term) {
-                
                 $output[$term->slug] = [
                     'id' => $term->term_id,
                     'name' => $term->name,
                     'taxonomy' => $term->taxonomy,
                     'label' => $label,
                     'post-count' => $term->count,
+                    'term-link' => get_term_link($term, $term->taxonomy)
                 ];
+
             }
         }
     } else {
@@ -66,9 +67,9 @@ function mtn_get_terms($postType = 'post', $settings = null)
                 ];
             }
         }
-
-        return apply_filters('mtn_term_options', $output, $postType);
+        
     }
+    return apply_filters('mtn_term_options', $output, $postType);
 }
 
 function mtn_terms_options($postType = 'post')
@@ -132,7 +133,7 @@ function mtn_posts($args = null, $terms = null)
             $output['excerpt'] = esc_attr(wp_trim_words(get_the_excerpt(), 15, '...'));
             $output['author'] = esc_attr(get_the_author_meta('display_name'));
             $output['thumbnail'] = get_the_post_thumbnail_url();
-            $output['categories'] = get_the_category($post_id);
+            $output['categories'] = get_the_category();
             $output['post-link'] = get_permalink();
             $output['date'] = esc_attr(get_the_date());
             $output['posted-date'] = esc_html($initDate);
@@ -161,16 +162,14 @@ function getPostType($settings)
     else
         return null;
 }
-function postsRender($settings)
+function postsRender($settings,$NumofPosts = null)
 {
-    if (isset($settings['grid_num_posts']))
-        $pnp = $settings['grid_num_posts'];
-    else
-        $pnp = -1;
+    if (!isset($NumofPosts))
+        $NumofPosts = -1;
 
     $args = [
         'post_type' => $settings['mtn_posts_post_type'],
-        'posts_per_page' => $pnp,
+        'posts_per_page' => $NumofPosts,
     ];
 
     if (isset($settings['mtn_posts_include_term_ids']) && $settings['mtn_posts_include_term_ids']) {

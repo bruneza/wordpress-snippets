@@ -6,6 +6,12 @@ a,
 .page-content a {
   text-decoration: none;
 }
+h1,h2,h3,h4,h5,h6 {
+  margin-bottom: 0;
+}
+
+
+
 .mnt-yellow {
   color: var(--e-global-color-primary);
 }
@@ -405,21 +411,31 @@ p .team-excerpt {
   overflow: hidden;
   text-align: left;
 }
-
-.section-navigator a {
-  color: #000;
+.mtn-accordion-row .nav-pills .nav-link{
+  border-radius: 0;
+  text-align: left;
+}
+.mtn-accordion-row .tab-content{
+  display: flex;
+}
+.section-navigator{
+  padding: 0;
+  overflow: hidden;
 }
 
-.section-navigator a.active {
-  background-color: #000;
-  color: #fff;
-  border-radius: 20px;
-}
+/**
+** FAQ Section
+**/
+.faq-column{
 
-.section-navigator li:hover {
-  background-color: #ffcc00;
-  color: #fff;
-  border-radius: 20px;
+}
+.faq-wrapper{
+ height: 100%; 
+}
+.faq-item {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
 }
 
 

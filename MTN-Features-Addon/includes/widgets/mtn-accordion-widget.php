@@ -74,8 +74,8 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 
 		$repeater = new \Elementor\Repeater();
 
-			text_control($repeater,'title','Title');
-			editor_control($repeater,'description','Description');
+		text_control($repeater, 'title', 'Title');
+		editor_control($repeater, 'description', 'Description');
 
 		$this->add_control(
 			'mtn_accordion',
@@ -102,32 +102,69 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		
-			box_shadow_control($this,'Box Shadow', '.section-navigator');
-			border_radius_control($this,'tab_border_radius','.section-navigator');
 
-			heading_control($this,'tab_item_heading','Item Style');
+		padding_control($this, 'box_padding', 'Box Padding', '.section-navigator');
+		box_shadow_control($this, 'Box Shadow', '.section-navigator');
+		border_radius_control($this, 'tab_border_radius', '.section-navigator');
+		heading_control($this, 'tab_item_heading', 'Item Style');
+		padding_control($this, 'tab_item_padding', 'Padding', '.accordion-tab-btn');
+		border_radius_control($this, 'item_border_radius', '.accordion-tab-btn');
+		typography_control($this, 'item_typography', '.accordion-tab-btn');
 
-			padding_control($this,'tab_item_padding','Padding','.accordion-tab-btn');
-		
 		$this->start_controls_tabs(
-            'accordion_item_state'
-        );
-        // NORMAL STATE
-        $this->start_controls_tab(
-            'item_normal_state',
-            [
-                'label' => esc_html__( 'Normal', 'mtn' ),
-            ]
-			
-        );
+			'accordion_item_state'
+		);
+		// NORMAL STATE
+		$this->start_controls_tab(
+			'item_normal_state',
+			[
+				'label' => esc_html__('Normal', 'mtn'),
+			]
 
-		background_control($this,'background', 'Background','.accordion-tab-btn');
-		color_control($this, 'item_color','Item Color', '.accordion-tab-btn');
-		typography_control($this,'item_typography', '.accordion-tab-btn');
+		);
+
+		background_control($this, 'background', 'Background', '.accordion-tab-btn');
+		color_control($this, 'item_color', 'Item Color', '.accordion-tab-btn');
+		$this->end_controls_tab();
+		$this->start_controls_tab(
+			'item_hover_state',
+			[
+				'label' => esc_html__('Hover', 'mtn'),
+			]
+
+		);
+
+		background_control($this, 'hover_background', 'Background', '.accordion-tab-btn:hover');
+		color_control($this, 'item_hover_color', 'Item Color', '.accordion-tab-btn:hover');
+
+		$this->end_controls_tab();
+		$this->start_controls_tab(
+			'item_active_state',
+			[
+				'label' => esc_html__('Active', 'mtn'),
+			]
+
+		);
+
+		background_control($this, 'active_background', 'Background', '.accordion-tab-btn.active');
+		color_control($this, 'item_active_color', 'Item Color', '.accordion-tab-btn.active');
 
 		$this->end_controls_tab();
 		$this->end_controls_tabs();
+
+
+		$this->end_controls_section();
+		$this->start_controls_section(
+			'Content_Style',
+			[
+				'label' => esc_html__('Content Style', 'mtn'),
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+		background_control($this, 'content_background', 'Background', '.tab-content');
+		color_control($this, 'content_color', 'Item Color', '.tab-content');
+		typography_control($this, 'content_typography', '.tab-content .tab-pane *');
+		padding_control($this, 'content_padding', 'Padding', '.tab-content');
 
 
 		$this->end_controls_section();
@@ -139,29 +176,29 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 		$title = [];
 		$description = [];
 		echo '<div class="mtn-accordion-section">';
-		echo '<div class="mtn-accordion-row d-flex align-items-start">';
+		echo '<div class="mtn-accordion-row row">';
 		foreach ($settings['mtn_accordion'] as $key => $item) {
 			array_push($title, array($item['_id'], $item['title']));
 			array_push($description, array($item['_id'], $item['description']));
 		}
 ?>
-		<div class="nav flex-column nav-pills me-3 section-navigator" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
-				<?php if (isset($title)) {
-					foreach ($title as $key => $value) { ?>
+		<div class="nav flex-column nav-pills col-md col-sm-12 section-navigator mb-sm-3 " id="v-pills-tab" role="tablist" aria-orientation="vertical">
+			<?php if (isset($title)) {
+				foreach ($title as $key => $value) { ?>
 
-						<button class="accordion-tab-btn nav-link <?php if ($key == 0) echo 'active'; ?>" id="v-pills-<?= $value[0]; ?>-tab" data-bs-toggle="pill" data-bs-target="#v-pills-<?= $value[0]; ?>" type="button" role="tab" aria-controls="v-pills-<?= $value[0]; ?>" <?php $key == 0 ? 'aria-selected="true"' : 'aria-selected="false"'; ?>>
-							<span><?= $value[1] ?></span>
-						</button>
-				<?php }
-				} ?>
+					<button class="accordion-tab-btn nav-link <?php if ($key == 0) echo 'active'; ?>" id="v-pills-<?= $value[0]; ?>-tab" data-bs-toggle="pill" data-bs-target="#v-pills-<?= $value[0]; ?>" type="button" role="tab" aria-controls="v-pills-<?= $value[0]; ?>" <?php $key == 0 ? 'aria-selected="true"' : 'aria-selected="false"'; ?>>
+						<span><?= $value[1] ?></span>
+					</button>
+			<?php }
+			} ?>
 		</div>
 
-		<div class="tab-content mtn-accordion-content" id="v-pills-tabContent">
+		<div class="tab-content mtn-accordion-content col-md-8 col-sm-12" id="v-pills-tabContent">
 			<?php if (isset($description)) {
 				foreach ($description as $key => $value) { ?>
 
-					<div class="tab-pane fade <?php if($key == 0) echo 'show active' ; ?>" id="v-pills-<?= $value[0]; ?>" role="tabpanel" aria-labelledby="v-pills-<?= $value[0]; ?>-tab">
-						<p><?= $value[1] ?></p>
+					<div class="tab-pane fade <?php if ($key == 0) echo 'show active'; ?>" id="v-pills-<?= $value[0]; ?>" role="tabpanel" aria-labelledby="v-pills-<?= $value[0]; ?>-tab">
+						<?= $value[1] ?>
 					</div>
 			<?php }
 			} ?>

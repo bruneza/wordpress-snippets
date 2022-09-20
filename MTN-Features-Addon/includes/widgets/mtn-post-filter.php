@@ -138,7 +138,7 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
 
 
         border_radius_control($this, 'grid_border_radius', '.post-wrapper');
-        space_between_control($this, 'space_between', '.post-card', 20);
+        space_between_control($this, 'space_between',null, '.post-card', 20);
         padding_control($this, 'grid_padding', 'Content Padding', '.post-content');
         slider_control($this, 'grid_height', 'Grid Height', array('.post-wrapper', 'height'), 350);
         background_control($this, 'backgroud_overlay', 'Overlay', '.post-content');
@@ -158,7 +158,7 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
         slider_control($this, 'filter_tab_width', 'Tab Width', array('.posts-filter .nav-link', 'width'), 80, array('max-px' => 200));
 
 
-        space_between_control($this, 'tab_space_between', '.nav-item', 20);
+        space_between_control($this, 'tab_space_between',null, '.nav-item', 20);
 
         typography_control($this, 'filter_title_typography', '.nav-link');
 

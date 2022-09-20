@@ -73,10 +73,10 @@ if (!function_exists('column_number_control')) {
 }
 
 if (!function_exists('space_between_control')) {
-    function space_between_control($parentControl,$name,$selector, $default = 10)
+    function space_between_control($parentControl,$name, $label = 'Space Between', $selector, $default = 10)
     {
         $arr =  [
-            'label' => esc_html__('Space Between', 'mtn'),
+            'label' => esc_html__($label, 'mtn'),
             'type' => \Elementor\Controls_Manager::SLIDER,
             'default' => [
                 'unit' => 'px',
@@ -91,6 +91,30 @@ if (!function_exists('space_between_control')) {
                 '{{WRAPPER}} ' . $selector => 'padding-bottom: {{SIZE}}{{UNIT}}',
                 '{{WRAPPER}} ' . $selector . ':not(:last-child)' => 'padding-right: calc({{SIZE}}{{UNIT}}/2)',
                 '{{WRAPPER}} ' . $selector . ':not(:first-child)' => 'padding-left: calc({{SIZE}}{{UNIT}}/2)',
+            ],
+        ];
+
+        $parentControl->add_responsive_control($name, $arr);
+    }
+}
+if (!function_exists('vertical_spacing_control')) {
+    function vertical_spacing_control($parentControl,$name, $label = 'Vertical Spacing', $selector, $default = 10)
+    {
+        $arr =  [
+            'label' => esc_html__($label, 'mtn'),
+            'type' => \Elementor\Controls_Manager::SLIDER,
+            'default' => [
+                'unit' => 'px',
+                'size' => $default
+            ],
+            'range' => [
+                'px' => [
+                    'max' => 50,
+                ],
+            ],
+            'selectors' => [
+                '{{WRAPPER}} ' . $selector . ':not(:last-child)' => 'padding-bottom: calc({{SIZE}}{{UNIT}}/2)',
+                '{{WRAPPER}} ' . $selector . ':not(:first-child)' => 'padding-top: calc({{SIZE}}{{UNIT}}/2)',
             ],
         ];
 
@@ -139,7 +163,7 @@ if (!function_exists('padding_control')) {
                 '{{WRAPPER}} ' . $selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
             ],
         ];
-        $parentControl->add_control($name, $arr);
+        $parentControl->add_responsive_control($name, $arr);
     }
 }
 

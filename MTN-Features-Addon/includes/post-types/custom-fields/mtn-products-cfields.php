@@ -21,30 +21,23 @@ if (!class_exists('MTN_Product_Fields')) :
 
         private $meta_fields = array(
             array(
-                'label' => 'Price',
-                'id' => '_mtn_price',
+                'label' => 'Storage',
+                'id' => '_mtn_storage',
+                'placeholder' => 'eg: 10GB',
+                'type' => 'text',
+            ),
+            array(
+                'label' => 'Regular Price',
+                'id' => '_mtn_reg_price',
                 'placeholder' => 'eg: 2500 FRW',
                 'type' => 'text',
             ),
             array(
-                'label' => 'email',
-                'id' => '_mtn_email',
-                'placeholder' => 'eg: info@example.com',
-                'type' => 'email',
-            ),
-
-            array(
-                'label' => 'Phone Number',
-                'id' => '_mtn_phone',
-                'placeholder' => 'eg: +250...',
-                'type' => 'tel',
-            ),
-            array(
-                'label' => 'External Link',
-                'id' => '_mtn_external_url',
-                'placeholder' => 'eg: https://mtn.co.rw/...',
-                'type' => 'url',
-            ),
+                'label' => 'Extended Warranty Fee',
+                'id' => '_mtn_warranty_fee',
+                'placeholder' => 'eg: 2500 FRW',
+                'type' => 'text',
+            )
         );
 
         public static function instance()

@@ -302,7 +302,7 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 	{
 
 		$settings = $this->get_settings_for_display();
-		$posts = postsRender($settings);
+		$posts = postsRender(null,$settings);
 		$postCount = count($posts);
 		$slides = range(0, intval($postCount / 6));
 		

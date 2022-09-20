@@ -277,5 +277,6 @@ final class MTN_Features
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Faqs());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Single_Faqs());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Vacancies());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Related_Faqs());
 	}
 }

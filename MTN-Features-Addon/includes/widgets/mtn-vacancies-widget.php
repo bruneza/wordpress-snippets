@@ -74,35 +74,42 @@ class MTN_Vacancies  extends \Elementor\Widget_Base
 			]
 		);
 
-		number_control($this, 'num_of_posts', $label = 'Number of Posts', $default = '5');
 		number_control($this, 'num_of_columns', $label = 'Number of Columns', $default = '3');
 		text_control($this, 'view_more_btn', 'View More Button');
 		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_query',
-			[
-				'label' => esc_html__('Query', 'elementor-pro'),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Related::get_type(),
-			[
-				'name' => 'mtn_posts',
-			]
-		);
-
-		$this->end_controls_section();
 	}
+
+
 
 	protected function render()
 	{
 		$settings = $this->get_settings_for_display();
-        $numPosts = $settings['num_of_posts'];
-        $postType = getPostType($settings);
-        $terms = mtn_get_terms($postType, $settings);
-		// $locations = ;
+		$postType = $settings['mtn_posts_post_type'] = 'job_listing';
+		$numCol = $settings['num_of_columns'];
+		$taxonomy = 'job_listing_category';
+
+		$terms = mtn_get_terms($postType, $settings,$taxonomy);
+		$regions= mtn_get_terms($postType, $settings,'mtn_job_region');
+
+		$posts = postsRender($taxonomy,$settings,null, ['title','deadline','terms','post-link','region']);
+	
+		echo '<br>********************************************************* <br>';
+		echo '<h3>Category</h3>';
+		echo '********************************************************* <br><br><br>';
+		print_r($terms);
+		echo '<br>********************************************************* <br>';
+		echo '<h3>Region</h3>';
+		echo '********************************************************* <br><br><br>';
+		print_r($regions);
+		echo '<br>********************************************************* <br>';
+		echo '<h3>POSTS</h3>';
+		echo '********************************************************* <br><br><br>';
+		print_r($posts);
+		
+
+
+		// foreach
+?>
+		<?php
 	}
 }

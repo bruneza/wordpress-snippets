@@ -302,7 +302,7 @@ class MTN_Deals_Carousel  extends \Elementor\Widget_Base
 	protected function render()
 	{
 		$settings = $this->get_settings_for_display();
-		$posts = postsRender($settings);
+		$posts = postsRender(null,$settings);
 ?>
 		<script>
 			jQuery(document).ready(function() {

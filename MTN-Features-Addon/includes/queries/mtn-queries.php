@@ -26,19 +26,21 @@ function mtn_get_taxonomies($postType = 'post')
     return $taxonomies;
 }
 
-function mtn_get_terms($postType = 'post', $settings = null)
+function mtn_get_terms($postType = 'post', $settings = null, $taxonomy = null)
 {
 
     $taxonomies = mtn_get_taxonomies($postType);
 
     // if(!$postType)
 
-    
     $output = array();
     if (!isset($settings['mtn_posts_include_term_ids'])) {
         foreach ($taxonomies as $key => $label) {
+            if ($taxonomy)
+                $key = $taxonomy;
+
             $terms = get_terms(array('taxonomy' => $key));
-    
+
             foreach ($terms as $term) {
                 $output[$term->slug] = [
                     'id' => $term->term_id,
@@ -48,7 +50,6 @@ function mtn_get_terms($postType = 'post', $settings = null)
                     'post-count' => $term->count,
                     'term-link' => get_term_link($term, $term->taxonomy)
                 ];
-
             }
         }
     } else {
@@ -67,7 +68,6 @@ function mtn_get_terms($postType = 'post', $settings = null)
                 ];
             }
         }
-        
     }
     return apply_filters('mtn_term_options', $output, $postType);
 }
@@ -93,8 +93,23 @@ function mtn_terms_options($postType = 'post')
     return apply_filters('mtn_term_options', $output, $postType);
 }
 
+function getPostTerms($post_id, $taxonomy)
+{
+    $terms = array();
+    if (!isset($post_id) || !isset($taxonomy)) return 'nom';
 
-function mtn_posts($args = null, $terms = null)
+    $rowTerms = get_the_terms($post_id, $taxonomy);
+    if (!empty($rowTerms)) {
+        foreach ($rowTerms as $term) {
+            $terms[$term->term_id] = $term->name;
+        }
+    }
+
+    return $terms;
+}
+
+
+function mtn_posts($args = null, $taxonomy = null, $terms = null)
 {
     $defaultArgs = array(
         'posts_per_page'         =>  -1,
@@ -133,13 +148,24 @@ function mtn_posts($args = null, $terms = null)
             $output['excerpt'] = esc_attr(wp_trim_words(get_the_excerpt(), 15, '...'));
             $output['author'] = esc_attr(get_the_author_meta('display_name'));
             $output['thumbnail'] = get_the_post_thumbnail_url();
-            $output['categories'] = get_the_category();
+            if ($taxonomy)
+                $output['terms'] = getPostTerms($post_id, $taxonomy);
+            else
+                $output['terms'] = get_the_category();
             $output['post-link'] = get_permalink();
             $output['date'] = esc_attr(get_the_date());
             $output['posted-date'] = esc_html($initDate);
             $output['cpt-description'] = meta_validator($post_id, '_mtn_description');
             $output['cpt-jobtitle'] = meta_validator($post_id, '_mtn_job_title');
             $output['cpt-linkedin'] = meta_validator($post_id, '_mtn_linkdin_url');
+
+
+            if ($args['post_type'] == 'job_listing') {
+                $output['location'] = get_the_job_location($post_id);
+                $output['deadline'] = meta_date_validator($post_id, '_job_expires');
+                if ($taxonomy)
+                $output['region'] = getPostTerms($post_id, 'mtn_job_region');
+            }
 
             /* 
             */
@@ -162,8 +188,10 @@ function getPostType($settings)
     else
         return null;
 }
-function postsRender($settings,$NumofPosts = null)
+function postsRender($taxonomy = null, $settings, $NumofPosts = null, $output = null)
 {
+    $result = array();
+
     if (!isset($NumofPosts))
         $NumofPosts = -1;
 
@@ -177,9 +205,36 @@ function postsRender($settings,$NumofPosts = null)
             $termInfo = get_term($termIds);
             $terms[$termInfo->taxonomy] = $termIds;
         }
-        return $posts = mtn_posts($args, $terms);
+        $posts = mtn_posts($args, $taxonomy, $terms);
+
+        if (isset($output) && is_array($output)) {
+            foreach ($posts as $k => $post) {
+                foreach ($output as $value) {
+                    if(isset($post[$value]))
+                    $in[$value] = $post[$value];  
+                }
+                array_push($result, $in);
+            }
+            $posts = $result;
+        }
+
+        return $posts;
     } else {
-        return $posts = mtn_posts($args);
+
+        $posts = mtn_posts($args, $taxonomy);
+
+        if (isset($output) && is_array($output)) {
+            foreach ($posts as $k => $post) {
+                foreach ($output as $value) {
+                    if(isset($post[$value]))
+                    $in[$value] = $post[$value];  
+                }
+                array_push($result, $in);
+            }
+            $posts = $result;
+        }
+
+        return $posts;
     }
 }
 
@@ -201,26 +256,57 @@ function meta_validator($post_id, $field)
         return null;
 }
 
+function meta_date_validator($post_id, $field, $format = 'd M Y')
+{
+    $postMeta = get_post_meta($post_id, $field, true);
+    if (isset($postMeta) && $postMeta)
+        return date($format, strtotime($postMeta));
+    else
+        return null;
+}
 
-function processIcon($settings){
+function find_key($array, $key, $res = array())
+{
+
+    foreach ($array as $arrKey => $value) {
+        if (empty($value)) {
+            continue;
+        }
+
+        if ((string) strval($arrKey) == strval($key)) {
+            array_push($res, $value);
+            break;
+        } else {
+            if (is_array($value)) {
+                array_push($res, find_key($value, $key));
+            } else {
+                continue;
+            }
+        }
+    }
+    return $res;
+}
+
+
+function processIcon($settings)
+{
     $output = null;
-    foreach($settings['filter_icons'] as $key=>$item){
-        $value= $item['filter_selected_icon']['value'];
+    foreach ($settings['filter_icons'] as $key => $item) {
+        $value = $item['filter_selected_icon']['value'];
         $library = $item['filter_selected_icon']['library'];
 
-        if ( empty( $library ) ) {
-			return false;
-		}
+        if (empty($library)) {
+            return false;
+        }
 
-        if ( 'svg' === $library ) {
-            if ( ! isset( $value['id'] ) ) return '';
+        if ('svg' === $library) {
+            if (!isset($value['id'])) return '';
 
-            $output[$key] = get_post_meta( $value['id'], '_elementor_inline_svg', true );
-		} else{
-            $output[$key] = '<i aria-hidden="true" class="'.$value.'"></i>';
+            $output[$key] = get_post_meta($value['id'], '_elementor_inline_svg', true);
+        } else {
+            $output[$key] = '<i aria-hidden="true" class="' . $value . '"></i>';
         }
     }
 
     return apply_filters('post_filter_icon', $output);
-
 }

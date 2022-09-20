@@ -2,6 +2,20 @@
 
 namespace MTN_FEATURES\Widgets;
 
+if (!function_exists('select_callback_control')) {
+    function select_callback_control($parentControl, $name = 'text', $label = 'Title', $callback = null)
+    { {
+            $arr = [
+                'label' => esc_html__('Post Type', 'mtn'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'Default' => 'post',
+                'options' =>  ['' => esc_html__('Default', 'mtn')] + $callback,
+            ];
+            $parentControl->add_control($name, $arr);
+        }
+    }
+}
+
 if (!function_exists('text_control')) {
     function text_control($parentControl, $name = 'text', $label = 'Title')
     {
@@ -32,18 +46,18 @@ if (!function_exists('editor_control')) {
     }
 }
 if (!function_exists('number_control')) {
-    function number_control($parentControl, $name, $label = 'Number',$default ='-1')
+    function number_control($parentControl, $name, $label = 'Number', $default = '-1')
     {
         $arr = [
             'label' => esc_html__($label, 'mtn'),
             'type' => \Elementor\Controls_Manager::NUMBER,
-            'default' => -1,
+            'default' => $default,
         ];
         $parentControl->add_control($name, $arr);
     }
 }
 if (!function_exists('icon_control')) {
-    function icon_control($parentControl,$name,$label = 'Icon')
+    function icon_control($parentControl, $name, $label = 'Icon')
     {
         $arr = [
             'label' => esc_html__($label, 'mtn'),
@@ -59,7 +73,7 @@ if (!function_exists('icon_control')) {
     }
 }
 if (!function_exists('column_number_control')) {
-    function column_number_control($parentControl,$name,$count_to_ten, $default = 10)
+    function column_number_control($parentControl, $name, $count_to_ten, $default = 10)
     {
         $arr = [
             'label' => esc_html__('Number of Columns', 'mtn'),
@@ -73,7 +87,7 @@ if (!function_exists('column_number_control')) {
 }
 
 if (!function_exists('space_between_control')) {
-    function space_between_control($parentControl,$name, $label = 'Space Between', $selector, $default = 10)
+    function space_between_control($parentControl, $name, $label = 'Space Between', $selector, $default = 10)
     {
         $arr =  [
             'label' => esc_html__($label, 'mtn'),
@@ -98,7 +112,7 @@ if (!function_exists('space_between_control')) {
     }
 }
 if (!function_exists('vertical_spacing_control')) {
-    function vertical_spacing_control($parentControl,$name, $label = 'Vertical Spacing', $selector, $default = 10)
+    function vertical_spacing_control($parentControl, $name, $label = 'Vertical Spacing', $selector, $default = 10)
     {
         $arr =  [
             'label' => esc_html__($label, 'mtn'),
@@ -122,7 +136,7 @@ if (!function_exists('vertical_spacing_control')) {
     }
 }
 if (!function_exists('slider_control')) {
-    function slider_control($parentControl,$name,$label = 'Height', $selector, $default = 300, $extra = null)
+    function slider_control($parentControl, $name, $label = 'Height', $selector, $default = 300, $extra = null)
     {
         if (!isset($extra['min-px'])) $extra['min-px'] = 0;
         if (!isset($extra['max-px'])) $extra['max-px'] = 100;
@@ -153,7 +167,7 @@ if (!function_exists('slider_control')) {
     }
 }
 if (!function_exists('padding_control')) {
-    function padding_control($parentControl,$name,$label = 'Padding', $selector)
+    function padding_control($parentControl, $name, $label = 'Padding', $selector)
     {
         $arr = [
             'type' => \Elementor\Controls_Manager::DIMENSIONS,
@@ -168,7 +182,7 @@ if (!function_exists('padding_control')) {
 }
 
 if (!function_exists('border_control')) {
-    function border_control($parentControl,$name = 'border', $label = 'Border', $selector)
+    function border_control($parentControl, $name = 'border', $label = 'Border', $selector)
     {
         $arr = [
             'name' => $name,
@@ -180,7 +194,7 @@ if (!function_exists('border_control')) {
     }
 }
 if (!function_exists('border_radius_control')) {
-    function border_radius_control($parentControl,$name,$selector)
+    function border_radius_control($parentControl, $name, $selector)
     {
         $arr = [
             'label' => esc_html__('Border Radius', 'mtn'),
@@ -197,7 +211,7 @@ if (!function_exists('border_radius_control')) {
 
 // HEADING
 if (!function_exists('heading_control')) {
-    function heading_control($parentControl,$name,$title)
+    function heading_control($parentControl, $name, $title)
     {
         $arr = [
             'label' => esc_html__($title, 'mtn'),

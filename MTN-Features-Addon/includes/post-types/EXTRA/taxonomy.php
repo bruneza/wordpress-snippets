@@ -69,7 +69,37 @@ if (!class_exists('MTN_Page_Taxonomy')) :
                 "sort" => false,
                 "show_in_graphql" => false,
             ));
+
+            /**
+             * Create Job Region Taxonomy
+             */
+            if (taxonomy_exists('mtn_job_region')) {
+                return;
+            }
+            register_taxonomy('mtn_job_region', ["job_listing"], array(
+                "label" => __("Job Region", "mtn"),
+                'labels'                     => array(
+                    'name'                       => _x('Job Regions', 'Taxonomy General Name', 'mtn'),
+                    'singular_name'              => _x('Job Region', 'Taxonomy Singular Name', 'mtn'),
+                ),
+                'hierarchical'               => true,
+                'public'                     => true,
+                "publicly_queryable" => true,
+                'show_ui'                    => true,
+                "show_in_menu" => true,
+                'show_admin_column'          => true,
+                'show_in_nav_menus'          => true,
+                'query_var'                  => true,
+                'rewrite'                    => array('slug' => 'job-region', 'with_front' => false,),
+                "show_in_rest" => true,
+                "show_tagcloud" => false,
+                "rest_base" => "bru_job_region",
+                "rest_controller_class" => "WP_REST_Terms_Controller",
+                "rest_namespace" => "wp/v2",
+                "show_in_quick_edit" => false,
+                "sort" => false,
+                "show_in_graphql" => false,
+            ));
         }
-        
     }
 endif; // End if class_exists check.

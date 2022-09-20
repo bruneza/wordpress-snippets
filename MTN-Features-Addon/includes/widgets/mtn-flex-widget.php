@@ -342,7 +342,7 @@ class MTN_Flex_Grid  extends \Elementor\Widget_Base
                 $termInfo = get_term($termIds);
                 $terms[$termInfo->taxonomy] = $termIds;
             }
-            return $posts = mtn_posts($args,$terms);
+            return $posts = mtn_posts($args,null,$terms);
         }
         else{
             return $posts = mtn_posts($args);

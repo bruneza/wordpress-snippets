@@ -90,7 +90,7 @@ class MTN_Deals_Carousel  extends \Elementor\Widget_Base
 				'label' => esc_html__('Number of Posts', 'mtn'),
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'label' => esc_html__('Slides Per View', 'mtn'),
-				'options' => ['' => esc_html__('Default', 'mtn')] + $slides_per_view,
+				'options' => $slides_per_view,
 				'default' => 3,
 			]
 		);
@@ -302,7 +302,7 @@ class MTN_Deals_Carousel  extends \Elementor\Widget_Base
 	protected function render()
 	{
 		$settings = $this->get_settings_for_display();
-		$posts = postsRender(null,$settings);
+		$posts = postsRender($settings);
 ?>
 		<script>
 			jQuery(document).ready(function() {
@@ -327,7 +327,7 @@ class MTN_Deals_Carousel  extends \Elementor\Widget_Base
 						}
 					},
 				});
-			});
+			})
 		</script>
 <?php
 		/*** Start Content Section ***/

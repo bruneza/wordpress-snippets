@@ -202,7 +202,7 @@ if (!defined('ABSPATH')) {
 		{
 
 			$settings = $this->get_settings_for_display();
-			$posts = postsRender(null,$settings);
+			$posts = postsRender($settings);
 			$screens = array_chunk($posts,6);
 			/*** Start Content Section ***/
 			echo '

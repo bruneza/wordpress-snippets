@@ -86,7 +86,7 @@ function mtn_terms_options($postType = 'post')
         }
     } else {
         foreach ($terms as $slug => $term) {
-            $output[$term['taxonomy'] . ':' . $slug . ':' . $term['post-count']] = esc_html($term['label'] . ':' . $term['name']);
+            $output[$term['taxonomy'] . ':/:' . $slug] = esc_html($term['label'] . ': ' . $term['name']);
         }
     }
 
@@ -188,15 +188,27 @@ function getPostType($settings)
     else
         return null;
 }
-function postsRender($taxonomy = null, $settings, $NumofPosts = null, $output = null)
+function postFieldRender($posts,$id,$field)
+{
+    if($posts) return null;
+    if($posts[$id]) return null;
+    if($posts[$id][$field]) return null;
+
+    return $posts[$id][$field];
+}
+function postsRender($settings, $NumofPosts = null,$taxonomy = null, $output = null)
 {
     $result = array();
+    if($settings['mtn_posts_post_type'])
+    $postType = $settings['mtn_posts_post_type'];
+    else
+    $postType = null;
 
     if (!isset($NumofPosts))
         $NumofPosts = -1;
 
     $args = [
-        'post_type' => $settings['mtn_posts_post_type'],
+        'post_type' => $postType,
         'posts_per_page' => $NumofPosts,
     ];
 

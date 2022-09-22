@@ -94,11 +94,19 @@ final class MTN_Features
 		$this->deal_cpt = \MTN_FEATURES\CPT\MTN_Deal_Cpt::instance();
 		$this->tariff_cpt = \MTN_FEATURES\CPT\MTN_Tariff_Cpt::instance();
 		$this->faq_cpt = \MTN_FEATURES\CPT\MTN_Faq_Cpt::instance();
+		$this->roaming_cpt = \MTN_FEATURES\CPT\MTN_Roaming_Cpt::instance();
 
 		// EXTRA 
 		include_once MTN_DIR . '/includes/post-types/EXTRA/taxonomy.php';
 
 		$this->page_taxonomy = \MTN_FEATURES\EXTRA\MTN_Page_Taxonomy::instance();
+
+		//MAP
+		
+		require_once MTN_DIR . '/includes/map-locator/mtn-map-locator.php';
+		require_once MTN_DIR . '/includes/map-locator/wpsl-templates/wpsl-helper.php';
+
+		\MTN_FEATURES\MAP_Locator\MTN_Map_Locator::instance();
 	}
 
 	/**

@@ -210,7 +210,7 @@ class MTN_Faqs  extends \Elementor\Widget_Base
                     <div class="faq-items  vertical-space">
                         <?php
                         $settings['mtn_posts_include_term_ids'] = array($term['id']);
-                        $posts = postsRender(null,$settings, $numPosts);
+                        $posts = postsRender($settings, $numPosts);
                         foreach ($posts as $post) {
                         ?>
                             <a href="<?= $post['post-link']; ?>" class="faq-item"><?= $post['title']; ?></a>

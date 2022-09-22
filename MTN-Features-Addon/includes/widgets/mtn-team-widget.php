@@ -259,7 +259,7 @@ if (!defined('ABSPATH')) {
 		protected function render()
 		{
 			$settings = $this->get_settings_for_display();
-            $posts = postsRender(null,$settings);
+            $posts = postsRender($settings);
 
 			/*** Start Content Section ***/
 			echo '

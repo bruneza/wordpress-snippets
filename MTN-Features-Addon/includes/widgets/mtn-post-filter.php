@@ -340,7 +340,7 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
 
                         <?php $settings['mtn_posts_include_term_ids'] = array($value[0]);
 
-                        $posts = postsRender(null,$settings);
+                        $posts = postsRender($settings);
                         if (isset($posts)) {
                             foreach ($posts as $post) {
                         ?>

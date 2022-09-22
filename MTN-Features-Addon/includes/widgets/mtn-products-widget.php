@@ -91,7 +91,7 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 				'label' => esc_html__('Number of Posts', 'mtn'),
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'label' => esc_html__('Slides Per View', 'mtn'),
-				'options' => ['' => esc_html__('Default', 'mtn')] + $slides_per_view,
+				'options' => $slides_per_view,
 				'default' => 3,
 			]
 		);
@@ -302,7 +302,7 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 	{
 
 		$settings = $this->get_settings_for_display();
-		$posts = postsRender(null,$settings);
+		$posts = postsRender($settings);
 		$postCount = count($posts);
 		$slides = range(0, intval($postCount / 6));
 		
@@ -339,26 +339,27 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 
 		foreach ($slides as $slide) {
 		?>
+
 			<div class="row">
 			<div class="col-md-4 col-sm-12 product-column">
-				<a href="<? echo $posts[intval(0+$slide)]['post-link']; ?>" class="product-container">
-				<div class="product-img" style="background-image: url('<? echo $posts[intval(0+$slide)]['thumbnail']; ?>')"></div>
+				<a href="<? echo postFieldRender($posts,intval(0+$slide),'post-link'); ?>" class="product-container">
+				<div class="product-img" style="background-image: url('<? echo postFieldRender($posts,intval(0+$slide),'thumbnail'); ?>')"></div>
 				</a>
-				<a href="<? echo $posts[intval(1+$slide)]['post-link']; ?>" class="product-container">
-				<div class="product-img" style="background-image: url('<? echo $posts[intval(1+$slide)]['thumbnail']; ?>')"></div>
-				</a>
-			</div>
-			<div class="col-md-4 col-sm-12 product-column">
-				<a href="<? echo $posts[intval(2+$slide)]['post-link']; ?>" class="product-container">
-				<div class="product-img" style="background-image: url('<? echo $posts[intval(2+$slide)]['thumbnail']; ?>')"></div>
+				<a href="<? echo postFieldRender($posts,intval(1+$slide),'post-link'); ?>" class="product-container">
+				<div class="product-img" style="background-image: url('<? echo postFieldRender($posts,intval(1+$slide),'thumbnail'); ?>')"></div>
 				</a>
 			</div>
 			<div class="col-md-4 col-sm-12 product-column">
-				<a href="<? echo $posts[intval(3+$slide)]['post-link']; ?>" class="product-container">
-				<div class="product-img" style="background-image: url('<? echo $posts[intval(3+$slide)]['thumbnail']; ?>')"></div>
+				<a href="<? echo postFieldRender($posts,intval(2+$slide),'post-link'); ?>" class="product-container">
+				<div class="product-img" style="background-image: url('<? echo postFieldRender($posts,intval(2+$slide),'thumbnail'); ?>')"></div>
 				</a>
-				<a href="<? echo $posts[intval(4+$slide)]['post-link']; ?>" class="product-container">
-				<div class="product-img" style="background-image: url('<? echo $posts[intval(4+$slide)]['thumbnail']; ?>')"></div>
+			</div>
+			<div class="col-md-4 col-sm-12 product-column">
+				<a href="<? echo postFieldRender($posts,intval(3+$slide),'post-link'); ?>" class="product-container">
+				<div class="product-img" style="background-image: url('<? echo postFieldRender($posts,intval(3+$slide),'thumbnail'); ?>')"></div>
+				</a>
+				<a href="<? echo postFieldRender($posts,intval(4+$slide),'post-link'); ?>" class="product-container">
+				<div class="product-img" style="background-image: url('<? echo postFieldRender($posts,intval(4+$slide),'thumbnail'); ?>')"></div>
 				</a>
 			</div>
 			</div>	

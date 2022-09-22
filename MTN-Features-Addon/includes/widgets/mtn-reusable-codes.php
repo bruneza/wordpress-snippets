@@ -9,7 +9,7 @@ if (!function_exists('select_callback_control')) {
                 'label' => esc_html__('Post Type', 'mtn'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'Default' => 'post',
-                'options' =>  ['' => esc_html__('Default', 'mtn')] + $callback,
+                'options' =>  $callback,
             ];
             $parentControl->add_control($name, $arr);
         }

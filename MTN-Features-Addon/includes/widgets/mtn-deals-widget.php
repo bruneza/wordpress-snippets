@@ -120,31 +120,7 @@ class MTN_Deals_Carousel  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		$this->add_responsive_control(
-			'grid_height',
-			[
-				'label' => esc_html__('Grid Height', 'mtn'),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => ['%', 'px'],
-				'default' => [
-					'unit' => 'px',
-					'size' => 400
-				],
-				'range' => [
-					'px' => [
-						'min' => 300,
-						'max' => 1000,
-					],
-					'%' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .carousel-column' => 'min-height: {{SIZE}}{{UNIT}} !important',
-				],
-			]
-		);
+		slider_control($this, 'grid_height', 'Grid Height', '.carousel-column', 400);
 
 		$this->add_control(
 			'grid_margin',
@@ -203,10 +179,7 @@ class MTN_Deals_Carousel  extends \Elementor\Widget_Base
 					'center' => 'center',
 					'flex-end' => 'Right',
 
-				],
-				'selectors' => [
-					'{{WRAPPER}} .owl-carousel .owl-dots' => 'justify-content: {{VALUE}};',
-				],
+				]
 			]
 		);
 		$this->add_responsive_control(
@@ -302,7 +275,9 @@ class MTN_Deals_Carousel  extends \Elementor\Widget_Base
 	protected function render()
 	{
 		$settings = $this->get_settings_for_display();
-		$posts = postsRender($settings);
+		$neededFields =  ['post-link', 'thumbnail'];
+		$posts = postsRender($settings, null, $neededFields);
+
 ?>
 		<script>
 			jQuery(document).ready(function() {
@@ -327,7 +302,9 @@ class MTN_Deals_Carousel  extends \Elementor\Widget_Base
 						}
 					},
 				});
-			})
+				jQuery(".owl-carousel .owl-dots").css("justify-content", "<?= $settings['dot_horizontal_position']; ?>");
+
+			});
 		</script>
 <?php
 		/*** Start Content Section ***/

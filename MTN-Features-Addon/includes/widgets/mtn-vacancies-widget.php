@@ -88,8 +88,8 @@ class MTN_Vacancies  extends \Elementor\Widget_Base
 		$numCol = $settings['num_of_columns'];
 		$taxonomy = 'job_listing_category';
 
-		$terms = mtn_get_terms($postType, $settings,$taxonomy);
-		$regions= mtn_get_terms($postType, $settings,'mtn_job_region');
+		$terms = mtnTerms($postType, $settings,$taxonomy);
+		$regions= mtnTerms($postType, $settings,'mtn_job_region');
 
 		$posts = postsRender($settings,null,$taxonomy, ['title','deadline','terms','post-link','region']);
 	

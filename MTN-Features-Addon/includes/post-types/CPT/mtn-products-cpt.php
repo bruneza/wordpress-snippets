@@ -106,6 +106,70 @@ if (!class_exists('MTN_Product_Cpt')) :
                 "sort" => false,
                 "show_in_graphql" => false,
             ));
+
+            /**
+             * Create Products Type Taxonomy
+             */
+            if (taxonomy_exists('mtn_product_type')) {
+                return;
+            }
+            register_taxonomy('mtn_product_type', ["mtn_products"], array(
+                "label" => __("Products Types", "mtn"),
+                'labels'                     => array(
+                    'name'                       => _x('Products Types', 'Taxonomy General Name', 'mtn'),
+                    'singular_name'              => _x('Products Type', 'Taxonomy Singular Name', 'mtn'),
+                ),
+                'hierarchical'               => true,
+                'public'                     => true,
+                "publicly_queryable" => true,
+                'show_ui'                    => true,
+                "show_in_menu" => true,
+                'show_admin_column'          => true,
+                'show_in_nav_menus'          => true,
+                'query_var'                  => true,
+                'rewrite'                    => array('slug' => 'product-types', 'with_front' => true,),
+                "show_in_rest" => true,
+                "show_tagcloud" => false,
+                "rest_base" => "bru_product_type",
+                "rest_controller_class" => "WP_REST_Terms_Controller",
+                "rest_namespace" => "wp/v2",
+                "show_in_quick_edit" => false,
+                "sort" => false,
+                "show_in_graphql" => false,
+            ));
+
+            /**
+             * Create Products Brand Taxonomy
+             */
+            if (taxonomy_exists('mtn_product_brand')) {
+                return;
+            }
+            register_taxonomy('mtn_product_brand', ["mtn_products"], array(
+                "label" => __("Products Brands", "mtn"),
+                'labels'                     => array(
+                    'name'                       => _x('Products Brands', 'Taxonomy General Name', 'mtn'),
+                    'singular_name'              => _x('Products Brand', 'Taxonomy Singular Name', 'mtn'),
+                ),
+                'hierarchical'               => true,
+                'public'                     => true,
+                "publicly_queryable" => true,
+                'show_ui'                    => true,
+                "show_in_menu" => true,
+                'show_admin_column'          => true,
+                'show_in_nav_menus'          => true,
+                'query_var'                  => true,
+                'rewrite'                    => array('slug' => 'product-brands', 'with_front' => true,),
+                "show_in_rest" => true,
+                "show_tagcloud" => false,
+                "rest_base" => "bru_product_brand",
+                "rest_controller_class" => "WP_REST_Terms_Controller",
+                "rest_namespace" => "wp/v2",
+                "show_in_quick_edit" => false,
+                "sort" => false,
+                "show_in_graphql" => false,
+            ));
+
+
             
             if (taxonomy_exists('mtn_product_amenity')) {
                 return;

@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-class MTN_Products_Carousel  extends \Elementor\Widget_Base
+class MTN_Test_Widget  extends \Elementor\Widget_Base
 {
 
 	/**
@@ -18,12 +18,12 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 	 * Retrieve test widget name.
 	 *
 	 * @since 1.0.0
-	 * @access public
+	 * @access public 
 	 * @return string Widget name.
 	 */
 	public function get_name()
 	{
-		return 'Products Carousel';
+		return 'MTN Test';
 	}
 	/**
 	 * Get widget title.
@@ -36,7 +36,7 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 	 */
 	public function get_title()
 	{
-		return esc_html__('Products Carousel', 'mtn');
+		return esc_html__('MTN Test', 'mtn');
 	}
 
 	/**
@@ -63,7 +63,6 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 	{
 		return 'post';
 	}
-
 	protected function register_controls()
 	{
 		$slides_per_view = range(1, 10);
@@ -121,31 +120,7 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		$this->add_responsive_control(
-			'grid_height',
-			[
-				'label' => esc_html__('Grid Height', 'mtn'),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => ['%', 'px'],
-				'default' => [
-					'unit' => 'px',
-					'size' => 400
-				],
-				'range' => [
-					'px' => [
-						'min' => 300,
-						'max' => 1000,
-					],
-					'%' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .carousel-column' => 'height: {{SIZE}}{{UNIT}} !important',
-				],
-			]
-		);
+		slider_control($this, 'grid_height', 'Grid Height', '.carousel-column', 400);
 
 		$this->add_control(
 			'grid_margin',
@@ -204,10 +179,7 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 					'center' => 'center',
 					'flex-end' => 'Right',
 
-				],
-				'selectors' => [
-					'{{WRAPPER}} .owl-carousel .owl-dots' => 'justify-content: {{VALUE}};',
-				],
+				]
 			]
 		);
 		$this->add_responsive_control(
@@ -298,19 +270,19 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 		$this->end_controls_section();
 	}
 
+
+
 	protected function render()
 	{
-
 		$settings = $this->get_settings_for_display();
 		$neededFields =  ['post-link', 'thumbnail'];
 		$posts = postsRender($settings, null, $neededFields, array('skip_nothumbnail' => true));
-		$postCount = count($posts);
-		$slides = range(0, intval($postCount / 6));
+		$chunkedPosts = array_chunk($posts, 5);
 
 ?>
 		<script>
 			jQuery(document).ready(function() {
-				jQuery('.mtn-carousel-product').owlCarousel({
+				jQuery('.mtn-carousel-5').owlCarousel({
 					loop: true,
 					margin: <?php echo $settings['grid_margin']; ?>,
 					slideToScroll: <?php echo $settings['slides_to_scroll']; ?>,
@@ -331,43 +303,29 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 						}
 					},
 				});
+				jQuery(".owl-carousel .owl-dots").css("justify-content", "<?= $settings['dot_horizontal_position']; ?>");
+
 			});
 		</script>
-		<?php
-		/*** Start Content Section ***/
-		echo '<div class="mtn-products-carousel-section">
-			<div class="owl-carousel mtn-carousel-product">';
-
-		foreach ($slides as $slide) {
-		?>
-
-			<div class="row">
-				<div class="col-md-4 col-sm-12 product-column">
-					<a href="<? echo $posts[intval(0 + $slide)]['post-link']; ?>" class="product-container">
-						<div class="product-img" style="background-image: url('<? echo $posts[intval(0 + $slide)]['thumbnail']; ?>')"></div>
-					</a>
-					<a href="<? echo $posts[intval(1 + $slide)]['post-link']; ?>" class="product-container">
-						<div class="product-img" style="background-image: url('<? echo $posts[intval(1 + $slide)]['thumbnail']; ?>')"></div>
-					</a>
-				</div>
-				<div class="col-md-4 col-sm-12 product-column">
-					<a href="<? echo $posts[intval(2 + $slide)]['post-link']; ?>" class="product-container">
-						<div class="product-img" style="background-image: url('<? echo $posts[intval(2 + $slide)]['thumbnail']; ?>')"></div>
-					</a>
-				</div>
-				<div class="col-md-4 col-sm-12 product-column">
-					<a href="<? echo $posts[intval(3 + $slide)]['post-link']; ?>" class="product-container">
-						<div class="product-img" style="background-image: url('<? echo $posts[intval(3 + $slide)]['thumbnail']; ?>')"></div>
-					</a>
-					<a href="<? echo $posts[intval(4 + $slide)]['post-link']; ?>" class="product-container">
-						<div class="product-img" style="background-image: url('<? echo $posts[intval(4 + $slide)]['thumbnail']; ?>')"></div>
-					</a>
-				</div>
-			</div>
 <?php
+		/*** Start Content Section ***/
+		echo '<div class="ni-dilu-carousel-section">';
+		echo '<div class="owl-carousel mtn-carousel-5">';
+
+		foreach ($chunkedPosts as $key => $innerPosts) {
+			echo '<div class="mtn-carousel-row">';
+			foreach ($innerPosts as $key => $post) {
+		?>
+				<div class="mtn-carousel-container">
+					<div class="home-device-image device-item-<?= $key; ?>" style="background-image: url('<?= $post['thumbnail']; ?>');">
+					</div>
+				</div>
+<?php
+
+			}
+			echo '</div>';
 		}
 		echo '</div></div>';
 		/*** End Content Section ***/
+		}
 	}
-	
-}

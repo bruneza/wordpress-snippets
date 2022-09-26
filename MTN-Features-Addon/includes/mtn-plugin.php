@@ -285,6 +285,10 @@ final class MTN_Features
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Faqs());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Single_Faqs());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Vacancies());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Filter());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Related_Faqs());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion_Foundation());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_International_Filter());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Test_Widget());
 	}
 }

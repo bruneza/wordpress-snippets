@@ -191,15 +191,14 @@ class MTN_Faqs  extends \Elementor\Widget_Base
     protected function render()
     {
         $settings = $this->get_settings_for_display();
-        $numPosts = $settings['num_of_posts'];
-
         $postType = getPostType($settings);
-        $terms = mtn_get_terms($postType, $settings);
+        $terms = mtnTerms($postType, $settings,null,['post_tag']);
         $colNum = intval(12 / $settings['num_of_columns']);
 
 
         echo '<div class="mtn-faq-section">';
         echo '<div class="row faq-row">';
+    
         foreach ($terms as $term) {
 ?>
             <div class="faq-column col-md-<?= $colNum; ?> col-sm-12">
@@ -210,7 +209,8 @@ class MTN_Faqs  extends \Elementor\Widget_Base
                     <div class="faq-items  vertical-space">
                         <?php
                         $settings['mtn_posts_include_term_ids'] = array($term['id']);
-                        $posts = postsRender($settings, $numPosts);
+                        $posts = postsRender($settings);
+                        
                         foreach ($posts as $post) {
                         ?>
                             <a href="<?= $post['post-link']; ?>" class="faq-item"><?= $post['title']; ?></a>

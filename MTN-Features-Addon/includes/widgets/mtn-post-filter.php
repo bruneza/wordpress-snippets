@@ -304,11 +304,8 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
         $settings = $this->get_settings_for_display();
         $postType = getPostType($settings);
         $selectedKeys = array();
-
         $icon = processIcon($settings);
-
-        $terms = mtn_get_terms($postType, $settings);
-
+        $terms = mtnTerms($postType,null,$settings['mtn_posts_include_term_ids']);
         echo '<div class="mtn-posts-filter-section">'; ?>
 
         <?php if (!empty($terms)) {
@@ -316,10 +313,10 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
             <ul class="nav nav-pills posts-filter mb-3" id="pills-tab" role="tablist">
 
                 <?php foreach ($terms as $key => $value) {
-                    array_push($selectedKeys, array($value['id'], $key)); ?>
+                    array_push($selectedKeys, array($key,$value['slug'],$value['taxonomy'])); ?>
 
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link <?php if ($i == 0) echo 'active'; ?>" id="pills-<?= $key; ?>-tab" data-bs-toggle="pill" data-bs-target="#pills-<?= $key; ?>" role="tab" aria-controls="pills-<?= $key; ?>" aria-selected="<?= $key; ?>">
+                        <a class="nav-link <?php if ($i == 0) echo 'active'; ?>" id="pills-<?= $value['slug']; ?>-tab" data-bs-toggle="pill" data-bs-target="#pills-<?= $value['slug']; ?>" role="tab" aria-controls="pills-<?= $value['slug']; ?>" aria-selected="<?= $value['slug']; ?>">
                             <?php if ($icon) echo $icon[$i]; ?>
                             <span class="filter-tab-title"><?= $value['name']; ?></span>
                         </a>
@@ -340,7 +337,7 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
 
                         <?php $settings['mtn_posts_include_term_ids'] = array($value[0]);
 
-                        $posts = postsRender($settings);
+                        $posts = postsRender($settings,array($value[2] =>$value[0]));
                         if (isset($posts)) {
                             foreach ($posts as $post) {
                         ?>

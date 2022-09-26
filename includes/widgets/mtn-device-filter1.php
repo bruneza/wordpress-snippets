@@ -80,7 +80,7 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
         number_control($this, 'grid_num_posts', 'Number of Posts', '-1');
 
 
-        column_number_control($this, 'num_of_col', $count_to_ten, $default = 3);
+        count_ten_control($this,'Number of Columns', 'num_of_col', 3);
 
         heading_control($this, 'icon_section', 'Icons');
 
@@ -314,17 +314,34 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
         $brands =array();
         $categories =array();
         
-        foreach($posts as $post)
+        foreach($posts as $postTypes)
         {
-            array_push($categories,$post['product_type']);
-        } 
-            // print_r($categories);
+        //    print_r($post['product_type']);
 
-        foreach($posts as $post)
+
+        if (is_array($postTypes['product_type']) || is_object($postTypes['product_type']))
             {
-                array_push($brands,$post['product_brand']);
+                foreach ($postTypes['product_type'] as $key => $value)
+                {
+                    array_push($categories,$value);
+                }
             }
-                // print_r($brands);
+
+
+           
+        } 
+            
+
+        foreach($posts as $postBrand)
+            {
+                if (is_array($postBrand['product_brand']) || is_object($postBrand['product_brand']))
+                {
+                    foreach ($postBrand['product_brand'] as $key => $value)
+                    {
+                        array_push($brands,$value);
+                    }
+                }
+            }
 		
 ?>
 
@@ -343,7 +360,7 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
 										<?php
 										foreach($brands as $key => $brand)
 										{?>
-											<option value="<?=$brand?>"><?php foreach($brand[$key] as $key2 => $brand2) echo $brand2?></option>
+											<option value="<?=$brand['slug']?>"><?=$brand['name']?></option>
 											<?php
 										}
 										?>
@@ -357,8 +374,9 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
                                         
 										<?php
 										foreach($categories as $key => $category)
-										{?>
-                                            <option value="<?=$category?>" class="category <?=$category?>"><?=$category?></option>
+										{                     
+                                            ?>
+                                            <option value="<?=$category['name']?>" class="category <?=$category['name']?>"><?=$category['name']?></option>
 											<?php
 										}
 										?>
@@ -378,8 +396,27 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
                     <div class="row" id="category-items">
 					<?php
 						foreach($posts as $product)
-					{?>
-                        <div class="col-md-4 filter categories <?php foreach($product['product_brand'] as $key => $brand) echo $brand?> <?php foreach($product['product_type'] as $key => $type) echo $type?>">
+					{
+                        
+                        if (is_array($product['product_brand']) || is_object($product['product_brand']))
+                        {
+                            foreach ($product['product_brand'] as $key => $value)
+                                $brand = $value['slug'];
+                            
+                        }
+                        else
+                        $brand = "";
+
+                        if (is_array($product['product_type']) || is_object($product['product_type']))
+                        {
+                            foreach ($product['product_type'] as $keys => $product_type)
+                                $category = $product_type['name'];
+                            
+                        }
+                        else
+                        $category = "";
+                               ?>
+                        <div class="col-md-4 filter categories <?=$brand?> <?=$category?>">
                             <div class="deals-item">
                                 <div class="d-flex">
                                     <div class="col-md-4">

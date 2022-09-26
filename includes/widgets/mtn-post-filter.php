@@ -80,7 +80,7 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
         number_control($this, 'grid_num_posts', 'Number of Posts', '-1');
 
 
-        column_number_control($this, 'num_of_col', $count_to_ten, $default = 3);
+        count_ten_control($this,'Number of Columns', 'num_of_col', 3);
 
         heading_control($this, 'icon_section', 'Icons');
 

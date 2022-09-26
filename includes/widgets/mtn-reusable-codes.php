@@ -72,11 +72,15 @@ if (!function_exists('icon_control')) {
         $parentControl->add_control($name, $arr);
     }
 }
-if (!function_exists('column_number_control')) {
-    function column_number_control($parentControl, $name, $count_to_ten, $default = 10)
+if (!function_exists('count_ten_control')) {
+    function count_ten_control($parentControl, $label, $name, $default = 1)
     {
+        
+        $count_to_ten = range(1, 10);
+		$count_to_ten = array_combine($count_to_ten, $count_to_ten);
+        
         $arr = [
-            'label' => esc_html__('Number of Columns', 'mtn'),
+            'label' => esc_html__($label, 'mtn'),
             'type' => \Elementor\Controls_Manager::SELECT,
             'default' => $default,
             'options' => ['' => esc_html__('Default', 'mtn')] + $count_to_ten,
@@ -111,6 +115,7 @@ if (!function_exists('space_between_control')) {
         $parentControl->add_responsive_control($name, $arr);
     }
 }
+
 if (!function_exists('vertical_spacing_control')) {
     function vertical_spacing_control($parentControl, $name, $label = 'Vertical Spacing', $selector, $default = 10)
     {
@@ -135,11 +140,23 @@ if (!function_exists('vertical_spacing_control')) {
         $parentControl->add_responsive_control($name, $arr);
     }
 }
-if (!function_exists('slider_control')) {
+if (!function_exists('slider_control')) {    
+    /**
+     * slider control
+     *
+     * @var $this  $parentControl
+     * @param  string $name
+     * @param  string $label
+     * @param  array $selector
+     * @param  integer $default
+     * @param  array $extra
+     * @return void
+     */
     function slider_control($parentControl, $name, $label = 'Height', $selector, $default = 300, $extra = null)
     {
         if (!isset($extra['min-px'])) $extra['min-px'] = 0;
         if (!isset($extra['max-px'])) $extra['max-px'] = 100;
+        if (!isset($extra['max-percent'])) $extra['max-percent'] = 100;
         $arr =  [
             'label' => esc_html__($label, 'mtn'),
             'type' => \Elementor\Controls_Manager::SLIDER,
@@ -151,11 +168,11 @@ if (!function_exists('slider_control')) {
             'range' => [
                 'px' => [
                     'min' => $extra['min-px'],
-                    'max' => 1400,
+                    'max' => $extra['max-px'],
                 ],
                 '%' => [
                     'min' => 0,
-                    'max' => 100,
+                    'max' => $extra['max-percent'],
                 ],
             ],
             'selectors' => [
@@ -244,7 +261,7 @@ if (!function_exists('color_control')) {
 }
 
 if (!function_exists('background_control')) {
-    function background_control($parentControl, $name = 'Background', $label = 'Background', $selector)
+    function background_control($parentControl, $name = 'Background', $label = 'Background', $selector,$exclude = null)
     {
         $arr =
             [
@@ -252,6 +269,7 @@ if (!function_exists('background_control')) {
                 'label' => esc_html__($label, 'mtn'),
                 'types' => ['classic', 'gradient', 'video'],
                 'selector' => '{{WRAPPER}} ' . $selector,
+                'exclude' => $exclude,
             ];
         $parentControl->add_group_control(\Elementor\Group_Control_Background::get_type(), $arr);
     }

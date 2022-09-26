@@ -272,7 +272,7 @@ final class MTN_Features
 		}
 
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Deals_Carousel());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Products_Carousel());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Complex_Carousel_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Viewed_Topics());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Flex_Grid());

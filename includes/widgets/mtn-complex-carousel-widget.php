@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-class MTN_Products_Carousel  extends \Elementor\Widget_Base
+class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 {
 
 	/**
@@ -18,12 +18,12 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 	 * Retrieve test widget name.
 	 *
 	 * @since 1.0.0
-	 * @access public
+	 * @access public 
 	 * @return string Widget name.
 	 */
 	public function get_name()
 	{
-		return 'Products Carousel';
+		return 'Complex Carousel';
 	}
 	/**
 	 * Get widget title.
@@ -36,7 +36,7 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 	 */
 	public function get_title()
 	{
-		return esc_html__('Products Carousel', 'mtn');
+		return esc_html__('Complex Carousel', 'mtn');
 	}
 
 	/**
@@ -63,11 +63,8 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 	{
 		return 'post';
 	}
-
 	protected function register_controls()
 	{
-		$slides_per_view = range(1, 10);
-		$slides_per_view = array_combine($slides_per_view, $slides_per_view);
 
 		$this->start_controls_section(
 			'content_section',
@@ -77,24 +74,13 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 			]
 		);
 
-		$this->add_control(
-			'grid_num_posts',
-			[
-				'label' => esc_html__('Number of Posts', 'mtn'),
-				'type' => \Elementor\Controls_Manager::NUMBER,
-				'default' => -1,
-			]
-		);
-		$this->add_control(
-			'slides_to_scroll',
-			[
-				'label' => esc_html__('Number of Posts', 'mtn'),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'label' => esc_html__('Slides Per View', 'mtn'),
-				'options' => $slides_per_view,
-				'default' => 3,
-			]
-		);
+		count_ten_control($this, 'Slides to Scroll', 'slides_to_scroll', 3);
+
+		select_callback_control($this, 'carousel_type', 'Carouse Type',[
+			'3-col-carousel' => '3 Column Carousel',
+			'two-1-two' => 'Two One Two',
+		]);
+		
 		$this->end_controls_section();
 		$this->start_controls_section(
 			'section_query',
@@ -114,6 +100,7 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 		$this->end_controls_section();
 
 		/*** Style COntrol ***/
+
 		$this->start_controls_section(
 			'grid_style',
 			[
@@ -121,75 +108,34 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		$this->add_responsive_control(
-			'grid_height',
-			[
-				'label' => esc_html__('Grid Height', 'mtn'),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => ['%', 'px'],
-				'default' => [
-					'unit' => 'px',
-					'size' => 400
-				],
-				'range' => [
-					'px' => [
-						'min' => 300,
-						'max' => 1000,
-					],
-					'%' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .carousel-column' => 'height: {{SIZE}}{{UNIT}} !important',
-				],
-			]
-		);
+		slider_control($this, 'carousel_grid_height', 'Carousel Grid Height', array('.mtn-carousel-row','height'), 400, array('max-px' => 800));
+		slider_control($this, 'carousel_grid_gap', 'Grid Gap', array('.mtn-carousel-row','grid-gap'), 10, array('max-px' => 50));
 
-		$this->add_control(
-			'grid_margin',
-			[
-				'label' => esc_html__('Space Between', 'mtn'),
-				'type' => \Elementor\Controls_Manager::NUMBER,
-				'default' => 15,
-				'min' => 1,
-				'max' => 12,
-			]
-		);
+		heading_control($this,'grid_heading','Item Container');
+		padding_control($this, 'item_container_padding', 'Padding', '.mtn-carousel-column');
+		border_control($this, 'item_container_border', 'Border', '.mtn-carousel-column');
+		border_radius_control($this, 'item_container_radius', '.mtn-carousel-column');
+		background_control($this, 'item_container_backgound', 'Background', '.mtn-carousel-column');
 
 		$this->end_controls_section();
 
+		$this->start_controls_section(
+			'grid_imagebg_style',
+			[
+				'label' => esc_html__('Carousel Post Image', 'mtn'),
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		slider_control($this, 'grid_image_height', 'Image', array('.home-device-image','height'), 10, array('max-percent' => 100) );
+		background_control($this, 'grid_image_background', 'Image background','.home-device-image',array('image'));
+
+		$this->end_controls_section();
 		$this->start_controls_section(
 			'dot_style',
 			[
 				'label' => esc_html__('Carousel dot Style', 'mtn'),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
-		);
-		$this->add_responsive_control(
-			'dot_vertical_position',
-			[
-				'label' => esc_html__('Vertical Position', 'mtn'),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => ['%', 'px'],
-				'default' => [
-					'unit' => 'px',
-					'size' => -60
-				],
-				'range' => [
-					'px' => [
-						'min' => -200,
-						'max' => 200,
-					],
-					'%' => [
-						'min' => -100,
-						'max' => 100,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .owl-carousel .owl-dots' => 'top: {{SIZE}}{{UNIT}};',
-				],
 			]
 		);
 
@@ -204,10 +150,7 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 					'center' => 'center',
 					'flex-end' => 'Right',
 
-				],
-				'selectors' => [
-					'{{WRAPPER}} .owl-carousel .owl-dots' => 'justify-content: {{VALUE}};',
-				],
+				]
 			]
 		);
 		$this->add_responsive_control(
@@ -231,7 +174,7 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .owl-carousel .owl-dots' => 'top: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .owl-dots' => 'top: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -298,19 +241,22 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 		$this->end_controls_section();
 	}
 
+
+
 	protected function render()
 	{
-
 		$settings = $this->get_settings_for_display();
+		$carouselType = $settings['carousel_type'];
 		$neededFields =  ['post-link', 'thumbnail'];
 		$posts = postsRender($settings, null, $neededFields, array('skip_nothumbnail' => true));
-		$postCount = count($posts);
-		$slides = range(0, intval($postCount / 6));
 
+		if($carouselType == 'two-1-two'){
+		$posts = array_chunk($posts, 5);
+		}
 ?>
 		<script>
 			jQuery(document).ready(function() {
-				jQuery('.mtn-carousel-product').owlCarousel({
+				jQuery('.mtn-carousel-5').owlCarousel({
 					loop: true,
 					margin: <?php echo $settings['grid_margin']; ?>,
 					slideToScroll: <?php echo $settings['slides_to_scroll']; ?>,
@@ -331,43 +277,29 @@ class MTN_Products_Carousel  extends \Elementor\Widget_Base
 						}
 					},
 				});
+				jQuery(".owl-carousel .owl-dots").css("justify-content", "<?= $settings['dot_horizontal_position']; ?>");
+
 			});
 		</script>
-		<?php
-		/*** Start Content Section ***/
-		echo '<div class="mtn-products-carousel-section">
-			<div class="owl-carousel mtn-carousel-product">';
-
-		foreach ($slides as $slide) {
-		?>
-
-			<div class="row">
-				<div class="col-md-4 col-sm-12 product-column">
-					<a href="<? echo $posts[intval(0 + $slide)]['post-link']; ?>" class="product-container">
-						<div class="product-img" style="background-image: url('<? echo $posts[intval(0 + $slide)]['thumbnail']; ?>')"></div>
-					</a>
-					<a href="<? echo $posts[intval(1 + $slide)]['post-link']; ?>" class="product-container">
-						<div class="product-img" style="background-image: url('<? echo $posts[intval(1 + $slide)]['thumbnail']; ?>')"></div>
-					</a>
-				</div>
-				<div class="col-md-4 col-sm-12 product-column">
-					<a href="<? echo $posts[intval(2 + $slide)]['post-link']; ?>" class="product-container">
-						<div class="product-img" style="background-image: url('<? echo $posts[intval(2 + $slide)]['thumbnail']; ?>')"></div>
-					</a>
-				</div>
-				<div class="col-md-4 col-sm-12 product-column">
-					<a href="<? echo $posts[intval(3 + $slide)]['post-link']; ?>" class="product-container">
-						<div class="product-img" style="background-image: url('<? echo $posts[intval(3 + $slide)]['thumbnail']; ?>')"></div>
-					</a>
-					<a href="<? echo $posts[intval(4 + $slide)]['post-link']; ?>" class="product-container">
-						<div class="product-img" style="background-image: url('<? echo $posts[intval(4 + $slide)]['thumbnail']; ?>')"></div>
-					</a>
-				</div>
-			</div>
 <?php
+		/*** Start Content Section ***/
+		echo '<div class="mtn-carousel-section">';
+		echo '<div class="owl-carousel mtn-carousel-5">';
+
+		foreach ($posts as $key => $innerPosts) {
+			echo '<div class="mtn-carousel-row">';
+			foreach ($innerPosts as $innerKey => $post) {
+		?>
+				<div class="mtn-carousel-column device-item-<?= $innerKey; ?>">
+					<div class="home-device-image" style="background-image: url('<?= $post['thumbnail']; ?>');">
+					</div>
+				</div>
+<?php
+
+			}
+			echo '</div>';
 		}
 		echo '</div></div>';
 		/*** End Content Section ***/
+		}
 	}
-	
-}

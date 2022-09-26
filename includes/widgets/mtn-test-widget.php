@@ -23,7 +23,7 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 	 */
 	public function get_name()
 	{
-		return 'MTN Test';
+		return 'Test Widget';
 	}
 	/**
 	 * Get widget title.
@@ -36,7 +36,7 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 	 */
 	public function get_title()
 	{
-		return esc_html__('MTN Test', 'mtn');
+		return esc_html__('Test Widget', 'mtn');
 	}
 
 	/**
@@ -276,16 +276,12 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 	{
 		$settings = $this->get_settings_for_display();
 		$neededFields =  ['post-link', 'thumbnail'];
-		$posts = postsRender($settings, null, $neededFields, array('skip_nothumbnail' => true));
-		$chunkedPosts = array_chunk($posts, 5);
-		// echo '<br>***///////////***** <br>';
-		// print_r($args);
-		// echo '<br>******** <br>';
+		$posts = postsRender($settings, null, $neededFields);
 
 ?>
 		<script>
 			jQuery(document).ready(function() {
-				jQuery('.mtn-carousel-5').owlCarousel({
+				jQuery('.mtn-carousel-3').owlCarousel({
 					loop: true,
 					margin: <?php echo $settings['grid_margin']; ?>,
 					slideToScroll: <?php echo $settings['slides_to_scroll']; ?>,
@@ -299,10 +295,10 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 							items: 1
 						},
 						600: {
-							items: 1
+							items: 2
 						},
 						1000: {
-							items: 1
+							items: 3
 						}
 					},
 				});
@@ -312,23 +308,20 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 		</script>
 <?php
 		/*** Start Content Section ***/
-		echo '<div class="ni-dilu-carousel-section">';
-		echo '<div class="owl-carousel mtn-carousel-5">';
+		echo '<div class="mtn-deals-carousel-section">';
+		echo '<div class="row owl-carousel mtn-carousel-3">';
 
-		foreach ($chunkedPosts as $key => $innerPosts) {
-			echo '<div class="mtn-carousel-row">';
-			foreach ($innerPosts as $innerKey => $post) {
-		?>
-				<div class="mtn-carousel-column device-item-<?= $innerKey; ?>">
-					<div class="home-device-image" style="background-image: url('<?= $post['thumbnail']; ?>');">
-					</div>
-				</div>
-<?php
+		foreach ($posts as $post) {
 
-			}
-			echo '</div>';
+			echo '<div class="col col-md">';
+			echo '<div class="carousel-column" style="background-image: url(' . $post['thumbnail'] . ');">';
+			echo '<div class="deals-contents">';
+
+			echo '<a class="btn read-more-btn" href="' . $post['post-link'] . '">Read More &nbsp;<i class="fa fa-angle-right"></i></a>';
+
+			echo '</div></div></div>';
 		}
 		echo '</div></div>';
 		/*** End Content Section ***/
-		}
 	}
+}

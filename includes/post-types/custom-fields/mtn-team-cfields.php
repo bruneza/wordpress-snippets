@@ -22,12 +22,6 @@ if (!class_exists('MTN_Team_Fields')) :
         private $meta_fields = array(
 
                     array(
-                        'label' => 'Short BIO',
-                        'id' => '_mtn_description',
-                        'placeholder' => 'eg: this team is about...',
-                        'type' => 'textarea',
-                    ),
-                    array(
                         'label' => 'Job Title',
                         'id' => '_mtn_job_title',
                         'placeholder' => 'eg: CEO',

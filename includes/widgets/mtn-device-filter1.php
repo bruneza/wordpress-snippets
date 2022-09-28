@@ -305,7 +305,10 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
 
 		$postType = getPostType($settings);
 		$terms = mtnTerms($postType);
+
 		// print_r($terms);
+        // echo '<br>******<br>';
+
         foreach($terms as $key => $taxonomy)
             $category =  $key;
 

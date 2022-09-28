@@ -76,11 +76,11 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 
 		count_ten_control($this, 'Slides to Scroll', 'slides_to_scroll', 3);
 
-		select_callback_control($this, 'carousel_type', 'Carouse Type',[
+		select_callback_control($this, 'carousel_type', 'Carouse Type', [
 			'3-col-carousel' => '3 Column Carousel',
 			'two-1-two' => 'Two One Two',
 		]);
-		
+
 		$this->end_controls_section();
 		$this->start_controls_section(
 			'section_query',
@@ -101,6 +101,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 
 		/*** Style COntrol ***/
 
+		//Grid Style
 		$this->start_controls_section(
 			'grid_style',
 			[
@@ -108,10 +109,11 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		slider_control($this, 'carousel_grid_height', 'Carousel Grid Height', array('.mtn-carousel-row','height'), 400, array('max-px' => 800));
-		slider_control($this, 'carousel_grid_gap', 'Grid Gap', array('.mtn-carousel-row','grid-gap'), 10, array('max-px' => 50));
+		slider_control($this, 'carousel_grid_height', 'Carousel Grid Height', array('.mtn-carousel-row', 'height'), 400, array('max-px' => 800));
+		slider_control($this, 'carousel_grid_gap', 'Grid Gap', array('.mtn-carousel-row', 'grid-gap'), 10, array('max-px' => 50));
 
-		heading_control($this,'grid_heading','Item Container');
+		//Item Container
+		heading_control($this, 'grid_heading', 'Item Container');
 		padding_control($this, 'item_container_padding', 'Padding', '.mtn-carousel-column');
 		border_control($this, 'item_container_border', 'Border', '.mtn-carousel-column');
 		border_radius_control($this, 'item_container_radius', '.mtn-carousel-column');
@@ -119,6 +121,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 
 		$this->end_controls_section();
 
+		// Carousel Post Image
 		$this->start_controls_section(
 			'grid_imagebg_style',
 			[
@@ -127,10 +130,12 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 
-		slider_control($this, 'grid_image_height', 'Image', array('.home-device-image','height'), 10, array('max-percent' => 100) );
-		background_control($this, 'grid_image_background', 'Image background','.home-device-image',array('image'));
+		slider_control($this, 'grid_image_height', 'Image', array('.home-device-image', 'height'), 10, array('max-percent' => 100));
+		background_control($this, 'grid_image_background', 'Image background', '.home-device-image', array('image'));
 
 		$this->end_controls_section();
+
+		// Carousel dot Style
 		$this->start_controls_section(
 			'dot_style',
 			[
@@ -139,47 +144,24 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 
-		$this->add_responsive_control(
+		select_callback_control(
+			$this,
 			'dot_horizontal_position',
+			'Horizontal Position',
 			[
-				'label' => esc_html__('Horizontal Position', 'mtn'),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'default' => 'flex-start',
-				'options' => [
-					'flex-start' => 'Left',
-					'center' => 'center',
-					'flex-end' => 'Right',
+				'flex-start' => 'Left',
+				'center' => 'center',
+				'flex-end' => 'Right',
 
-				]
-			]
-		);
-		$this->add_responsive_control(
-			'dot_vertical_offset',
-			[
-				'label' => esc_html__('Vertical Offset', 'mtn'),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => ['%', 'px'],
-				'default' => [
-					'unit' => 'px',
-					'size' => -60
-				],
-				'range' => [
-					'px' => [
-						'min' => -200,
-						'max' => 200,
-					],
-					'%' => [
-						'min' => -100,
-						'max' => 100,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .owl-dots' => 'top: {{SIZE}}{{UNIT}};',
-				],
-			]
+			],
+			'flex-start',
 		);
 
+		slider_control($this, 'dot_vertical_offset', 'Vertical Offset', array('.owl-dots', 'top'), -60, ['min-px' => -200, 'max-px' => 200]);
+
+		// STATE TABS
 		$this->start_controls_tabs('tabs_dot_style');
+		// Normal State
 		$this->start_controls_tab(
 			'tab_dot_normal',
 			[
@@ -187,17 +169,11 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 
-		$this->add_group_control(
-			\Elementor\Group_Control_Background::get_type(),
-			[
-				'name' => 'dot_background',
-				'label' => esc_html__('Dot Background', 'mtn'),
-				'types' => ['classic', 'gradient', 'video'],
-				'selector' => '{{WRAPPER}} .owl-dots span',
-			]
-		);
+		background_control($this, 'dot_background', 'Dot Background', '.owl-dots span');
 
 		$this->end_controls_tab();
+
+		// Hover State
 		$this->start_controls_tab(
 			'tab_dot_hover',
 			[
@@ -205,39 +181,15 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 
-		$this->add_group_control(
-			\Elementor\Group_Control_Background::get_type(),
-			[
-				'name' => 'dot_hover_background',
-				'label' => esc_html__('Dot Background', 'mtn'),
-				'types' => ['classic', 'gradient', 'video'],
-				'selector' => '{{WRAPPER}} .owl-dots .active span',
-			]
-		);
-
+		background_control($this, 'dot_hover_background', 'Dot Background', '.owl-dots .active span');
 		$this->end_controls_tab();
+
 		$this->end_controls_tabs();
+		// END TABS
 
-		$this->add_group_control(
-			\Elementor\Group_Control_Border::get_type(),
-			[
-				'name' => 'dot_border',
-				'label' => esc_html__('Dot Border', 'mtn'),
-				'selector' => '{{WRAPPER}} .owl-dot span',
-			]
-		);
+		border_control($this,'dot_border','Dot Border','.owl-dot span');
+		border_radius_control($this,'allbtn_border_radius','Button Radius','.owl-dot span');
 
-		$this->add_control(
-			'allbtn_border_radius',
-			[
-				'label' => esc_html__('Button Radius', 'mtn'),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => ['px', '%', 'em'],
-				'selectors' => [
-					'{{WRAPPER}} .owl-dot span' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
 		$this->end_controls_section();
 	}
 
@@ -250,8 +202,8 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 		$neededFields =  ['post-link', 'thumbnail'];
 		$posts = postsRender($settings, null, $neededFields, array('skip_nothumbnail' => true));
 
-		if($carouselType == 'two-1-two'){
-		$posts = array_chunk($posts, 5);
+		if ($carouselType == 'two-1-two') {
+			$posts = array_chunk($posts, 5);
 		}
 ?>
 		<script>
@@ -281,7 +233,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 
 			});
 		</script>
-<?php
+		<?php
 		/*** Start Content Section ***/
 		echo '<div class="mtn-carousel-section">';
 		echo '<div class="owl-carousel mtn-carousel-5">';
@@ -301,5 +253,5 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 		}
 		echo '</div></div>';
 		/*** End Content Section ***/
-		}
 	}
+}

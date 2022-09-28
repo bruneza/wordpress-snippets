@@ -3,12 +3,12 @@
 namespace MTN_FEATURES\Widgets;
 
 if (!function_exists('select_callback_control')) {
-    function select_callback_control($parentControl, $name = 'text', $label = 'Title', $callback = null)
+    function select_callback_control($parentControl, $name = 'text', $label = 'Title', $callback = null, $default = 'post')
     { {
             $arr = [
                 'label' => esc_html__('Post Type', 'mtn'),
                 'type' => \Elementor\Controls_Manager::SELECT,
-                'Default' => 'post',
+                'Default' => $default,
                 'options' =>  $callback,
             ];
             $parentControl->add_control($name, $arr);
@@ -33,6 +33,32 @@ if (!function_exists('text_control')) {
         $parentControl->add_control($name, $arr);
     }
 }
+
+if (!function_exists('link_control')) {
+    function link_control($parentControl, $name = 'text', $label = 'Link')
+    {
+
+        $arr = [
+            'label' => esc_html__( $label, 'mtn' ),
+            'type' => \Elementor\Controls_Manager::URL,
+            'placeholder' => esc_html__( 'https://your-link.com', 'mtn' ),
+            'options' => [ 'url', 'is_external', 'nofollow' ],
+            'default' => [
+                'url' => '',
+                'is_external' => true,
+                'nofollow' => true,
+                // 'custom_attributes' => '',
+            ],
+            'dynamic' => [
+                'active' => true,
+            ],
+            'label_block' => true,
+        ];
+
+        $parentControl->add_control($name, $arr);
+    }
+}
+
 if (!function_exists('editor_control')) {
     function editor_control($parentControl, $name, $label = 'Description')
     {
@@ -46,7 +72,7 @@ if (!function_exists('editor_control')) {
     }
 }
 if (!function_exists('number_control')) {
-    function number_control($parentControl, $name, $label = 'Number', $default = '-1')
+    function number_control($parentControl, $name, $label = 'Number', $default = 3)
     {
         $arr = [
             'label' => esc_html__($label, 'mtn'),
@@ -155,7 +181,7 @@ if (!function_exists('slider_control')) {
     function slider_control($parentControl, $name, $label = 'Height', $selector, $default = 300, $extra = null)
     {
         if (!isset($extra['min-px'])) $extra['min-px'] = 0;
-        if (!isset($extra['max-px'])) $extra['max-px'] = 100;
+        if (!isset($extra['max-px'])) $extra['max-px'] = 1000;
         if (!isset($extra['max-percent'])) $extra['max-percent'] = 100;
         $arr =  [
             'label' => esc_html__($label, 'mtn'),
@@ -179,6 +205,25 @@ if (!function_exists('slider_control')) {
                 '{{WRAPPER}} ' . $selector[0] => $selector[1] . ': {{SIZE}}{{UNIT}} !important',
             ],
         ];
+
+        $parentControl->add_responsive_control($name, $arr);
+    }
+}
+if (!function_exists('slider_no_control')) {   
+    function slider_no_unit_control($parentControl, $name, $label = 'No Unit', $selector, $default = 30, $extra = null)
+    {
+        $count_to_ten = range(1, 10);
+		$count_to_ten = array_combine($count_to_ten, $count_to_ten);
+
+			$arr = [
+				'label' => esc_html__( $label, 'mtn' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count_to_ten,
+				'selectors' => [
+					'{{WRAPPER}} '.$selector[0] => $selector[1].': {{VALUE}};',
+				],
+			];
 
         $parentControl->add_responsive_control($name, $arr);
     }
@@ -216,7 +261,23 @@ if (!function_exists('border_radius_control')) {
         $arr = [
             'label' => esc_html__('Border Radius', 'mtn'),
             'type' => \Elementor\Controls_Manager::DIMENSIONS,
-            'size_units' => ['px', '%'],
+            'size_units' => ['px', '%', 'em'],
+            'selectors' => [
+                '{{WRAPPER}} ' . $selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ],
+        ];
+
+        $parentControl->add_responsive_control($name, $arr);
+    }
+}
+
+if (!function_exists('grid_area_control')) {
+    function grid_area_control($parentControl, $name, $selector)
+    {
+        $arr = [
+            'label' => esc_html__('Border Radius', 'mtn'),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => ['px', '%', 'em'],
             'selectors' => [
                 '{{WRAPPER}} ' . $selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
             ],

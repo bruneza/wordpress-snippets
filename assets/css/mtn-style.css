@@ -348,7 +348,7 @@ h6 {
   height: 100%;
 }
 
-/* Team */
+/* TEAM */
 
 .profile-card {
   border-radius: 20px;
@@ -400,11 +400,45 @@ p .team-excerpt {
 
 .team-more-btn:hover {
   color: #ffcc00;
+  background-color: #FFFFFF;
 }
 
 .team-more-btn .icon-desc {
   text-align: center;
 }
+/**** TEAM MODAL ***/
+
+.mtn-team-modal.show {
+  display: flex !important;
+  align-content: center;
+  align-items: center;
+}
+
+.mtn-modal-dialog {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  width: 500px;
+}
+
+.mtn-modal-row {
+  min-height: 100%;
+  width: 100%;
+  
+  overflow: hidden;
+}
+
+.team-member-img{
+  padding: 0;
+}
+.team-member-img img {
+  min-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
 /**
 ** Accordion styles
 **/
@@ -448,12 +482,12 @@ p .team-excerpt {
   }
 }
 
-/***TEST ****/
+/***COMPLEX OWL CAROUSEL ****/
 
 .mtn-carousel-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
 }
 
 .mtn-carousel-row .mtn-carousel-column {
@@ -485,3 +519,4 @@ p .team-excerpt {
   background-repeat: no-repeat;
   background-position: center;
 }
+

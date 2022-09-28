@@ -200,6 +200,7 @@ function processOutput($query)
         $output['title'] = esc_attr(get_the_title());
         $output['slug'] = esc_attr(get_post_field('post_name', $post_id));
         $output['excerpt'] = esc_attr(wp_trim_words(get_the_excerpt(), 15, '...'));
+        $output['content'] = esc_attr(wp_strip_all_tags(get_the_content()));
         $output['author'] = esc_attr(get_the_author_meta('display_name'));
         $output['thumbnail'] = get_the_post_thumbnail_url();
         $output['post-link'] = get_permalink();
@@ -212,6 +213,9 @@ function processOutput($query)
         if ($output['post_type'] == 'job_listing') {
             $output['location'] = get_the_job_location($post_id);
             $output['deadline'] = meta_date_validator($post_id, '_job_expires');
+        }
+        if ($output['post_type'] == 'mtn_teams') {
+            $output['job-title'] = meta_validator($post_id, '_mtn_job_title');
         }
         if ($output['post_type'] == 'mtn_products') {
             $output['storage'] = meta_validator($post_id, '_mtn_storage');

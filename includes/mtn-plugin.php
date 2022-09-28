@@ -290,5 +290,7 @@ final class MTN_Features
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion_Foundation());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_International_Filter());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Test_Widget());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Data_Bundle_Filter());
 	}
 }
+

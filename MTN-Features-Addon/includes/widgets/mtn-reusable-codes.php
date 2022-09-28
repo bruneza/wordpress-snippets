@@ -1,14 +1,63 @@
 <?php
 
-namespace MTN_FEATURES\Widgets;
-
-if (!function_exists('select_callback_control')) {
-    function select_callback_control($parentControl, $name = 'text', $label = 'Title', $callback = null)
+if (!function_exists('switcher_control')) {
+    function switcher_control($parentControl, $name = 'show', $label = 'Show')
     { {
             $arr = [
-                'label' => esc_html__('Post Type', 'mtn'),
+                'label' => esc_html__($label, 'mtn'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('Show', 'mtn'),
+                'label_off' => esc_html__('Hide', 'mtn'),
+                'return_value' => 'yes',
+                'default' => 'yes',
+            ];
+            $parentControl->add_control($name, $arr);
+        }
+    }
+}
+
+if (!function_exists('select_callback_control')) {
+    function select_callback_control($parentControl, $name = 'text', $label = 'Title', $callback = null, $default = 'post')
+    { {
+            $arr = [
+                'label' => esc_html__($label, 'mtn'),
                 'type' => \Elementor\Controls_Manager::SELECT,
-                'Default' => 'post',
+                'Default' => $default,
+                'options' =>  $callback,
+            ];
+            $parentControl->add_control($name, $arr);
+        }
+    }
+}
+if (!function_exists('select_style_control')) {
+    function select_style_control($parentControl, $name = 'text', $options,$selector, $extra = null)
+    {
+        if (!isset($extra['conditions'])) $extra['conditions'] = null;
+        if (!isset($extra['label'])) $extra['label'] = esc_html('post', 'mnt');
+        if (!isset($extra['default'])) $extra['default'] = esc_html('', 'mnt');
+
+            $arr = [
+                'label' => esc_html__($extra['label'], 'mtn'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'Default' => $extra['default'],
+                'options' =>  $options,
+                'selectors' => [
+					'{{WRAPPER}} '.$selector[0] => $selector[1].': {{VALUE}};',
+				],
+                'condition' => $extra['conditions'],
+            ];
+            $parentControl->add_control($name, $arr);
+        }
+}
+
+if (!function_exists('select2_callback_control')) {
+    function select2_callback_control($parentControl, $name = 'text', $label = 'Title', $callback = null, $default = 'post')
+    { {
+            $arr = [
+                'label' => esc_html__($label, 'mtn'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'Default' => $default,
+                'multiple' => true,
                 'options' =>  $callback,
             ];
             $parentControl->add_control($name, $arr);
@@ -33,6 +82,32 @@ if (!function_exists('text_control')) {
         $parentControl->add_control($name, $arr);
     }
 }
+
+if (!function_exists('link_control')) {
+    function link_control($parentControl, $name = 'text', $label = 'Link')
+    {
+
+        $arr = [
+            'label' => esc_html__( $label, 'mtn' ),
+            'type' => \Elementor\Controls_Manager::URL,
+            'placeholder' => esc_html__( 'https://your-link.com', 'mtn' ),
+            'options' => [ 'url', 'is_external', 'nofollow' ],
+            'default' => [
+                'url' => '',
+                'is_external' => true,
+                'nofollow' => true,
+                // 'custom_attributes' => '',
+            ],
+            'dynamic' => [
+                'active' => true,
+            ],
+            'label_block' => true,
+        ];
+
+        $parentControl->add_control($name, $arr);
+    }
+}
+
 if (!function_exists('editor_control')) {
     function editor_control($parentControl, $name, $label = 'Description')
     {
@@ -46,7 +121,7 @@ if (!function_exists('editor_control')) {
     }
 }
 if (!function_exists('number_control')) {
-    function number_control($parentControl, $name, $label = 'Number', $default = '-1')
+    function number_control($parentControl, $name, $label = 'Number', $default = 3)
     {
         $arr = [
             'label' => esc_html__($label, 'mtn'),
@@ -72,11 +147,15 @@ if (!function_exists('icon_control')) {
         $parentControl->add_control($name, $arr);
     }
 }
-if (!function_exists('column_number_control')) {
-    function column_number_control($parentControl, $name, $count_to_ten, $default = 10)
+if (!function_exists('count_ten_control')) {
+    function count_ten_control($parentControl, $label, $name, $default = 1)
     {
+        
+        $count_to_ten = range(1, 10);
+		$count_to_ten = array_combine($count_to_ten, $count_to_ten);
+        
         $arr = [
-            'label' => esc_html__('Number of Columns', 'mtn'),
+            'label' => esc_html__($label, 'mtn'),
             'type' => \Elementor\Controls_Manager::SELECT,
             'default' => $default,
             'options' => ['' => esc_html__('Default', 'mtn')] + $count_to_ten,
@@ -111,6 +190,7 @@ if (!function_exists('space_between_control')) {
         $parentControl->add_responsive_control($name, $arr);
     }
 }
+
 if (!function_exists('vertical_spacing_control')) {
     function vertical_spacing_control($parentControl, $name, $label = 'Vertical Spacing', $selector, $default = 10)
     {
@@ -135,11 +215,23 @@ if (!function_exists('vertical_spacing_control')) {
         $parentControl->add_responsive_control($name, $arr);
     }
 }
-if (!function_exists('slider_control')) {
+if (!function_exists('slider_control')) {    
+    /**
+     * slider control
+     *
+     * @var $this  $parentControl
+     * @param  string $name
+     * @param  string $label
+     * @param  array $selector
+     * @param  integer $default
+     * @param  array $extra
+     * @return void
+     */
     function slider_control($parentControl, $name, $label = 'Height', $selector, $default = 300, $extra = null)
     {
         if (!isset($extra['min-px'])) $extra['min-px'] = 0;
-        if (!isset($extra['max-px'])) $extra['max-px'] = 100;
+        if (!isset($extra['max-px'])) $extra['max-px'] = 1000;
+        if (!isset($extra['max-percent'])) $extra['max-percent'] = 100;
         $arr =  [
             'label' => esc_html__($label, 'mtn'),
             'type' => \Elementor\Controls_Manager::SLIDER,
@@ -151,17 +243,36 @@ if (!function_exists('slider_control')) {
             'range' => [
                 'px' => [
                     'min' => $extra['min-px'],
-                    'max' => 1400,
+                    'max' => $extra['max-px'],
                 ],
                 '%' => [
                     'min' => 0,
-                    'max' => 100,
+                    'max' => $extra['max-percent'],
                 ],
             ],
             'selectors' => [
                 '{{WRAPPER}} ' . $selector[0] => $selector[1] . ': {{SIZE}}{{UNIT}} !important',
             ],
         ];
+
+        $parentControl->add_responsive_control($name, $arr);
+    }
+}
+if (!function_exists('select_value_control')) {   
+    function select_value_control($parentControl, $name, $label = 'Value', $selector, $default = 30, $extra = null)
+    {
+        $count = range(1, 15);
+		$count = array_combine($count, $count);
+
+			$arr = [
+				'label' => esc_html__( $label, 'mtn' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
+				'selectors' => [
+					'{{WRAPPER}} '.$selector[0] => $selector[1].': {{VALUE}};',
+				],
+			];
 
         $parentControl->add_responsive_control($name, $arr);
     }
@@ -199,7 +310,23 @@ if (!function_exists('border_radius_control')) {
         $arr = [
             'label' => esc_html__('Border Radius', 'mtn'),
             'type' => \Elementor\Controls_Manager::DIMENSIONS,
-            'size_units' => ['px', '%'],
+            'size_units' => ['px', '%', 'em'],
+            'selectors' => [
+                '{{WRAPPER}} ' . $selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ],
+        ];
+
+        $parentControl->add_responsive_control($name, $arr);
+    }
+}
+
+if (!function_exists('grid_area_control')) {
+    function grid_area_control($parentControl, $name, $selector)
+    {
+        $arr = [
+            'label' => esc_html__('Border Radius', 'mtn'),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => ['px', '%', 'em'],
             'selectors' => [
                 '{{WRAPPER}} ' . $selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
             ],
@@ -244,7 +371,7 @@ if (!function_exists('color_control')) {
 }
 
 if (!function_exists('background_control')) {
-    function background_control($parentControl, $name = 'Background', $label = 'Background', $selector)
+    function background_control($parentControl, $name = 'Background', $label = 'Background', $selector,$exclude = null)
     {
         $arr =
             [
@@ -252,6 +379,7 @@ if (!function_exists('background_control')) {
                 'label' => esc_html__($label, 'mtn'),
                 'types' => ['classic', 'gradient', 'video'],
                 'selector' => '{{WRAPPER}} ' . $selector,
+                'exclude' => $exclude,
             ];
         $parentControl->add_group_control(\Elementor\Group_Control_Background::get_type(), $arr);
     }

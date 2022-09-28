@@ -81,8 +81,6 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 			'two-1-two' => 'Two One Two',
 		]);
 
-		slider_no_unit_control($this, 'test_gap', 'Test', ['.mtn-carousel-section','gap']);
-
 		$this->end_controls_section();
 		$this->start_controls_section(
 			'section_query',
@@ -111,7 +109,6 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-
 		slider_control($this, 'carousel_grid_height', 'Carousel Grid Height', array('.mtn-carousel-row', 'height'), 400, array('max-px' => 800));
 		slider_control($this, 'carousel_grid_gap', 'Grid Gap', array('.mtn-carousel-row', 'grid-gap'), 10, array('max-px' => 50));
 
@@ -204,11 +201,14 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 		$carouselType = $settings['carousel_type'];
 		$neededFields =  ['post-link', 'thumbnail'];
 		$posts = postsRender($settings, null, $neededFields, array('skip_nothumbnail' => true));
-			$posts = array_chunk($posts, 3);
+
+		if ($carouselType == 'two-1-two') {
+			$posts = array_chunk($posts, 5);
+		}
 ?>
 		<script>
 			jQuery(document).ready(function() {
-				jQuery('.mtn-carousel-grid').owlCarousel({
+				jQuery('.mtn-carousel-5').owlCarousel({
 					loop: true,
 					margin: <?php echo $settings['grid_margin']; ?>,
 					slideToScroll: <?php echo $settings['slides_to_scroll']; ?>,
@@ -235,15 +235,15 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 		</script>
 		<?php
 		/*** Start Content Section ***/
-		echo '<div class="complex-carousel-section">';
-		echo '<div class="owl-carousel complex-carousel-grid">';
+		echo '<div class="mtn-carousel-section">';
+		echo '<div class="owl-carousel mtn-carousel-5">';
 
 		foreach ($posts as $key => $innerPosts) {
-			echo '<div class="complex-carousel-row">';
+			echo '<div class="mtn-carousel-row">';
 			foreach ($innerPosts as $innerKey => $post) {
 		?>
 				<div class="mtn-carousel-column device-item-<?= $innerKey; ?>">
-					<div class="complex-carousel-image" style="background-image: url('<?= $post['thumbnail']; ?>');">
+					<div class="home-device-image" style="background-image: url('<?= $post['thumbnail']; ?>');">
 					</div>
 				</div>
 <?php

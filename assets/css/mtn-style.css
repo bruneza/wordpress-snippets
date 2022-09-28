@@ -400,7 +400,7 @@ p .team-excerpt {
 
 .team-more-btn:hover {
   color: #ffcc00;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .team-more-btn .icon-desc {
@@ -424,11 +424,11 @@ p .team-excerpt {
 .mtn-modal-row {
   min-height: 100%;
   width: 100%;
-  
+
   overflow: hidden;
 }
 
-.team-member-img{
+.team-member-img {
   padding: 0;
 }
 .team-member-img img {
@@ -437,7 +437,6 @@ p .team-excerpt {
   height: 100%;
   object-fit: cover;
 }
-
 
 /**
 ** Accordion styles
@@ -484,18 +483,26 @@ p .team-excerpt {
 
 /***COMPLEX OWL CAROUSEL ****/
 
-.mtn-carousel-row {
+.complex-carousel-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
 }
 
-.mtn-carousel-row .mtn-carousel-column {
+.complex-carousel-row .complex-column-item {
   padding: 40px;
   background: #ffcc00;
   height: 100%;
 }
 
+.complex-column-item {
+  grid-row-start: auto;
+  grid-column-start: auto;
+  grid-row-end: auto;
+  grid-column-end: auto;
+}
+
+/*
 .mtn-carousel-row .device-item-0 {
   grid-area: 1 / 2 / 3 / 3;
 }
@@ -511,12 +518,16 @@ p .team-excerpt {
 .mtn-carousel-row .device-item-4 {
   grid-area: 2 / 3 / 3 / 4;
 }
-
-.home-device-image {
+*/
+.owl-carousel .owl-item img{
+  object-fit: contain;
+}
+.complex-carousel-row .owl-item img.complex-col-img {
   height: 90%;
   width: 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
-

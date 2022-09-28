@@ -1,14 +1,68 @@
 <?php
 
-namespace MTN_FEATURES\Widgets;
-
-if (!function_exists('select_callback_control')) {
-    function select_callback_control($parentControl, $name = 'text', $label = 'Title', $callback = null, $default = 'post')
+if (!function_exists('switcher_control')) {
+    function switcher_control($parentControl, $name = 'show', $label = 'Show')
     { {
             $arr = [
-                'label' => esc_html__('Post Type', 'mtn'),
+                'label' => esc_html__($label, 'mtn'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('Show', 'mtn'),
+                'label_off' => esc_html__('Hide', 'mtn'),
+                'return_value' => 'yes',
+                'default' => 'yes',
+            ];
+            $parentControl->add_control($name, $arr);
+        }
+    }
+}
+
+if (!function_exists('select_callback_control')) {
+    function select_callback_control($parentControl, $name = 'text', $callback = null, $extra = null)
+    { {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Select';
+        if (!isset($extra['default'])) $extra['default'] = '';
+
+            $arr = [
+                'label' => esc_html__($extra['label'], 'mtn'),
                 'type' => \Elementor\Controls_Manager::SELECT,
-                'Default' => $default,
+                'default' => $extra['default'],
+                'options' =>  $callback,
+                'condition' => $extra['condition']
+            ];
+            $parentControl->add_control($name, $arr);
+        }
+    }
+}
+if (!function_exists('select_style_control')) {
+    function select_style_control($parentControl, $name = 'text', $options,$selector, $extra = null)
+    {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Select';
+        if (!isset($extra['default'])) $extra['default'] = '';
+
+            $arr = [
+                'label' => esc_html__($extra['label'], 'mtn'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => $extra['default'],
+                'options' =>  $options,
+                'selectors' => [
+					'{{WRAPPER}} '.$selector[0] => $selector[1].': {{VALUE}};',
+				],
+                'condition' => $extra['condition'],
+            ];
+            $parentControl->add_control($name, $arr);
+        }
+}
+
+if (!function_exists('select2_callback_control')) {
+    function select2_callback_control($parentControl, $name = 'text', $label = 'Title', $callback = null, $default = 'post')
+    { {
+            $arr = [
+                'label' => esc_html__($label, 'mtn'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'default' => $default,
+                'multiple' => true,
                 'options' =>  $callback,
             ];
             $parentControl->add_control($name, $arr);
@@ -178,10 +232,12 @@ if (!function_exists('slider_control')) {
      * @param  array $extra
      * @return void
      */
-    function slider_control($parentControl, $name, $label = 'Height', $selector, $default = 300, $extra = null)
+    function slider_control($parentControl, $name, $label = 'Height', $selector, $extra = null)
     {
         if (!isset($extra['min-px'])) $extra['min-px'] = 0;
         if (!isset($extra['max-px'])) $extra['max-px'] = 1000;
+        if (!isset($extra['default'])) $extra['default'] = 300;
+        if (!isset($extra['condition'])) $extra['condition'] = array();
         if (!isset($extra['max-percent'])) $extra['max-percent'] = 100;
         $arr =  [
             'label' => esc_html__($label, 'mtn'),
@@ -189,7 +245,7 @@ if (!function_exists('slider_control')) {
             'size_units' => ['%', 'px'],
             'default' => [
                 'unit' => 'px',
-                'size' => $default
+                'size' => $extra['default']
             ],
             'range' => [
                 'px' => [
@@ -204,22 +260,23 @@ if (!function_exists('slider_control')) {
             'selectors' => [
                 '{{WRAPPER}} ' . $selector[0] => $selector[1] . ': {{SIZE}}{{UNIT}} !important',
             ],
+            'condition' => $extra['condition'],
         ];
 
         $parentControl->add_responsive_control($name, $arr);
     }
 }
-if (!function_exists('slider_no_control')) {   
-    function slider_no_unit_control($parentControl, $name, $label = 'No Unit', $selector, $default = 30, $extra = null)
+if (!function_exists('select_value_control')) {   
+    function select_value_control($parentControl, $name, $label = 'Value', $selector, $default = 30, $extra = null)
     {
-        $count_to_ten = range(1, 10);
-		$count_to_ten = array_combine($count_to_ten, $count_to_ten);
+        $count = range(1, 15);
+		$count = array_combine($count, $count);
 
 			$arr = [
 				'label' => esc_html__( $label, 'mtn' ),
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'default' => 'auto',
-				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count_to_ten,
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
 				'selectors' => [
 					'{{WRAPPER}} '.$selector[0] => $selector[1].': {{VALUE}};',
 				],

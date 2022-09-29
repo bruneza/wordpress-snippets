@@ -74,8 +74,8 @@ class MTN_Vacancies  extends \Elementor\Widget_Base
 			]
 		);
 
-		number_control($this, 'num_of_columns', $label = 'Number of Columns', $default = '3');
-		text_control($this, 'view_more_btn', 'View More Button');
+		number_control($this, 'num_of_columns', ['default' => 3, 'label' => 'Number of Columns']);
+		text_control($this, 'view_more_btn', ['label' => 'View More Button']);
 		$this->end_controls_section();
 	}
 

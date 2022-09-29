@@ -140,7 +140,7 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
         border_radius_control($this, 'grid_border_radius', '.post-wrapper');
         space_between_control($this, 'space_between',null, '.post-card', 20);
         padding_control($this, 'grid_padding', 'Content Padding', '.post-content');
-        slider_control($this, 'grid_height', 'Grid Height', array('.post-wrapper', 'height'), 350);
+        slider_control($this, 'grid_height', 'Grid Height', array('.post-wrapper', 'height'));
         background_control($this, 'backgroud_overlay', 'Overlay', '.post-content');
 
         $this->end_controls_section();
@@ -154,8 +154,8 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
         );
 
 
-        slider_control($this, 'filter_tab_height', 'Tab Height', array('.posts-filter .nav-link', 'height'), 80, array('max-px' => 200));
-        slider_control($this, 'filter_tab_width', 'Tab Width', array('.posts-filter .nav-link', 'width'), 80, array('max-px' => 200));
+        slider_control($this, 'filter_tab_height', 'Tab Height', array('.posts-filter .nav-link', 'height'), array('max-px' => 200));
+        slider_control($this, 'filter_tab_width', 'Tab Width', array('.posts-filter .nav-link', 'width'), array('max-px' => 200));
 
 
         space_between_control($this, 'tab_space_between',null, '.nav-item', 20);
@@ -163,9 +163,9 @@ class MTN_Posts_Filter extends \Elementor\Widget_Base
         typography_control($this, 'filter_title_typography', '.nav-link');
 
 
-        slider_control($this, 'filter_svg_size', 'SVG Icon Size', array('.nav-link svg', 'width'), 30, array('max-px' => 200));
+        slider_control($this, 'filter_svg_size', 'SVG Icon Size', array('.nav-link svg', 'width'), array('max-px' => 200));
 
-        slider_control($this, 'filter_icon_size', 'Icon Font Size', array('.nav-link i', 'font-size'), 30, array('max-px' => 200));
+        slider_control($this, 'filter_icon_size', 'Icon Font Size', array('.nav-link i', 'font-size'), array('max-px' => 200));
 
         // NORMAL STATE
         $this->start_controls_tabs(

@@ -18,13 +18,18 @@ function amir_codes($that)
     select_callback_control(
         $that,
         'title-color-settings',
-        'Title Color Settings',
         [
             'default_style' => 'Default',
             'custom_style' => 'Custom',
 
         ],
-        'default_style',
+        [
+            'default' => 'default_style',
+            'label' => 'Title Color Settings',
+            'condition'	=> [
+            'show_contents_title' => 'yes',
+            ]
+            ]
     );
 
     typography_control($that, 'content_section_typography', '.mtn-complex-column-content');

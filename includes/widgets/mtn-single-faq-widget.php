@@ -73,9 +73,9 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        number_control($this, 'num_of_posts', $label = 'Number of Posts', $default = '5');
-        number_control($this, 'num_of_columns', $label = 'Number of Columns', $default = '3');
-        text_control($this, 'view_more_btn', 'View More Button');
+        number_control($this, 'num_of_posts', ['default' => 5, 'label' => 'Number of Posts']);
+        number_control($this, 'num_of_columns', ['default' => 3, 'label' => 'Number of Columns']);
+        text_control($this, 'view_more_btn', ['label' =>'View More Button']);
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -104,9 +104,9 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        space_between_control($this,'grid_space_between',null,'.faq-column', 20);
-        padding_control($this, 'grid_padding', 'Grid Padding', '.faq-wrapper');
-        box_shadow_control($this, 'Box Shadow', '.faq-wrapper');
+        space_between_control($this,'grid_space_between', '.faq-column', ['default' => 20]);
+        padding_control($this, 'grid_padding', '.faq-wrapper', ['label' => 'Grid Padding']);
+        box_shadow_control($this, '.faq-wrapper', ['label' => 'Box Shadow']);
         border_radius_control($this, 'grid_border_radius', '.faq-wrapper');
 
         $this->end_controls_section();
@@ -123,9 +123,9 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
         border_radius_control($this, 'heading_border_radius', '.faq-header');
         typography_control($this, 'header_typography', '.faq-header h4');
         
-        color_control($this, 'heading_color','Heading Color', '.faq-header h4');
-        heading_control($this,'header_bg','Background');
-        background_control($this, 'header_background', 'Background', '.faq-header');
+        color_control($this, 'heading_color', '.faq-header h4',['label' => 'Heading Color']);
+        heading_control($this,'header_bg',['label' => 'Background']);
+        background_control($this, 'header_background', '.faq-header', ['label' => 'Background']);
         
         $this->end_controls_section();
         $this->start_controls_section(
@@ -136,9 +136,9 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        vertical_spacing_control($this,'item_space_between',null,'.faq-item', 20);
-        padding_control($this, 'item_padding', 'Item Padding', '.faq-items');
-        heading_control($this,'title_heading','Title');
+        vertical_spacing_control($this,'item_space_between','.faq-item', ['default' => 20]);
+        padding_control($this, 'item_padding', '.faq-items', ['label' => 'Item Padding']);
+        heading_control($this,'title_heading',['label' => 'Title']);
         typography_control($this, 'item_header_typography', 'a.faq-item');
 
         $this->start_controls_tabs(
@@ -152,10 +152,10 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
 			]
 
 		);
-        color_control($this, 'item_color','Heading Color', 'a.faq-item');
-        heading_control($this,'item_header_bg','Background');
-        background_control($this, 'item_background', 'Background', '.faq-item');
-        border_control($this,'item_border', 'Border', '.faq-item');
+        color_control($this, 'item_color', 'a.faq-item', ['label' => 'Heading Color']);
+        heading_control($this,'item_header_bg',['label' => 'Background']);
+        background_control($this, 'item_background', '.faq-item', ['label' => 'Background']);
+        border_control($this,'item_border', '.faq-item', ['label' => 'Border']);
 
         $this->end_controls_tab();
 
@@ -166,10 +166,10 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
 			]
 
 		);
-        color_control($this, 'item_color_hover','Heading Color', 'a.faq-item:hover');
-        heading_control($this,'item_header_bg_hover','Background');
-        background_control($this, 'item_background_hover', 'Background', '.faq-item:hover');
-        border_control($this,'item_border_hover', 'Border', '.faq-item:hover');
+        color_control($this, 'item_color_hover', 'a.faq-item:hover',['label' => 'Heading Color']);
+        heading_control($this,'item_header_bg_hover',['label' => 'Background']);
+        background_control($this, 'item_background_hover', '.faq-item:hover', ['label' => 'Background']);
+        border_control($this,'item_border_hover', '.faq-item:hover', ['label' => 'Border']);
 
         $this->end_controls_tab();
 		$this->end_controls_tabs();

@@ -74,9 +74,9 @@ class MTN_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        number_control($this, 'num_of_posts', $label = 'Number of Posts', $default = '5');
-        number_control($this, 'num_of_columns', $label = 'Number of Columns', $default = '3');
-        text_control($this, 'view_more_btn', 'View More Button');
+        number_control($this, 'num_of_posts', ['default' => 5, 'label' => 'Number of Posts']);
+        number_control($this, 'num_of_columns', ['default' => 3, 'label' => 'Number of Columns']);
+        text_control($this, 'view_more_btn', ['label' => 'View More Button']);
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -95,8 +95,8 @@ class MTN_Faqs  extends \Elementor\Widget_Base
         );
 
         $this->end_controls_section();
-        /////STYLESSS
 
+        /////STYLESSS
         $this->start_controls_section(
             'grid_Style',
             [
@@ -105,8 +105,8 @@ class MTN_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        space_between_control($this,'grid_space_between',null,'.faq-column', 20);
-        padding_control($this, 'grid_padding', 'Grid Padding', '.faq-wrapper');
+        space_between_control($this, 'grid_space_between', '.faq-column', ['default' => 20]);
+        padding_control($this, 'grid_padding', '.faq-wrapper', ['label' => 'Grid Padding']);
         box_shadow_control($this, 'Box Shadow', '.faq-wrapper');
         border_radius_control($this, 'grid_border_radius', '.faq-wrapper');
 
@@ -120,14 +120,14 @@ class MTN_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        padding_control($this, 'heading_padding', 'Heading Padding', '.faq-header');
+        padding_control($this, 'heading_padding', '.faq-header', ['label' => 'Heading Padding']);
         border_radius_control($this, 'heading_border_radius', '.faq-header');
         typography_control($this, 'header_typography', '.faq-header h4');
-        
-        color_control($this, 'heading_color','Heading Color', '.faq-header h4');
-        heading_control($this,'header_bg','Background');
-        background_control($this, 'header_background', 'Background', '.faq-header');
-        
+
+        color_control($this, 'heading_color', '.faq-header h4', ['label' => 'Heading Color']);
+        heading_control($this, 'header_bg', ['label' => 'Background']);
+        background_control($this, 'header_background', '.faq-header', ['label' => 'Background']);
+
         $this->end_controls_section();
         $this->start_controls_section(
             'item_Style',
@@ -137,43 +137,43 @@ class MTN_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        vertical_spacing_control($this,'item_space_between',null,'.faq-item', 20);
-        padding_control($this, 'item_padding', 'Item Padding', '.faq-items');
-        heading_control($this,'title_heading','Title');
+        vertical_spacing_control($this, 'item_space_between', '.faq-item', ['default' => 20]);
+        padding_control($this, 'item_padding', '.faq-items', ['label' => 'Item Padding']);
+        heading_control($this, 'title_heading', ['label' => 'Title']);
         typography_control($this, 'item_header_typography', 'a.faq-item');
 
         $this->start_controls_tabs(
-			'faq_item_state'
-		);
+            'faq_item_state'
+        );
         // NORMAL STATE
-		$this->start_controls_tab(
-			'item_normal_state',
-			[
-				'label' => esc_html__('Normal', 'mtn'),
-			]
+        $this->start_controls_tab(
+            'item_normal_state',
+            [
+                'label' => esc_html__('Normal', 'mtn'),
+            ]
 
-		);
-        color_control($this, 'item_color','Heading Color', 'a.faq-item');
-        heading_control($this,'item_header_bg','Background');
-        background_control($this, 'item_background', 'Background', '.faq-item');
-        border_control($this,'item_border', 'Border', '.faq-item');
-
-        $this->end_controls_tab();
-
-		$this->start_controls_tab(
-			'item_hover_state',
-			[
-				'label' => esc_html__('Hover', 'mtn'),
-			]
-
-		);
-        color_control($this, 'item_color_hover','Heading Color', 'a.faq-item:hover');
-        heading_control($this,'item_header_bg_hover','Background');
-        background_control($this, 'item_background_hover', 'Background', '.faq-item:hover');
-        border_control($this,'item_border_hover', 'Border', '.faq-item:hover');
+        );
+        color_control($this, 'item_color', 'a.faq-item', ['label' => 'Heading Color']);
+        heading_control($this, 'item_header_bg', ['label' => 'Background']);
+        background_control($this, 'item_background', '.faq-item',  ['label' => 'Background']);
+        border_control($this, 'item_border', '.faq-item',  ['label' => 'Border']);
 
         $this->end_controls_tab();
-		$this->end_controls_tabs();
+
+        $this->start_controls_tab(
+            'item_hover_state',
+            [
+                'label' => esc_html__('Hover', 'mtn'),
+            ]
+
+        );
+        color_control($this, 'item_color_hover', 'a.faq-item:hover',  ['label' => 'Heading Color']);
+        heading_control($this, 'item_header_bg_hover',  ['label' => 'Background']);
+        background_control($this, 'item_background_hover', '.faq-item:hover',   ['label' => 'Background']);
+        border_control($this, 'item_border_hover', '.faq-item:hover',   ['label' => 'Border']);
+
+        $this->end_controls_tab();
+        $this->end_controls_tabs();
 
 
         $this->end_controls_section();
@@ -191,15 +191,15 @@ class MTN_Faqs  extends \Elementor\Widget_Base
     protected function render()
     {
         $settings = $this->get_settings_for_display();
-        $postType = getPostType($settings);
-        $terms = mtnTerms($postType, $settings,null,['post_tag']);
+        $postType = $settings['mtn_posts_post_type'] = 'mtn_faqs';
+        $terms = mtnTerms($postType, 'mtn_faq_category');
         $colNum = intval(12 / $settings['num_of_columns']);
 
 
         echo '<div class="mtn-faq-section">';
         echo '<div class="row faq-row">';
-    
-        foreach ($terms as $term) {
+
+        foreach ($terms as $key => $term) {
 ?>
             <div class="faq-column col-md-<?= $colNum; ?> col-sm-12">
                 <div class="faq-wrapper">
@@ -208,9 +208,9 @@ class MTN_Faqs  extends \Elementor\Widget_Base
                     </div>
                     <div class="faq-items  vertical-space">
                         <?php
-                        $settings['mtn_posts_include_term_ids'] = array($term['id']);
+                        $settings['mtn_posts_include_term_ids'] = array($key);
                         $posts = postsRender($settings);
-                        
+
                         foreach ($posts as $post) {
                         ?>
                             <a href="<?= $post['post-link']; ?>" class="faq-item"><?= $post['title']; ?></a>

@@ -1,27 +1,59 @@
 <?php
 
 if (!function_exists('switcher_control')) {
-    function switcher_control($parentControl, $name = 'show', $label = 'Show')
-    { {
-            $arr = [
-                'label' => esc_html__($label, 'mtn'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Show', 'mtn'),
-                'label_off' => esc_html__('Hide', 'mtn'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ];
-            $parentControl->add_control($name, $arr);
-        }
+    /**
+     * switcher control
+     *
+     * @param  [type]  $parentControl
+     * @param  string $name
+     * @param  string $label
+     * @param  array  $extra[
+     * 'condition' => array 
+     * ]
+     * 
+     * @return void
+     */
+    function switcher_control($parentControl, $name = 'show', $extra = array())
+    {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Show';
+        $arr = [
+            'label' => esc_html__($extra['label'], 'mtn'),
+            'type' => \Elementor\Controls_Manager::SWITCHER,
+            'label_on' => esc_html__('Show', 'mtn'),
+            'label_off' => esc_html__('Hide', 'mtn'),
+            'return_value' => 'yes',
+            'default' => 'yes',
+            'condition' => $extra['condition'],
+        ];
+        $parentControl->add_control($name, $arr);
     }
 }
 
 if (!function_exists('select_callback_control')) {
-    function select_callback_control($parentControl, $name = 'text', $callback = null, $extra = null)
+    /**
+     * Select Control Function
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param array $callback
+     * @param  array  $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * 
+     * @return void
+     */
+
+    function select_callback_control($parentControl, $name = 'text', $callback = null, $extra = array())
     { {
-        if (!isset($extra['condition'])) $extra['condition'] = array();
-        if (!isset($extra['label'])) $extra['label'] = 'Select';
-        if (!isset($extra['default'])) $extra['default'] = '';
+            if (!isset($extra['condition'])) $extra['condition'] = array();
+            if (!isset($extra['label'])) $extra['label'] = 'Select';
+            if (!isset($extra['default'])) $extra['default'] = '';
 
             $arr = [
                 'label' => esc_html__($extra['label'], 'mtn'),
@@ -34,54 +66,113 @@ if (!function_exists('select_callback_control')) {
         }
     }
 }
+
 if (!function_exists('select_style_control')) {
-    function select_style_control($parentControl, $name = 'text', $options,$selector, $extra = null)
+    /**
+     * Select Style Control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param array $options
+     * @param array $selector
+     * @param  array  $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * 
+     * @return void
+     */
+    function select_style_control($parentControl, $name = 'text', $options, $selector, $extra = array())
+    {
+        if (!isset($extra['label'])) $extra['label'] = 'Select';
+        if (!isset($extra['default'])) $extra['default'] = '';
+
+        $arr = [
+            'label' => esc_html__($extra['label'], 'mtn'),
+            'type' => \Elementor\Controls_Manager::SELECT,
+            'default' => $extra['default'],
+            'options' =>  $options,
+            'selectors' => [
+                '{{WRAPPER}} ' . $selector[0] => $selector[1] . ': {{VALUE}};',
+            ],
+            'condition' => $extra['condition'],
+        ];
+        $parentControl->add_control($name, $arr);
+    }
+}
+
+if (!function_exists('select2_callback_control')) {
+    /**
+     * select2_callback_control
+     *
+     * @param   [type] $parentControl
+     * @param   string $name
+     * @param   array $callback
+     * @param   array  $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * 
+     * @return void
+     */
+    function select2_callback_control($parentControl, $name = 'text', $callback = null, $extra = array())
     {
         if (!isset($extra['condition'])) $extra['condition'] = array();
         if (!isset($extra['label'])) $extra['label'] = 'Select';
         if (!isset($extra['default'])) $extra['default'] = '';
-
-            $arr = [
-                'label' => esc_html__($extra['label'], 'mtn'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => $extra['default'],
-                'options' =>  $options,
-                'selectors' => [
-					'{{WRAPPER}} '.$selector[0] => $selector[1].': {{VALUE}};',
-				],
-                'condition' => $extra['condition'],
-            ];
-            $parentControl->add_control($name, $arr);
-        }
-}
-
-if (!function_exists('select2_callback_control')) {
-    function select2_callback_control($parentControl, $name = 'text', $label = 'Title', $callback = null, $default = 'post')
-    { {
-            $arr = [
-                'label' => esc_html__($label, 'mtn'),
-                'type' => \Elementor\Controls_Manager::SELECT2,
-                'default' => $default,
-                'multiple' => true,
-                'options' =>  $callback,
-            ];
-            $parentControl->add_control($name, $arr);
-        }
+        $arr = [
+            'label' => esc_html__($extra['label'], 'mtn'),
+            'type' => \Elementor\Controls_Manager::SELECT2,
+            'default' => $extra['default'],
+            'multiple' => true,
+            'options' =>  $callback,
+        ];
+        $parentControl->add_control($name, $arr);
     }
 }
 
 if (!function_exists('text_control')) {
-    function text_control($parentControl, $name = 'text', $label = 'Title')
+    /**
+     * Text Control function
+     *
+     * @param   [type]  $parentControl
+     * @param   string  $name
+     * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * 
+     * @return void
+     */
+    function text_control($parentControl, $name = 'text', $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Text';
+        if (!isset($extra['placeholder'])) $extra['placeholder'] = 'Item';
+        if (!isset($extra['default'])) $extra['default'] = '';
+
         $arr = [
-            'label' => esc_html__($label, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::TEXT,
             'label_block' => true,
-            'placeholder' => esc_html__('Item', 'mtn'),
-            'default' => esc_html__('Item', 'mtn'),
+            'placeholder' => esc_html__($extra['placeholder'], 'mtn'),
+            'default' => esc_html__($extra['default'], 'mtn'),
             'dynamic' => [
                 'active' => true,
             ],
+            'condition' => $extra['condition']
         ];
 
         $parentControl->add_control($name, $arr);
@@ -89,19 +180,37 @@ if (!function_exists('text_control')) {
 }
 
 if (!function_exists('link_control')) {
-    function link_control($parentControl, $name = 'text', $label = 'Link')
-    {
 
+    /**
+     * Link Control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * 
+     * @return void
+     */
+    function link_control($parentControl, $name = 'text', $extra = array())
+    {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'URL';
         $arr = [
-            'label' => esc_html__( $label, 'mtn' ),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::URL,
-            'placeholder' => esc_html__( 'https://your-link.com', 'mtn' ),
-            'options' => [ 'url', 'is_external', 'nofollow' ],
+            'placeholder' => esc_html__('https://your-link.com', 'mtn'),
+            'options' => ['url', 'is_external', 'nofollow'],
+            'condition' => $extra['condition'],
             'default' => [
                 'url' => '',
                 'is_external' => true,
                 'nofollow' => true,
-                // 'custom_attributes' => '',
             ],
             'dynamic' => [
                 'active' => true,
@@ -114,33 +223,88 @@ if (!function_exists('link_control')) {
 }
 
 if (!function_exists('editor_control')) {
-    function editor_control($parentControl, $name, $label = 'Description')
+
+    /**
+     * editor_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * 
+     * @return void
+     */
+    function editor_control($parentControl, $name, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'URL';
         $arr = [
-            'label' => esc_html__($label, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::WYSIWYG,
             'default' => esc_html__('Default description', 'mtn'),
+            'condition' => $extra['condition'],
             'placeholder' => esc_html__('Type your description here', 'mtn'),
         ];
         $parentControl->add_control($name, $arr);
     }
 }
 if (!function_exists('number_control')) {
-    function number_control($parentControl, $name, $label = 'Number', $default = 3)
+    /**
+     * Number Control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function number_control($parentControl, $name, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'URL';
+        if (!isset($extra['default'])) $extra['default'] = 3;
         $arr = [
-            'label' => esc_html__($label, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::NUMBER,
-            'default' => $default,
+            'default' => $extra['default'],
         ];
         $parentControl->add_control($name, $arr);
     }
 }
 if (!function_exists('icon_control')) {
-    function icon_control($parentControl, $name, $label = 'Icon')
+    /**
+     * icon_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function icon_control($parentControl, $name, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Icon';
         $arr = [
-            'label' => esc_html__($label, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::ICONS,
             'default' => [
                 'value' => 'fas fa-check',
@@ -153,16 +317,34 @@ if (!function_exists('icon_control')) {
     }
 }
 if (!function_exists('count_ten_control')) {
-    function count_ten_control($parentControl, $label, $name, $default = 1)
+    /**
+     * count_ten_control
+     *
+     * @param [type] $parentControl
+     * @param [type] $label
+     * @param string $name
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function count_ten_control($parentControl, $name, $extra = array())
     {
-        
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Count';
+        if (!isset($extra['default'])) $extra['default'] = 1;
         $count_to_ten = range(1, 10);
-		$count_to_ten = array_combine($count_to_ten, $count_to_ten);
-        
+        $count_to_ten = array_combine($count_to_ten, $count_to_ten);
+
         $arr = [
-            'label' => esc_html__($label, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::SELECT,
-            'default' => $default,
+            'default' => $extra['default'],
             'options' => ['' => esc_html__('Default', 'mtn')] + $count_to_ten,
         ];
 
@@ -171,14 +353,33 @@ if (!function_exists('count_ten_control')) {
 }
 
 if (!function_exists('space_between_control')) {
-    function space_between_control($parentControl, $name, $label = 'Space Between', $selector, $default = 10)
+    /**
+     * space_between_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param array $selector
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function space_between_control($parentControl, $name, $selector, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Space Between';
+        if (!isset($extra['default'])) $extra['default'] = 10;
         $arr =  [
-            'label' => esc_html__($label, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::SLIDER,
             'default' => [
                 'unit' => 'px',
-                'size' => $default
+                'size' => $extra['default']
             ],
             'range' => [
                 'px' => [
@@ -197,14 +398,17 @@ if (!function_exists('space_between_control')) {
 }
 
 if (!function_exists('vertical_spacing_control')) {
-    function vertical_spacing_control($parentControl, $name, $label = 'Vertical Spacing', $selector, $default = 10)
+    function vertical_spacing_control($parentControl, $name, $selector, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Vertical Spacing';
+        if (!isset($extra['default'])) $extra['default'] = 10;
         $arr =  [
-            'label' => esc_html__($label, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::SLIDER,
             'default' => [
                 'unit' => 'px',
-                'size' => $default
+                'size' => $extra['default']
             ],
             'range' => [
                 'px' => [
@@ -220,7 +424,7 @@ if (!function_exists('vertical_spacing_control')) {
         $parentControl->add_responsive_control($name, $arr);
     }
 }
-if (!function_exists('slider_control')) {    
+if (!function_exists('slider_control')) {
     /**
      * slider control
      *
@@ -229,18 +433,27 @@ if (!function_exists('slider_control')) {
      * @param  string $label
      * @param  array $selector
      * @param  integer $default
-     * @param  array $extra
+     * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
      * @return void
      */
-    function slider_control($parentControl, $name, $label = 'Height', $selector, $extra = null)
+    function slider_control($parentControl, $name, $selector, $extra = array())
     {
+
         if (!isset($extra['min-px'])) $extra['min-px'] = 0;
         if (!isset($extra['max-px'])) $extra['max-px'] = 1000;
         if (!isset($extra['default'])) $extra['default'] = 300;
+        if (!isset($extra['label'])) $extra['label'] = 'Height';
         if (!isset($extra['condition'])) $extra['condition'] = array();
         if (!isset($extra['max-percent'])) $extra['max-percent'] = 100;
         $arr =  [
-            'label' => esc_html__($label, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::SLIDER,
             'size_units' => ['%', 'px'],
             'default' => [
@@ -266,31 +479,68 @@ if (!function_exists('slider_control')) {
         $parentControl->add_responsive_control($name, $arr);
     }
 }
-if (!function_exists('select_value_control')) {   
-    function select_value_control($parentControl, $name, $label = 'Value', $selector, $default = 30, $extra = null)
+if (!function_exists('select_value_control')) {
+    /**
+     * select_value_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param array $selector
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function select_value_control($parentControl, $name, $selector, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Value';
+        if (!isset($extra['default'])) $extra['default'] = 'auto';
         $count = range(1, 15);
-		$count = array_combine($count, $count);
+        $count = array_combine($count, $count);
 
-			$arr = [
-				'label' => esc_html__( $label, 'mtn' ),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'default' => 'auto',
-				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
-				'selectors' => [
-					'{{WRAPPER}} '.$selector[0] => $selector[1].': {{VALUE}};',
-				],
-			];
+        $arr = [
+            'label' => esc_html__($extra['label'], 'mtn'),
+            'type' => \Elementor\Controls_Manager::SELECT,
+            'default' => $extra['default'],
+            'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
+            'selectors' => [
+                '{{WRAPPER}} ' . $selector[0] => $selector[1] . ': {{VALUE}};',
+            ],
+        ];
 
         $parentControl->add_responsive_control($name, $arr);
     }
 }
 if (!function_exists('padding_control')) {
-    function padding_control($parentControl, $name, $label = 'Padding', $selector)
+    /**
+     * padding_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param array $selector
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function padding_control($parentControl, $name, $selector, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Padding';
         $arr = [
             'type' => \Elementor\Controls_Manager::DIMENSIONS,
-            'label' => esc_html__($label, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'size_units' => ['px', '%', 'em'],
             'selectors' => [
                 '{{WRAPPER}} ' . $selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -301,11 +551,29 @@ if (!function_exists('padding_control')) {
 }
 
 if (!function_exists('border_control')) {
-    function border_control($parentControl, $name = 'border', $label = 'Border', $selector)
+    /**
+     * border_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param array $selector
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function border_control($parentControl, $name = 'border', $selector, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Border';
         $arr = [
             'name' => $name,
-            'label' => esc_html__($label, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'selector' => '{{WRAPPER}} ' . $selector,
         ];
 
@@ -313,8 +581,26 @@ if (!function_exists('border_control')) {
     }
 }
 if (!function_exists('border_radius_control')) {
-    function border_radius_control($parentControl, $name, $selector)
+    /**
+     * border_radius_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param array $selector
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function border_radius_control($parentControl, $name, $selector, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'URL';
         $arr = [
             'label' => esc_html__('Border Radius', 'mtn'),
             'type' => \Elementor\Controls_Manager::DIMENSIONS,
@@ -329,8 +615,27 @@ if (!function_exists('border_radius_control')) {
 }
 
 if (!function_exists('grid_area_control')) {
-    function grid_area_control($parentControl, $name, $selector)
+    /**
+     * grid_area_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param array $selector
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function grid_area_control($parentControl, $name, $selector, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'URL';
+        if (!isset($extra['default'])) $extra['default'] = 3;
         $arr = [
             'label' => esc_html__('Border Radius', 'mtn'),
             'type' => \Elementor\Controls_Manager::DIMENSIONS,
@@ -346,10 +651,27 @@ if (!function_exists('grid_area_control')) {
 
 // HEADING
 if (!function_exists('heading_control')) {
-    function heading_control($parentControl, $name, $title)
+    /**
+     * heading_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function heading_control($parentControl, $name, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'URL';
         $arr = [
-            'label' => esc_html__($title, 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::HEADING,
             'separator' => 'before',
         ];
@@ -360,10 +682,30 @@ if (!function_exists('heading_control')) {
 
 // COLOR
 if (!function_exists('color_control')) {
-    function color_control($parentControl, $name = 'color', $label = 'Color', $selector)
+    /**
+     * color_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param string $label
+     * @param array $selector
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function color_control($parentControl, $name = 'color', $selector, $extra = array())
     {
+        if (!isset($extra) || !is_array($extra)) $extra = array();
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Color';
         $arr = [
-            'label' => esc_html__('Color', 'mtn'),
+            'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::COLOR,
             'global' => [
                 'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
@@ -372,6 +714,7 @@ if (!function_exists('color_control')) {
                 '{{WRAPPER}} ' . $selector => 'color: {{VALUE}}',
                 '{{WRAPPER}} ' . $selector . ' svg path' => 'fill: {{VALUE}}',
             ],
+            'condition' => $extra['condition'],
         ];
 
         $parentControl->add_control($name, $arr);
@@ -379,12 +722,33 @@ if (!function_exists('color_control')) {
 }
 
 if (!function_exists('background_control')) {
-    function background_control($parentControl, $name = 'Background', $label = 'Background', $selector,$exclude = null)
+    /**
+     * background_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param string $label
+     * @param array $selector
+     * @param [type] $exclude
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function background_control($parentControl, $name = 'Background', $selector, $exclude = null, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'Background';
+        if (!isset($extra['default'])) $extra['default'] = 3;
         $arr =
             [
                 'name' => $name,
-                'label' => esc_html__($label, 'mtn'),
+                'label' => esc_html__($extra['label'], 'mtn'),
                 'types' => ['classic', 'gradient', 'video'],
                 'selector' => '{{WRAPPER}} ' . $selector,
                 'exclude' => $exclude,
@@ -393,8 +757,27 @@ if (!function_exists('background_control')) {
     }
 }
 if (!function_exists('box_shadow_control')) {
-    function box_shadow_control($parentControl, $name = 'Box Shadow', $selector)
+    /**
+     * box_shadow_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param array $selector
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function box_shadow_control($parentControl, $name = 'Box Shadow', $selector, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'URL';
+        if (!isset($extra['default'])) $extra['default'] = 3;
         $arr = [
             'name' => 'tab_box_shadow',
             'label' => esc_html__('Box Shadow', 'mtn'),
@@ -405,11 +788,31 @@ if (!function_exists('box_shadow_control')) {
 }
 
 if (!function_exists('typography_control')) {
-    function typography_control($parentControl, $name = 'title_typography', $selector)
+    /**
+     * typography_control
+     *
+     * @param [type] $parentControl
+     * @param string $name
+     * @param array $selector
+    * @param   array   $extra[
+     * 'condition' => array,
+     * 'label' => string,
+     * 'default' => mixed,
+     * 'min-px' => integer
+     * 'max-px' => integer,
+     * max-percent' => integer
+     * ]
+     * @return void
+     */
+    function typography_control($parentControl, $name = 'title_typography', $selector, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
+        if (!isset($extra['label'])) $extra['label'] = 'URL';
+        if (!isset($extra['default'])) $extra['default'] = 3;
         $arr = [
             'name' => $name,
             'selector' => '{{WRAPPER}} ' . $selector,
+            'condition' => $extra['condition'],
             'global' => [
                 'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
             ],

@@ -74,8 +74,8 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 
 		$repeater = new \Elementor\Repeater();
 
-		text_control($repeater, 'title', 'Title');
-		editor_control($repeater, 'description', 'Description');
+		text_control($repeater, 'title', ['label' => 'Title']);
+		editor_control($repeater, 'description', ['label' => 'Description']);
 
 		$this->add_control(
 			'mtn_accordion',
@@ -103,11 +103,11 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 			]
 		);
 
-		padding_control($this, 'box_padding', 'Box Padding', '.section-navigator');
+		padding_control($this, 'box_padding', '.section-navigator',['label' => 'Box Padding']);
 		box_shadow_control($this, 'Box Shadow', '.section-navigator');
 		border_radius_control($this, 'tab_border_radius', '.section-navigator');
-		heading_control($this, 'tab_item_heading', 'Item Style');
-		padding_control($this, 'tab_item_padding', 'Padding', '.accordion-tab-btn');
+		heading_control($this, 'tab_item_heading',['label' => 'Item Style']);
+		padding_control($this, 'tab_item_padding', '.accordion-tab-btn',['label' => 'Padding']);
 		border_radius_control($this, 'item_border_radius', '.accordion-tab-btn');
 		typography_control($this, 'item_typography', '.accordion-tab-btn');
 
@@ -123,8 +123,8 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 
 		);
 
-		background_control($this, 'background', 'Background', '.accordion-tab-btn');
-		color_control($this, 'item_color', 'Item Color', '.accordion-tab-btn');
+		background_control($this, 'background', '.accordion-tab-btn', ['label' =>'Background']);
+		color_control($this, 'item_color', '.accordion-tab-btn', ['label' => 'Item Color']);
 		$this->end_controls_tab();
 		$this->start_controls_tab(
 			'item_hover_state',
@@ -134,8 +134,8 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 
 		);
 
-		background_control($this, 'hover_background', 'Background', '.accordion-tab-btn:hover');
-		color_control($this, 'item_hover_color', 'Item Color', '.accordion-tab-btn:hover');
+		background_control($this, 'hover_background', '.accordion-tab-btn:hover', ['label' => 'Background']);
+		color_control($this, 'item_hover_color', '.accordion-tab-btn:hover', ['label' => 'Item Color']);
 
 		$this->end_controls_tab();
 		$this->start_controls_tab(
@@ -146,8 +146,8 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 
 		);
 
-		background_control($this, 'active_background', 'Background', '.accordion-tab-btn.active');
-		color_control($this, 'item_active_color', 'Item Color', '.accordion-tab-btn.active');
+		background_control($this, 'active_background', '.accordion-tab-btn.active', ['label' => 'Background']);
+		color_control($this, 'item_active_color', '.accordion-tab-btn.active', ['label' => 'Item Color']);
 
 		$this->end_controls_tab();
 		$this->end_controls_tabs();
@@ -161,10 +161,10 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		background_control($this, 'content_background', 'Background', '.tab-content');
-		color_control($this, 'content_color', 'Item Color', '.tab-content');
+		background_control($this, 'content_background', '.tab-content', ['label' => 'Background']);
+		color_control($this, 'content_color', '.tab-content', ['label' => 'Item Color']);
 		typography_control($this, 'content_typography', '.tab-content .tab-pane *');
-		padding_control($this, 'content_padding', 'Padding', '.tab-content');
+		padding_control($this, 'content_padding', '.tab-content', ['label' => 'Padding']);
 
 
 		$this->end_controls_section();

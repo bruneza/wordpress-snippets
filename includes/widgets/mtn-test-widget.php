@@ -109,8 +109,8 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		slider_control($this, 'carousel_grid_height', 'Carousel Grid Height', array('.mtn-carousel-row', 'height'), 400, array('max-px' => 800));
-		slider_control($this, 'carousel_grid_gap', 'Grid Gap', array('.mtn-carousel-row', 'grid-gap'), 10, array('max-px' => 50));
+		slider_control($this, 'carousel_grid_height', 'Carousel Grid Height', array('.mtn-carousel-row', 'height'), array('max-px' => 800));
+		slider_control($this, 'carousel_grid_gap', 'Grid Gap', array('.mtn-carousel-row', 'grid-gap'), array('max-px' => 50));
 
 		//Item Container
 		heading_control($this, 'grid_heading', 'Item Container');
@@ -130,7 +130,7 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 			]
 		);
 
-		slider_control($this, 'grid_image_height', 'Image', array('.home-device-image', 'height'), 10, array('max-percent' => 100));
+		slider_control($this, 'grid_image_height', 'Image', array('.home-device-image', 'height'), array('max-percent' => 100));
 		background_control($this, 'grid_image_background', 'Image background', '.home-device-image', array('image'));
 
 		$this->end_controls_section();
@@ -157,7 +157,7 @@ class MTN_Test_Widget  extends \Elementor\Widget_Base
 			'flex-start',
 		);
 
-		slider_control($this, 'dot_vertical_offset', 'Vertical Offset', array('.owl-dots', 'top'), -60, ['min-px' => -200, 'max-px' => 200]);
+		slider_control($this, 'dot_vertical_offset', 'Vertical Offset', array('.owl-dots', 'top'), ['default' => -60,'min-px' => -200, 'max-px' => 200]);
 
 		// STATE TABS
 		$this->start_controls_tabs('tabs_dot_style');

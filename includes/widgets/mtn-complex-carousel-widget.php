@@ -79,8 +79,8 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 
 		$contentRepeater = new \Elementor\Repeater();
 		// Grid Settings
-		heading_control($contentRepeater, "grid_setting_heading", "Grid Settings");
-		select_value_control($contentRepeater, 'grid_row_start', 'Grid Row Start', ['{{CURRENT_ITEM}}.complex-column-item', 'grid-row-start'], 'auto');
+		heading_control($contentRepeater, "grid_setting_heading", ['label' => "Grid Settings"]);
+		select_value_control($contentRepeater, 'grid_row_start', ['{{CURRENT_ITEM}}.complex-column-item', 'grid-row-start'], ['label' => 'Grid Row Start', 'default' => 'auto']);
 		select_value_control($contentRepeater, 'grid_row_end', 'Grid Row End', ['{{CURRENT_ITEM}}.complex-column-item', 'grid-row-end'], 'auto');
 		select_value_control($contentRepeater, "grid_column_start", 'Grid Column Start', ['{{CURRENT_ITEM}}.complex-column-item', 'grid-column-start'], 'auto');
 		select_value_control($contentRepeater, "grid_column_end", 'Grid Column End', ['{{CURRENT_ITEM}}.complex-column-item', 'grid-column-end'], 'auto');
@@ -88,7 +88,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 		padding_control($contentRepeater, 'grid_padding', "Grid Padding", '.mtn-complex-column');
 
 		// Grid Image Settings
-		heading_control($contentRepeater, "grid_img", "Grid Image");
+		heading_control($contentRepeater, "grid_img", ['label' => "Grid Image"]);
 		switcher_control($contentRepeater, 'show_col_image', 'Show Image');
 
 
@@ -111,8 +111,33 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 
-		slider_control($contentRepeater, 'custom_img_height', 'Set Image Height', ['.complex-col-img', 'height'], ['default' => 300, 'condition' => ['custom_img_style' => 'custom_style']]);
-		slider_control($contentRepeater, 'custom_img_width', 'Set Image Width', ['.complex-col-img', 'width'], ['default' => 300, 'condition' => ['custom_img_style' => 'custom_style']]);
+		slider_control(
+			$contentRepeater,
+			'custom_img_height',
+			'Set Image Height',
+			['.complex-col-img', 'height'],
+			[
+				'default' => 300,
+				'condition' => [
+					'custom_img_style' => 'custom_style',
+					'show_col_image' => 'yes'
+				]
+			]
+		);
+
+		slider_control(
+			$contentRepeater,
+			'custom_img_width',
+			'Set Image Width',
+			['.complex-col-img', 'width'],
+			[
+				'default' => 300,
+				'condition' => [
+					'custom_img_style' => 'custom_style',
+					'show_col_image' => 'yes'
+				]
+			]
+		);
 
 		select_style_control(
 			$contentRepeater,
@@ -127,20 +152,29 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'object-fit'
 			],
 			[
-				'condition' => array('custom_img_style' => 'custom_style'),
 				'label' => 'Object Fit',
 				'default' => 'contain',
+				'condition' => [
+					'custom_img_style' => 'custom_style',
+					'show_col_image' => 'yes'
+				]
 			]
 		);
 
+
+		switcher_control($contentRepeater, 'show_post_content', 'Show Content');
+
 		// Grid Content
+
+		//Title
 		switcher_control($contentRepeater, 'show_contents_title', 'Show Title');
-		heading_control($contentRepeater, "content_title", "Content Title");
+
+		heading_control($contentRepeater, "content_title_heading", "Content Title");
 
 		select_callback_control(
 			$contentRepeater,
 			'title-color-settings',
-			
+
 			[
 				'default_style' => 'Default',
 				'custom_style' => 'Custom',
@@ -150,14 +184,48 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'default' => 'default_style',
 				'label' => 'Title Color Settings',
 				'condition'	=> [
-					'show_col_image' => 'yes'
+					'show_contents_title' => 'yes'
 				]
 			]
 		);
 
-		typography_control($contentRepeater, 'content_section_typography', '.mtn-complex-column-content');
+		typography_control($contentRepeater, 'custom_title_typography', '.complex-col-title', [
+			'condition' => [
+				'show_contents_title' => 'yes'
+			]
+		]);
+		color_control($contentRepeater, 'custom_title_color', 'Color', '.complex-col-title',  [
+			'condition' => [
+				'show_contents_title' => 'yes'
+			]
+		]);
 
-		// amir_codes($contentRepeater);
+		// Excerpt
+		switcher_control($contentRepeater, 'show_contents_excerpt', 'Show excerpt');
+
+		heading_control($contentRepeater, "custom_excerpt_heading", "Content excerpt");
+
+		select_callback_control(
+			$contentRepeater,
+			'excerpt-color-style',
+			'excerpt Color Style',
+			[
+				'default_excerpt_style' => 'Default',
+				'custom_excerpt_style' => 'Custom',
+			],
+			[
+				'default' => 'default_excerpt_style',
+				'condition'	=> [
+					'show_contents_title' => 'yes'
+				],
+			]
+		);
+		typography_control($contentRepeater, 'custom_excerpt_typography', '.mtn-complex-column-content');
+
+		switcher_control($contentRepeater, 'show_read_more_btn', 'Show Button');
+		heading_control($contentRepeater, "content_read_more", "Read More Button");
+
+		typography_control($contentRepeater, 'content_btn_typography', '.mtn-complex-column-btn-content');
 
 		$this->add_control(
 			'content_grid_cols',
@@ -234,18 +302,46 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 
 		// Carousel Post Image
 		$this->start_controls_section(
-			'grid_imagebg_style',
+			'grid_image_style',
 			[
 				'label' => esc_html__('Carousel Post Image', 'mtn'),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
-		slider_control($this, 'grid_image_height', 'Image', array('.home-device-image', 'height'), array('max-percent' => 100));
-		background_control($this, 'grid_image_background', 'Image background', '.home-device-image', array('image'));
+		slider_control($this, 'img_height', 'Set Image Height', ['.complex-col-img', 'height'], ['default' => 300]);
+		slider_control($this, 'img_width', 'Set Image Width', ['.complex-col-img', 'width'], ['default' => 300]);
+		select_style_control(
+			$this,
+			'bulk_object_fit',
+			[
+				'fill' => 'Fill',
+				'contain' => 'Contain',
+				'cover' => 'Cover',
+			],
+			[
+				'.complex-col-img',
+				'object-fit'
+			],
+			[
+				'label' => 'Object Fit',
+				'default' => 'contain',
+			]
+		);
 
 		$this->end_controls_section();
 
+		// Carousel Post COntent
+		$this->start_controls_section(
+			'post_content_style',
+			[
+				'label' => esc_html__('Carousel Post COntent', 'mtn'),
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+		amir_codes($this);
+
+		$this->end_controls_section();
 		// Carousel dot Style
 		$this->start_controls_section(
 			'dot_style',

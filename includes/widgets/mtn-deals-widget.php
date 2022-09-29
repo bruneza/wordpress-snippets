@@ -120,7 +120,7 @@ class MTN_Deals_Carousel  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		slider_control($this, 'grid_height', 'Grid Height', '.carousel-column', 400);
+		slider_control($this, 'grid_height', 'Grid Height', '.carousel-column');
 
 		$this->add_control(
 			'grid_margin',

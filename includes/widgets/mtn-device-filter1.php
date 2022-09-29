@@ -77,16 +77,16 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
             ]
         );
 
-        number_control($this, 'grid_num_posts', 'Number of Posts', '-1');
+        number_control($this, 'grid_num_posts',['default' => -1, 'label' => 'Number of Posts']);
 
 
-        count_ten_control($this,'Number of Columns', 'num_of_col', 3);
+        count_ten_control($this, 'num_of_col', ['label' => 'Number of Columns', 'default' => 3]);
 
-        heading_control($this, 'icon_section', 'Icons');
+        heading_control($this, 'icon_section', ['label' => 'Icons']);
 
         $repeater = new \Elementor\Repeater();
 
-        icon_control($repeater, 'filter_selected_icon', 'Icon');
+        icon_control($repeater, 'filter_selected_icon', ['label' => 'Icon']);
 
 
         $this->add_control(
@@ -138,10 +138,10 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
 
 
         border_radius_control($this, 'grid_border_radius', '.post-wrapper');
-        space_between_control($this, 'space_between',null, '.post-card', 20);
-        padding_control($this, 'grid_padding', 'Content Padding', '.post-content');
-        slider_control($this, 'grid_height', 'Grid Height', array('.post-wrapper', 'height'), 350);
-        background_control($this, 'backgroud_overlay', 'Overlay', '.post-content');
+        space_between_control($this, 'space_between', '.post-card', ['default' => 20]);
+        padding_control($this, 'grid_padding', '.post-content', ['label' => 'Content Padding']);
+        slider_control($this, 'grid_height', array('.post-wrapper', 'height'), ['label' => 'Grid Height']);
+        background_control($this, 'backgroud_overlay', '.post-content', ['label' => 'Overlay']);
 
         $this->end_controls_section();
 
@@ -154,18 +154,18 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
         );
 
 
-        slider_control($this, 'filter_tab_height', 'Tab Height', array('.posts-filter .nav-link', 'height'), 80, array('max-px' => 200));
-        slider_control($this, 'filter_tab_width', 'Tab Width', array('.posts-filter .nav-link', 'width'), 80, array('max-px' => 200));
+        slider_control($this, 'filter_tab_height', array('.posts-filter .nav-link', 'height'), ['max-px' => 200,'label' => 'Tab Height']);
+        slider_control($this, 'filter_tab_width', array('.posts-filter .nav-link', 'width'), ['max-px' => 200,'label' => 'Tab Width']);
 
 
-        space_between_control($this, 'tab_space_between',null, '.nav-item', 20);
+        space_between_control($this, 'tab_space_between','.nav-item', ['default' => 20]);
 
         typography_control($this, 'filter_title_typography', '.nav-link');
 
 
-        slider_control($this, 'filter_svg_size', 'SVG Icon Size', array('.nav-link svg', 'width'), 30, array('max-px' => 200));
+        slider_control($this, 'filter_svg_size', array('.nav-link svg', 'width'), ['max-px' => 200,'label' => 'SVG Icon Size']);
 
-        slider_control($this, 'filter_icon_size', 'Icon Font Size', array('.nav-link i', 'font-size'), 30, array('max-px' => 200));
+        slider_control($this, 'filter_icon_size', array('.nav-link i', 'font-size'), ['max-px' => 200,'label' => 'Icon Font Size']);
 
         // NORMAL STATE
         $this->start_controls_tabs(
@@ -180,14 +180,14 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
         );
 
 
-        heading_control($this, 'fitler_btn_heading', 'Button pill');
-        border_control($this, 'filter_btn_border', 'Border', '.nav-link');
+        heading_control($this, 'fitler_btn_heading', ['label' => 'Button pill']);
+        border_control($this, 'filter_btn_border', '.nav-link', ['label' => 'Border']);
 
-        background_control($this, 'filter_btn_background', 'Button Background', '.nav-link');
+        background_control($this, 'filter_btn_background', '.nav-link', ['label' => 'Button Background']);
 
-        heading_control($this, 'fitler_title_heading', 'Tab Content');
+        heading_control($this, 'fitler_title_heading', ['label' => 'Tab Content']);
 
-        color_control($this, 'fitler_title_color', 'Color', '.nav-link');
+        color_control($this, 'fitler_title_color','.nav-link', ['label' => 'Color']);
 
         $this->end_controls_tab();
         // HOVER STATE;
@@ -199,18 +199,18 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
         );
 
 
-        heading_control($this, 'fitler_btn_heading_hover', 'Button pill');
+        heading_control($this, 'fitler_btn_heading_hover', ['label' => 'Button pill']);
 
-        border_control($this, 'filter_btn_border_hover', 'Border', '.nav-link:hover');
-
-
-        background_control($this, 'filter_btn_background_hover', 'Background', '.nav-link:hover');
+        border_control($this, 'filter_btn_border_hover', '.nav-link:hover', ['label' => 'Border']);
 
 
+        background_control($this, 'filter_btn_background_hover', '.nav-link:hover', ['label' => 'Background']);
 
-        heading_control($this, 'fitler_title_heading_hover', 'Tab Content');
 
-        color_control($this, 'fitler_title_color_hover', 'Color', '.nav-link:hover');
+
+        heading_control($this, 'fitler_title_heading_hover', ['label' => 'Tab Content']);
+
+        color_control($this, 'fitler_title_color_hover', '.nav-link:hover', ['label' => 'Color']);
 
         $this->end_controls_tab();
 
@@ -222,14 +222,14 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
             ]
         );
 
-        heading_control($this, 'fitler_btn_heading_active', 'Button pill');
+        heading_control($this, 'fitler_btn_heading_active', ['label' => 'Button pill']);
 
-        border_control($this, 'filter_btn_border_active', 'Border', '.nav-link.active');
-        background_control($this, 'filter_btn_background_active', 'Button Background', '.nav-link.active');
+        border_control($this, 'filter_btn_border_active', '.nav-link.active', ['label' => 'Border']);
+        background_control($this, 'filter_btn_background_active', '.nav-link.active', ['label' => 'Button Background']);
 
 
-        heading_control($this, 'fitler_title_heading_active', 'Tab Content');
-        color_control($this, 'fitler_title_color_active', 'Color', '.nav-link.active');
+        heading_control($this, 'fitler_title_heading_active', ['label' => 'Tab Content']);
+        color_control($this, 'fitler_title_color_active', '.nav-link.active', ['label' => 'Color']);
 
         $this->end_controls_tab();
 
@@ -247,14 +247,14 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
         );
 
 
-        heading_control($this, 'title_heading', 'Title');
+        heading_control($this, 'title_heading', ['label' => 'Title']);
 
-        color_control($this, 'title_color', 'title_color', 'h4.post-title');
+        color_control($this, 'title_color', 'h4.post-title');
 
         typography_control($this, 'title_typography', 'h4.post-title');
 
 
-        heading_control($this, 'readmore_heading', 'Read More Button');
+        heading_control($this, 'readmore_heading', ['label' => 'Read More Button']);
 
 
         border_radius_control($this, 'btn_border_radius', '.post-readmore');
@@ -262,7 +262,7 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
         typography_control($this, 'btn_typography', '.post-readmore');
 
 
-        padding_control($this, 'btn_padding', $label = 'Padding', '.post-readmore');
+        padding_control($this, 'btn_padding', '.post-readmore', ['label' => 'Padding']);
 
         // NORMAL STATE
         $this->start_controls_tabs(
@@ -276,9 +276,9 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
             ]
         );
 
-        color_control($this, 'btn_color', 'Color', '.post-readmore');
-        border_control($this, 'btn_border', 'Border', '.post-readmore');
-        background_control($this, 'btn_background', 'Background', '.post-readmore');
+        color_control($this, 'btn_color', '.post-readmore', ['label' => 'Color']);
+        border_control($this, 'btn_border', '.post-readmore', ['label' => 'Border']);
+        background_control($this, 'btn_background', '.post-readmore', ['label' => 'Background']);
         
         $this->end_controls_tab();
         // HOVER STATE;
@@ -288,9 +288,9 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
                 'label' => esc_html__('Hover', 'mtn'),
             ]
         );
-        color_control($this, 'btn_hover_color', 'Color', '.post-readmore:hover');
-        border_control($this, 'btn_hover_border', 'Border', '.post-readmore:hover');
-        background_control($this, 'btn_hover_background', 'Background', '.post-readmore:hover');
+        color_control($this, 'btn_hover_color', '.post-readmore:hover', ['label' => 'Color']);
+        border_control($this, 'btn_hover_border', '.post-readmore:hover', ['label' => 'Border']);
+        background_control($this, 'btn_hover_background', '.post-readmore:hover', ['label' => 'Background']);
         $this->end_controls_tab();
 
         $this->end_controls_tabs();

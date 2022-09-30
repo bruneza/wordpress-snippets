@@ -13,7 +13,7 @@ if (!function_exists('mtn_map_Filter')) {
                     <div class="mtn-map-search">
                         <form class="mtn-search-form" autocomplete="off">
                             
-                            <input id="wpsl-search-input" type="text" value="<?= apply_filters('wpsl_search_input', ''); ?>" name="wpsl-search-input" placeholder="Search City" aria-required="true" />
+                            <input id="wpsl-search-input" type="text" value="<?= apply_filters('wpsl_search_input', ''); ?>" name="wpsl-search-input" placeholder="Search City" aria-required="true" autofocus="false" />
                             <input id="wpsl-search-btn" type="submit" value="<?= $mapLocator['searchBtnLabel']; ?>">
                         </form>
                     </div>

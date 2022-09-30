@@ -186,9 +186,19 @@ function getTaxQuery($terms = null)
  * 
  * @return array
  */
-function processOutput($query)
+function processOutput($query =null)
 {
     $finalOutput = array();
+    $fields = array();
+
+    $arg = null;
+    if(!isset($query)){
+        $arg = [
+            'post_type' => null,
+        ];
+        $query = new WP_Query( $arg );
+    }
+    
     while ($query->have_posts()) {
         $post = $query->the_post();
 
@@ -210,21 +220,21 @@ function processOutput($query)
         $output['cpt-jobtitle'] = meta_validator($post_id, '_mtn_job_title');
         $output['cpt-linkedin'] = meta_validator($post_id, '_mtn_linkdin_url');
 
-        if ($output['post_type'] == 'job_listing') {
+        if ($output['post_type'] == 'job_listing' || isset($arg)) {
             $output['location'] = get_the_job_location($post_id);
             $output['deadline'] = meta_date_validator($post_id, '_job_expires');
         }
-        if ($output['post_type'] == 'mtn_teams') {
+        if ($output['post_type'] == 'mtn_teams' || isset($arg)) {
             $output['job-title'] = meta_validator($post_id, '_mtn_job_title');
         }
-        if ($output['post_type'] == 'mtn_products') {
+        if ($output['post_type'] == 'mtn_products' || isset($arg)) {
             $output['storage'] = meta_validator($post_id, '_mtn_storage');
             $output['regular_price'] = meta_validator($post_id, '_mtn_reg_price');
             $output['warant_fee'] = meta_validator($post_id, '_mtn_warranty_fee');
             $output['product_type'] = getPostTerms($post_id, array('mtn_product_type'));
             $output['product_brand'] = getPostTerms($post_id, array('mtn_product_brand'));
         }
-        if ($output['post_type'] == 'mtn_roamings') {
+        if ($output['post_type'] == 'mtn_roamings' || isset($arg)) {
             $output['roaming_price'] = array();
             $output['roaming_price_array'] = get_field('price', $post_id);
             $output['plan_type'] = getPostTerms($post_id, array('mtn_roaming_plans'));
@@ -254,9 +264,14 @@ function processOutput($query)
 
         array_push($finalOutput, $output);
     }
-    return apply_filters('mtn_process_outputs', $finalOutput);
-}
+    
+    foreach(array_keys($output) as $out){
+        $label = ucfirst (str_replace(str_split('-_'),' ',$out));
+        $fields[$out] = esc_html($label);
+    }
 
+    return apply_filters('mtn_process_outputs', ['data' => $finalOutput, 'fields' => $fields]);
+}
 
 function processArgs($additionalArgs, $conditions)
 {
@@ -302,14 +317,20 @@ function processArgs($additionalArgs, $conditions)
 
 function postsRender($settings, $terms = null, $output = null, $conditions = null)
 {
-
-    if (isset($settings['mtn_posts_post_type']))
-        $postType = $settings['mtn_posts_post_type'];
-
-    if (isset($settings['mtn_posts_posts_per_page']))
-        $NumofPosts = $settings['mtn_posts_posts_per_page'];
-    else
+    if (is_string($settings)) {
+        $postType = $settings;
         $NumofPosts = -1;
+    } else if (is_array($settings)) {
+        if (isset($settings['mtn_posts_post_type']))
+            $postType = $settings['mtn_posts_post_type'];
+
+        if (isset($settings['mtn_posts_posts_per_page']))
+            $NumofPosts = $settings['mtn_posts_posts_per_page'];
+        else
+            $NumofPosts = -1;
+    } else {
+        $NumofPosts = -1;
+    }
 
     $additionalArgs = [
         'post_type' => $postType,
@@ -322,7 +343,7 @@ function postsRender($settings, $terms = null, $output = null, $conditions = nul
     }
 
     $args = processArgs($additionalArgs, $conditions);
-    
+
     if (isset($settings['mtn_posts_include_term_ids']) && $settings['mtn_posts_include_term_ids']) {
         foreach ($settings['mtn_posts_include_term_ids'] as $key => $termIds) {
             $termInfo = get_term($termIds);
@@ -335,9 +356,9 @@ function postsRender($settings, $terms = null, $output = null, $conditions = nul
 
     if ($query->have_posts()) {
         if (isset($output))
-            $posts = filterPost(processOutput($query), $output);
+            $posts = filterPost(processOutput($query)['data'], $output);
         else
-            $posts = processOutput($query);
+            $posts = processOutput($query)['data'];
 
         return $posts;
     }

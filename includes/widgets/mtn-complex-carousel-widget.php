@@ -67,8 +67,10 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 	// Register Controller
 	protected function register_controls()
 	{
+		$count = range(1, 15);
+		$count = array_combine($count, $count);
 
-		// Content Content
+		// ANCHOR: Complex Carousel - Content Control
 		$this->start_controls_section(
 			'content_section',
 			[
@@ -76,156 +78,459 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
-
-		$contentRepeater = new \Elementor\Repeater();
-		// Grid Settings
-		heading_control($contentRepeater, "grid_setting_heading", ['label' => "Grid Settings"]);
-		select_value_control($contentRepeater, 'grid_row_start', ['{{CURRENT_ITEM}}.complex-column-item', 'grid-row-start'], ['label' => 'Grid Row Start', 'default' => 'auto']);
-		select_value_control($contentRepeater, 'grid_row_end', 'Grid Row End', ['{{CURRENT_ITEM}}.complex-column-item', 'grid-row-end'], 'auto');
-		select_value_control($contentRepeater, "grid_column_start", 'Grid Column Start', ['{{CURRENT_ITEM}}.complex-column-item', 'grid-column-start'], 'auto');
-		select_value_control($contentRepeater, "grid_column_end", 'Grid Column End', ['{{CURRENT_ITEM}}.complex-column-item', 'grid-column-end'], 'auto');
-
-		padding_control($contentRepeater, 'grid_padding', "Grid Padding", '.mtn-complex-column');
-
-		// Grid Image Settings
-		heading_control($contentRepeater, "grid_img", ['label' => "Grid Image"]);
-		switcher_control($contentRepeater, 'show_col_image', 'Show Image');
-
-
-		// Grid Image Style
-		select_callback_control(
-			$contentRepeater,
-			'custom_img_style',
-
+		// ANCHOR: Complex Carousel - Grid Structure
+		$this->add_responsive_control(
+			'grid_template_columns',
 			[
-				'default_style' => 'Default',
-				'custom_style' => 'Custom',
-
-			],
-			[
-				'default' => 'default_style',
-				'label' => 'Image Style',
-				'condition'	=> [
-					'show_col_image' => 'yes'
-				]
-			]
-		);
-
-		slider_control(
-			$contentRepeater,
-			'custom_img_height',
-			'Set Image Height',
-			['.complex-col-img', 'height'],
-			[
-				'default' => 300,
-				'condition' => [
-					'custom_img_style' => 'custom_style',
-					'show_col_image' => 'yes'
-				]
-			]
-		);
-
-		slider_control(
-			$contentRepeater,
-			'custom_img_width',
-			'Set Image Width',
-			['.complex-col-img', 'width'],
-			[
-				'default' => 300,
-				'condition' => [
-					'custom_img_style' => 'custom_style',
-					'show_col_image' => 'yes'
-				]
-			]
-		);
-
-		select_style_control(
-			$contentRepeater,
-			'custom_object_fit',
-			[
-				'fill' => 'Fill',
-				'contain' => 'Contain',
-				'cover' => 'Cover',
-			],
-			[
-				'.complex-col-img',
-				'object-fit'
-			],
-			[
-				'label' => 'Object Fit',
-				'default' => 'contain',
-				'condition' => [
-					'custom_img_style' => 'custom_style',
-					'show_col_image' => 'yes'
-				]
-			]
-		);
-
-
-		switcher_control($contentRepeater, 'show_post_content', 'Show Content');
-
-		// Grid Content
-
-		//Title
-		switcher_control($contentRepeater, 'show_contents_title', 'Show Title');
-
-		heading_control($contentRepeater, "content_title_heading", "Content Title");
-
-		select_callback_control(
-			$contentRepeater,
-			'title-color-settings',
-
-			[
-				'default_style' => 'Default',
-				'custom_style' => 'Custom',
-
-			],
-			[
-				'default' => 'default_style',
-				'label' => 'Title Color Settings',
-				'condition'	=> [
-					'show_contents_title' => 'yes'
-				]
-			]
-		);
-
-		typography_control($contentRepeater, 'custom_title_typography', '.complex-col-title', [
-			'condition' => [
-				'show_contents_title' => 'yes'
-			]
-		]);
-		color_control($contentRepeater, 'custom_title_color', 'Color', '.complex-col-title',  [
-			'condition' => [
-				'show_contents_title' => 'yes'
-			]
-		]);
-
-		// Excerpt
-		switcher_control($contentRepeater, 'show_contents_excerpt', 'Show excerpt');
-
-		heading_control($contentRepeater, "custom_excerpt_heading", "Content excerpt");
-
-		select_callback_control(
-			$contentRepeater,
-			'excerpt-color-style',
-			'excerpt Color Style',
-			[
-				'default_excerpt_style' => 'Default',
-				'custom_excerpt_style' => 'Custom',
-			],
-			[
-				'default' => 'default_excerpt_style',
-				'condition'	=> [
-					'show_contents_title' => 'yes'
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Grid Number of Columns', 'mtn'),
+				'default' => [
+					'size' => 'auto'
+				],
+				'range' => [
+					'%' => [
+						'min' => 1,
+						'max' => 12,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-carousel-row' => 'grid-template-columns : repeat({{SIZE}}, minmax(0, 1fr));',
 				],
 			]
 		);
-		typography_control($contentRepeater, 'custom_excerpt_typography', '.mtn-complex-column-content');
 
-		switcher_control($contentRepeater, 'show_read_more_btn', 'Show Button');
-		heading_control($contentRepeater, "content_read_more", "Read More Button");
+		$this->add_responsive_control(
+			'grid_template_rows',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Grid Number of Rows', 'mtn'),
+				'default' => [
+					'size' => 'auto'
+				],
+				'range' => [
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-carousel-row' => 'grid-template-rows : repeat({{SIZE}}, minmax(0, 1fr));',
+				],
+			]
+		);
 
-		typography_control($contentRepeater, 'content_btn_typography', '.mtn-complex-column-btn-content');
+		// ANCHOR: Complex Carousel - Start Repeater
+		$contentRepeater = new \Elementor\Repeater();
+
+		// ANCHOR: Complex Carousel - Custom Grid Item Settings
+
+		$contentRepeater->add_responsive_control(
+			'custom_grid_styling',
+			[
+				'label' => esc_html__('Grid Style Type', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'custom_display',
+				'options' => [
+					'default_display' => 'default',
+					'custom_display' => 'Custom',
+				],
+			]
+		);
+
+		$contentRepeater->add_control(
+			"custom_grid_setting_heading",
+			[
+				'label' => esc_html__("Grid Settings", 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition' => [
+					'custom_grid_styling' => 'custom_display'
+				],
+			]
+		);
+
+		$contentRepeater->add_responsive_control(
+			'custom_grid_row_start',
+			[
+				'label' => esc_html__('Grid Row Start', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}}.complex-column-item' => 'grid-row-start: {{VALUE}};',
+				],
+				'condition' => [
+					'custom_grid_styling' => 'custom_display'
+				],
+			]
+		);
+
+		$contentRepeater->add_responsive_control(
+			'custom_grid_row_end',
+			[
+				'label' => esc_html__('Grid Row End', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}}.complex-column-item' => 'grid-row-end: {{VALUE}};',
+				],
+				'condition' => [
+					'custom_grid_styling' => 'custom_display'
+				],
+			]
+		);
+
+		$contentRepeater->add_responsive_control(
+			'custom_grid_column_start',
+			[
+				'label' => esc_html__('Grid Column Start', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}}.complex-column-item' => 'grid-column-start: {{VALUE}};',
+				],
+				'condition' => [
+					'custom_grid_styling' => 'custom_display'
+				],
+			]
+		);
+
+		$contentRepeater->add_responsive_control(
+			'custom_grid_column_end',
+			[
+				'label' => esc_html__('Grid Column End', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}}.complex-column-item' => 'grid-column-end: {{VALUE}};',
+				],
+				'condition' => [
+					'custom_grid_styling' => 'custom_display'
+				],
+			]
+		);
+
+		$contentRepeater->add_responsive_control(
+			'grid_padding',
+			[
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'label' => esc_html__('Grid Padding', 'mtn'),
+				'size_units' => ['px', 'em', '%'],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}}.complex-column-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		// ANCHOR: Complex Carousel - Grid Image Settings
+		$contentRepeater->add_control(
+			"grid_img",
+			[
+				'label' => esc_html__("Grid Image", 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$contentRepeater->add_responsive_control(
+			'custom_img_display',
+			[
+				'label' => esc_html__('Grid Image Display Setting', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'default_display',
+				'options' => [
+					'default_display' => 'default',
+					'custom_display' => 'Custom',
+					'hide_display' => 'Hide',
+				],
+			]
+		);
+
+		$contentRepeater->add_responsive_control(
+			'custom_img_height',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Set Image Height', 'mtn'),
+				'size_units' => ['px', '%'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 300,
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-grid-img-container img' => 'height: {{SIZE}}{{UNIT}};',
+				],
+				'condition' => [
+					'custom_img_display' => 'custom_display',
+				]
+			]
+		);
+
+		$contentRepeater->add_responsive_control(
+			'custom_img_width',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Set Image Width', 'mtn'),
+				'size_units' => ['px', '%'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 300,
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-grid-img-container img' => 'width: {{SIZE}}{{UNIT}};',
+				],
+				'condition' => [
+					'custom_img_display' => 'custom_display',
+				]
+			]
+		);
+
+		$contentRepeater->add_control(
+			'custom_object_fit',
+			[
+				'label' => esc_html__('Object Fit', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'contain',
+				'options' => [
+					'fill' => 'Fill',
+					'contain' => 'Contain',
+					'cover' => 'Cover',
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-grid-img-container img' => 'object-fit: {{VALUE}};',
+				],
+				'condition' => [
+					'custom_img_display' => 'custom_display',
+				]
+			]
+		);
+
+		//ANCHOR: Complex Carousel - Grid content Settings
+		$contentRepeater->add_control(
+			"content_content_heading",
+			[
+				'label' => esc_html__("Content Setting", 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$contentRepeater->add_control(
+
+			'show_grid_content',
+			[
+				'label' => esc_html__('Content Display Settings', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'default_display',
+				'options' => [
+					'default_display' => 'default',
+					'custom_display' => 'Custom',
+					'hide_display' => 'Hide',
+				],
+			]
+		);
+		// Content Title
+		$this->add_control(
+			'show_grid_title',
+			[
+				'label' => esc_html__('Show Title', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_on' => esc_html__('Show', 'your-plugin'),
+				'label_off' => esc_html__('Hide', 'your-plugin'),
+				'return_value' => 'yes',
+				'default' => 'yes',
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+				]
+			]
+		);
+
+		$contentRepeater->add_control(
+			"content_title_heading",
+			[
+				'label' => esc_html__("Title", 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+					'show_grid_title' => 'yes',
+				]
+
+			]
+		);
+		$contentRepeater->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'custom_title_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} {{CURRENT_ITEM}} .complex-grid-col-content > h3',
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+					'show_grid_title' => 'yes',
+				]
+			],
+		);
+		$contentRepeater->add_control(
+			'custom_title_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-grid-col-content > p' => 'color: {{VALUE}}',
+				],
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+					'show_grid_title' => 'yes',
+				]
+			]
+		);
+
+		// Content Excerpt
+		$this->add_control(
+			'show_grid_excerpt',
+			[
+				'label' => esc_html__('Show Excerpt', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_on' => esc_html__('Show', 'your-plugin'),
+				'label_off' => esc_html__('Hide', 'your-plugin'),
+				'return_value' => 'yes',
+				'default' => 'yes',
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+				]
+			]
+		);
+		$contentRepeater->add_control(
+			"content_excerpt_heading",
+			[
+				'label' => esc_html__("Excerpt", 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+					'show_grid_title' => 'show_grid_excerpt',
+				]
+			]
+		);
+		$contentRepeater->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'custom_excerpt_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} {{CURRENT_ITEM}} .complex-grid-col-content > p',
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+					'show_grid_excerpt' => 'yes',
+				]
+			],
+		);
+
+		$contentRepeater->add_control(
+			'custom_excerpt_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-grid-col-content > p' => 'color: {{VALUE}}',
+				],
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+					'show_grid_excerpt' => 'yes',
+				]
+			]
+		);
+
+		// Content Button
+		$this->add_control(
+			'show_grid_button',
+			[
+				'label' => esc_html__('Show Button', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_on' => esc_html__('Show', 'your-plugin'),
+				'label_off' => esc_html__('Hide', 'your-plugin'),
+				'return_value' => 'yes',
+				'default' => 'yes',
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+				]
+			]
+		);
+		$contentRepeater->add_control(
+			"content_btn_heading",
+			[
+				'label' => esc_html__("Button", 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+					'show_grid_button' => 'yes',
+				]
+			]
+		);
+		$contentRepeater->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'custom_btn_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} {{CURRENT_ITEM}} .complex-grid-col-content > a',
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+					'show_grid_button' => 'yes',
+				]
+
+			],
+		);
+
+		$contentRepeater->add_control(
+			'custom_btn_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-grid-col-content > a' => 'color: {{VALUE}}',
+				],
+				'condition' => [
+					'show_grid_content' => 'custom_display',
+					'show_grid_title' => 'show_grid_button',
+				]
+			]
+		);
 
 		$this->add_control(
 			'content_grid_cols',
@@ -235,13 +540,13 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'fields' => $contentRepeater->get_controls(),
 				'default' => [
 					[
-						'grid_row_start' => esc_html__('auto'),
-						'grid_column_start' => esc_html__('auto'),
-						'grid_row_end' => esc_html__('auto'),
-						'grid_column_start' => esc_html__('auto'),
+						'custom_grid_row_start' => esc_html__('auto'),
+						'custom_grid_column_start' => esc_html__('auto'),
+						'custom_grid_row_end' => esc_html__('auto'),
+						'custom_grid_column_end' => esc_html__('auto'),
 					],
 				],
-				'title_field' => '{{{grid_row_start}}} / {{{grid_row_end}}}',
+				'title_field' => '{{{custom_grid_row_start}}} / {{{custom_grid_column_start}}} / {{{custom_grid_row_end}}} / {{{custom_grid_column_end}}}',
 			]
 		);
 
@@ -252,15 +557,23 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			'carousel_settings_section',
 			[
 				'label' => esc_html__('Carousel Settings', 'mtn'),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
-		count_ten_control($this, 'Slides to Scroll', 'slides_to_scroll', 3);
-
+		$this->add_responsive_control(
+			'slides_to_scroll',
+			[
+				'label' => esc_html__('Slides to Scroll', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 3,
+				'options' => $count,
+			]
+		);
 
 		$this->end_controls_section();
 
+		// ANCHOR: Complex Carousel - Grid Query Controls
 		$this->start_controls_section(
 			'section_query',
 			[
@@ -275,12 +588,28 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'name' => 'mtn_posts',
 			]
 		);
+		$this->add_control(
+			'grid_fields_heading',
+			[
+				'label' => esc_html__('Choose Fields', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_control(
+			'choose_grid_fields',
+			[
+				'type' => \Elementor\Controls_Manager::SELECT2,
+				'multiple' => true,
+				'options' => processOutput()['fields'],
+				'default' => ['thumbnail', 'post-link']
+			]
+		);
 
 		$this->end_controls_section();
 
-		/*** Style COntrol ***/
-
-		//Grid Style
+		// ANCHOR: Complex Carousel - Style Controls Section
+		// ANCHOR: Complex Carousel - Grid Style
 		$this->start_controls_section(
 			'grid_style',
 			[
@@ -288,15 +617,161 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		slider_control($this, 'carousel_grid_height', 'Carousel Grid Height', array('.complex-carousel-row', 'height'), array('max-px' => 800));
-		slider_control($this, 'carousel_grid_gap', 'Grid Gap', array('.complex-carousel-row', 'grid-gap'), array('max-px' => 50));
+
+		$this->add_responsive_control(
+			'carousel_grid_height',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Carousel Grid Height', 'mtn'),
+				'size_units' => ['px', '%'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 300,
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-carousel-row' => 'height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'carousel_grid_gap',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Grid Gap', 'mtn'),
+				'size_units' => ['px', '%'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 200,
+					]
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 30,
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-carousel-row' => 'grid-gap: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
 
 		//Item Container
-		heading_control($this, 'grid_heading', 'Item Container');
-		padding_control($this, 'item_container_padding', 'Padding', '.complex-column-item');
-		border_control($this, 'item_container_border', 'Border', '.complex-column-item');
-		border_radius_control($this, 'item_container_radius', '.complex-column-item');
-		background_control($this, 'item_container_backgound', 'Background', '.complex-column-item');
+		$this->add_control(
+			'grid_heading',
+			[
+				'label' => esc_html__('Grids Item Container', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		// ANCHOR: Complex Carousel - Custom Grid Item Settings
+		$this->add_responsive_control(
+			'grid_row_start',
+			[
+				'label' => esc_html__('Grid Row Start', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
+				'selectors' => [
+					'{{WRAPPER}} .complex-column-item' => 'grid-row-start: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_row_end',
+			[
+				'label' => esc_html__('Grid Row End', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
+				'selectors' => [
+					'{{WRAPPER}} .complex-column-item' => 'grid-row-end: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_column_start',
+			[
+				'label' => esc_html__('Grid Column Start', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
+				'selectors' => [
+					'{{WRAPPER}} .complex-column-item' => 'grid-column-start: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_column_end',
+			[
+				'label' => esc_html__('Grid Column End', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'auto',
+				'options' => ['auto' => esc_html__('Auto', 'mtn')] + $count,
+				'selectors' => [
+					'{{WRAPPER}} .complex-column-item' => 'grid-column-end: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name' => 'item_container_border',
+				'selector' => '{{WRAPPER}} .complex-column-item',
+			]
+		);
+
+		$this->add_control(
+			'text_color',
+			[
+				'label' => esc_html__('Text Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .your-class' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'item_container_radius',
+			[
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'label' => esc_html__('Border Radius', 'mtn'),
+				'size_units' => ['px', 'em', '%'],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-column-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'item_container_backgound',
+				'label' => esc_html__('Background', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .complex-column-item',
+				'exclude' => [
+					// eg: image
+				]
+			]
+		);
 
 		$this->end_controls_section();
 
@@ -309,23 +784,72 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 
-		slider_control($this, 'img_height', 'Set Image Height', ['.complex-col-img', 'height'], ['default' => 300]);
-		slider_control($this, 'img_width', 'Set Image Width', ['.complex-col-img', 'width'], ['default' => 300]);
-		select_style_control(
-			$this,
+		$this->add_responsive_control(
+			'bulk_img_height',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Set Image Height', 'mtn'),
+				'size_units' => ['px', '%'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default' => [
+					'unit' => '%',
+					'size' => 100,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .complex-grid-img-container img' => 'height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'bulk_img_width',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Set Image Width', 'mtn'),
+				'size_units' => ['px', '%'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default' => [
+					'unit' => '%',
+					'size' => 100,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .complex-grid-img-container img' => 'width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
 			'bulk_object_fit',
 			[
-				'fill' => 'Fill',
-				'contain' => 'Contain',
-				'cover' => 'Cover',
-			],
-			[
-				'.complex-col-img',
-				'object-fit'
-			],
-			[
-				'label' => 'Object Fit',
+				'label' => esc_html__('Object Fit', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
 				'default' => 'contain',
+				'options' => [
+					'fill' => 'Fill',
+					'contain' => 'Contain',
+					'cover' => 'Cover',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .complex-grid-img-container img' => 'object-fit: {{VALUE}};',
+				],
 			]
 		);
 
@@ -339,7 +863,107 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		amir_codes($this);
+
+		// Content Title
+		$this->add_control(
+			"content_title_heading",
+			[
+				'label' => esc_html__("Title", 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'title_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} .complex-grid-col-content > h3',
+			],
+		);
+		$this->add_control(
+			'title_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .complex-grid-col-content > p' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		// Content Excerpt
+		$this->add_control(
+			"content_excerpt_heading",
+			[
+				'label' => esc_html__("Excerpt", 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'excerpt_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} .complex-grid-col-content > p',
+			],
+		);
+
+		$this->add_control(
+			'excerpt_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .complex-grid-col-content > p' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		// Content Button
+		$this->add_control(
+			"content_btn_heading",
+			[
+				'label' => esc_html__("Button", 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'btn_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} .complex-grid-col-content > a',
+			],
+		);
+		$this->add_control(
+			'btn_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-grid-col-content > p' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
 
 		$this->end_controls_section();
 		// Carousel dot Style
@@ -351,22 +975,46 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 
-		select_callback_control(
-			$this,
+		$this->add_control(
 			'dot_horizontal_position',
 			[
-				'flex-start' => 'Left',
-				'center' => 'center',
-				'flex-end' => 'Right',
-
-			],
-			[
+				'label' => esc_html__('Horizontal Position', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
 				'default' => 'flex-start',
-				'label' => 'Horizontal Position',
+				'options' => [
+					'flex-start' => 'Left',
+					'center' => 'center',
+					'flex-end' => 'Right',
+
+				],
 			]
 		);
 
-		slider_control($this, 'dot_vertical_offset', 'Vertical Offset', array('.owl-dots', 'top'), ['default' => -60, 'min-px' => -200, 'max-px' => 200]);
+		$this->add_responsive_control(
+			'dot_vertical_offset',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Vertical Offset', 'mtn'),
+				'size_units' => ['px', '%'],
+				'range' => [
+					'px' => [
+						'min' => -200,
+						'max' => 200,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 200,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => -60,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .owl-dots' => 'top: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
 
 		// STATE TABS
 		$this->start_controls_tabs('tabs_dot_style');
@@ -378,42 +1026,83 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 
-		background_control($this, 'dot_background', 'Dot Background', '.owl-dots span');
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'dot_background',
+				'label' => esc_html__('Dot Background', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .owl-dots span',
+			]
+		);
 
 		$this->end_controls_tab();
 
 		// Hover State
 		$this->start_controls_tab(
-			'tab_dot_hover',
+			'tab_dot_active',
 			[
 				'label' => esc_html__('Hover', 'elementor'),
 			]
 		);
 
-		background_control($this, 'dot_hover_background', 'Dot Background', '.owl-dots .active span');
+		background_control($this, 'dot_active_background', '.owl-dots .active span', ['label' => 'Dot Background']);
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'dot_hover_background',
+				'label' => esc_html__('Dot Background', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .owl-dots  .active span',
+			]
+		);
 		$this->end_controls_tab();
 
 		$this->end_controls_tabs();
 		// END TABS
 
-		border_control($this, 'dot_border', 'Dot Border', '.owl-dot span');
-		border_radius_control($this, 'allbtn_border_radius', 'Button Radius', '.owl-dot span');
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name' => 'dot_border',
+				'selector' => '{{WRAPPER}} .owl-dot span',
+			]
+		);
+
+		$this->add_responsive_control(
+			'allbtn_border_radius',
+			[
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'label' => esc_html__('Border Radius', 'mtn'),
+				'size_units' => ['px', 'em', '%'],
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-dot span' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
 
 		$this->end_controls_section();
 	}
 
 
-
+	// ANCHOR: Complex Carousel - Render
 	protected function render()
 	{
 		$settings = $this->get_settings_for_display();
-		// $neededFields =  ['post-link', 'thumbnail'];
-		$posts = postsRender($settings, null, null, array('skip_nothumbnail' => true));
+
+		if ($settings['choose_grid_fields'])
+			$neededFields =  $settings['choose_grid_fields'];
+		else
+			$neededFields =  ['thumbnail'];
+
+		$posts = postsRender($settings, null, $neededFields, array('skip_nothumbnail' => true));
 		$grid_cols = $settings['content_grid_cols'];
 		$grid_col_count = count($grid_cols);
-		$posts = array_chunk($posts, $grid_col_count);
+		if (isset($grid_col_count) && isset($posts))
+			$posts = array_chunk($posts, $grid_col_count);
 
-		// print_r($settings['content_grid_cols']);
+		// print_r(get_posts($args));
 ?>
 
 
@@ -421,7 +1110,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			jQuery(document).ready(function() {
 				jQuery('.complex-carousel').owlCarousel({
 					loop: true,
-					margin: <?php echo $settings['grid_margin']; ?>,
+					margin: 16,
 					slideToScroll: <?php echo $settings['slides_to_scroll']; ?>,
 					dots: true,
 					nav: false,
@@ -454,7 +1143,23 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			foreach ($innerPosts as $innerKey => $post) {
 		?>
 				<div class="complex-column-item elementor-repeater-item-<?= $grid_cols[$innerKey]['_id']; ?>">
-					<img class="complex-col-img" src="<?= $post['thumbnail']; ?>" />
+					<?php if ($grid_cols[$innerKey]['custom_img_display'] != 'hide_display') { ?>
+						<div class="complex-grid-img-container">
+							<img class="complex-col-img" src="<?= $post['thumbnail']; ?>" />
+						</div>
+					<?php } ?>
+					<?php if ($grid_cols[$innerKey]['show_grid_content'] != 'hide_display') { ?>
+						<div class="complex-grid-col-content overlay-content">
+							<?php
+							if (isset($post['title']))
+								echo '<h3>' . $post['title'] . '</h3>';
+							if (isset($post['excerpt']))
+								echo '<P>' . $post['excerpt'] . '</P>';
+							if (isset($post['post-link']))
+								echo '<a class ="btn-white btn" href="' . $post['post-link'] . '"> Read More</a>'; ?>
+						</div>
+					<?php } ?>
+
 				</div>
 <?php
 

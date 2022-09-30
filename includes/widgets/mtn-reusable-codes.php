@@ -88,6 +88,7 @@ if (!function_exists('select_style_control')) {
      */
     function select_style_control($parentControl, $name = 'text', $options, $selector, $extra = array())
     {
+        if (!isset($extra['condition'])) $extra['condition'] = array();
         if (!isset($extra['label'])) $extra['label'] = 'Select';
         if (!isset($extra['default'])) $extra['default'] = '';
 
@@ -452,6 +453,8 @@ if (!function_exists('slider_control')) {
         if (!isset($extra['label'])) $extra['label'] = 'Height';
         if (!isset($extra['condition'])) $extra['condition'] = array();
         if (!isset($extra['max-percent'])) $extra['max-percent'] = 100;
+        if(isset($selector[2])) $selectorVal = $selector[2];
+        else $selectorVal = ' {{SIZE}}{{UNIT}}';
         $arr =  [
             'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::SLIDER,
@@ -471,7 +474,7 @@ if (!function_exists('slider_control')) {
                 ],
             ],
             'selectors' => [
-                '{{WRAPPER}} ' . $selector[0] => $selector[1] . ': {{SIZE}}{{UNIT}} !important',
+                '{{WRAPPER}} ' . $selector[0] => $selector[1] . ':'. $selectorVal ,
             ],
             'condition' => $extra['condition'],
         ];
@@ -479,6 +482,7 @@ if (!function_exists('slider_control')) {
         $parentControl->add_responsive_control($name, $arr);
     }
 }
+
 if (!function_exists('select_value_control')) {
     /**
      * select_value_control
@@ -673,8 +677,10 @@ if (!function_exists('heading_control')) {
         $arr = [
             'label' => esc_html__($extra['label'], 'mtn'),
             'type' => \Elementor\Controls_Manager::HEADING,
+            'condition' => $extra['condition'],
             'separator' => 'before',
         ];
+        
 
         $parentControl->add_control($name, $arr);
     }

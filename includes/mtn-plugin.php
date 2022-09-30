@@ -275,7 +275,7 @@ final class MTN_Features
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Complex_Carousel_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Viewed_Topics());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Flex_Grid());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Flex_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_News_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Post_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Tariffs_Widget());
@@ -291,6 +291,7 @@ final class MTN_Features
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_International_Filter());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Test_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Data_Bundle_Filter());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Simplex_Filter());
 	}
 }
 

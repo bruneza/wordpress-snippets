@@ -353,7 +353,7 @@ function postsRender($settings, $terms = null, $output = null, $conditions = nul
 
     $query = new WP_Query($args);
 
-
+    
     if ($query->have_posts()) {
         if (isset($output))
             $posts = filterPost(processOutput($query)['data'], $output);

@@ -271,7 +271,7 @@ final class MTN_Features
 			require_once $filename;
 		}
 
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Deals_Carousel());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Deals_Carousel());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Complex_Carousel_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Viewed_Topics());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());

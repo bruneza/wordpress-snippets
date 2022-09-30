@@ -77,8 +77,14 @@ class MTN_Roaming_Filter  extends \Elementor\Widget_Base
             ]
         );
 
-        number_control($this, 'grid_num_posts', 'Number of Posts', '-1');
-
+        $this->add_control( 
+			'grid_num_posts',
+		[
+            'label' => esc_html__('Number of Posts', 'textdomain'),
+            'type' => \Elementor\Controls_Manager::NUMBER,
+            'default' => -1,
+        ]
+    );
         $this->end_controls_section();
         /*** Style begins here***/
     }

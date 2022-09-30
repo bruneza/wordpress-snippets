@@ -224,7 +224,15 @@ class Elementor_controls_Widget  extends \Elementor\Widget_Base
 				'selector' => '{{WRAPPER}} .your-class',
 			]
 		);
-        // ANCHOR: Code - _control
+        // ANCHOR: Code - number_control
+        $this->add_control(
+			'number',
+			[
+				'label' => esc_html__( 'Price', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::NUMBER,
+				'default' => 10,
+			]
+		);
         // ANCHOR: Code - _control
         // ANCHOR: Code - _control
         // ANCHOR: Code - _control

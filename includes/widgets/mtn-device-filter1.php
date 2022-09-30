@@ -6,65 +6,65 @@ use ElementorPro\Modules\QueryControl\Module as Module_Query;
 use ElementorPro\Modules\QueryControl\Controls\Group_Control_Related;
 
 if (!defined('ABSPATH')) {
-	exit;
+    exit;
 }
 
 class MTN_Device_Filter1  extends \Elementor\Widget_Base
 {
 
-	/**
-	 * Get widget name.
-	 *
-	 * Retrieve test widget name.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 * @return string Widget name.
-	 */
-	public function get_name()
-	{
-		return 'Device Filter01';
-	}
-	/**
-	 * Get widget title.
-	 *
-	 * Retrieve test widget title.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 * @return string Widget title.
-	 */
-	public function get_title()
-	{
-		return esc_html__('Device Filter01', 'mtn');
-	}
+    /**
+     * Get widget name.
+     *
+     * Retrieve test widget name.
+     *
+     * @since 1.0.0
+     * @access public
+     * @return string Widget name.
+     */
+    public function get_name()
+    {
+        return 'Device Filter01';
+    }
+    /**
+     * Get widget title.
+     *
+     * Retrieve test widget title.
+     *
+     * @since 1.0.0
+     * @access public
+     * @return string Widget title.
+     */
+    public function get_title()
+    {
+        return esc_html__('Device Filter01', 'mtn');
+    }
 
-	/**
-	 * Get widget icon.
-	 *
-	 * Retrieve test widget icon.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 * @return string Widget icon.
-	 */
-	public function get_icon()
-	{
-		return 'eicon-code';
-	}
+    /**
+     * Get widget icon.
+     *
+     * Retrieve test widget icon.
+     *
+     * @since 1.0.0
+     * @access public
+     * @return string Widget icon.
+     */
+    public function get_icon()
+    {
+        return 'eicon-code';
+    }
 
-	public function get_categories()
-	{
-		return ['basic'];
-	}
+    public function get_categories()
+    {
+        return ['basic'];
+    }
 
 
-	private function postType()
-	{
-		return 'post';
-	}
+    private function postType()
+    {
+        return 'post';
+    }
 
-	protected function register_controls()
+    protected function register_controls()
     {
         $count_to_ten = range(1, 10);
         $count_to_ten = array_combine($count_to_ten, $count_to_ten);
@@ -77,7 +77,23 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
             ]
         );
 
-        number_control($this, 'grid_num_posts',['default' => -1, 'label' => 'Number of Posts']);
+        $this->add_control(
+            'grid_num_posts',
+            [
+                'label' => esc_html__('Number of Posts', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => -1,
+            ]
+        );
+
+        $this->add_control(
+            'number',
+            [
+                'label' => esc_html__('Price', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 10,
+            ]
+        );
 
 
         count_ten_control($this, 'num_of_col', ['label' => 'Number of Columns', 'default' => 3]);
@@ -154,18 +170,18 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
         );
 
 
-        slider_control($this, 'filter_tab_height', array('.posts-filter .nav-link', 'height'), ['max-px' => 200,'label' => 'Tab Height']);
-        slider_control($this, 'filter_tab_width', array('.posts-filter .nav-link', 'width'), ['max-px' => 200,'label' => 'Tab Width']);
+        slider_control($this, 'filter_tab_height', array('.posts-filter .nav-link', 'height'), ['max-px' => 200, 'label' => 'Tab Height']);
+        slider_control($this, 'filter_tab_width', array('.posts-filter .nav-link', 'width'), ['max-px' => 200, 'label' => 'Tab Width']);
 
 
-        space_between_control($this, 'tab_space_between','.nav-item', ['default' => 20]);
+        space_between_control($this, 'tab_space_between', '.nav-item', ['default' => 20]);
 
         typography_control($this, 'filter_title_typography', '.nav-link');
 
 
-        slider_control($this, 'filter_svg_size', array('.nav-link svg', 'width'), ['max-px' => 200,'label' => 'SVG Icon Size']);
+        slider_control($this, 'filter_svg_size', array('.nav-link svg', 'width'), ['max-px' => 200, 'label' => 'SVG Icon Size']);
 
-        slider_control($this, 'filter_icon_size', array('.nav-link i', 'font-size'), ['max-px' => 200,'label' => 'Icon Font Size']);
+        slider_control($this, 'filter_icon_size', array('.nav-link i', 'font-size'), ['max-px' => 200, 'label' => 'Icon Font Size']);
 
         // NORMAL STATE
         $this->start_controls_tabs(
@@ -187,7 +203,7 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
 
         heading_control($this, 'fitler_title_heading', ['label' => 'Tab Content']);
 
-        color_control($this, 'fitler_title_color','.nav-link', ['label' => 'Color']);
+        color_control($this, 'fitler_title_color', '.nav-link', ['label' => 'Color']);
 
         $this->end_controls_tab();
         // HOVER STATE;
@@ -279,7 +295,7 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
         color_control($this, 'btn_color', '.post-readmore', ['label' => 'Color']);
         border_control($this, 'btn_border', '.post-readmore', ['label' => 'Border']);
         background_control($this, 'btn_background', '.post-readmore', ['label' => 'Background']);
-        
+
         $this->end_controls_tab();
         // HOVER STATE;
         $this->start_controls_tab(
@@ -300,55 +316,46 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
 
 
     protected function render()
-	{
-		$settings = $this->get_settings_for_display();
+    {
+        $settings = $this->get_settings_for_display();
 
-		$postType = getPostType($settings);
-		$terms = mtnTerms($postType);
+        $postType = getPostType($settings);
+        $terms = mtnTerms($postType);
 
-		// print_r($terms);
+        // print_r($terms);
         // echo '<br>******<br>';
 
-        foreach($terms as $key => $taxonomy)
+        foreach ($terms as $key => $taxonomy)
             $category =  $key;
 
-		$posts = postsRender($settings);
+        $posts = postsRender($settings);
 
-        $brands =array();
-        $categories =array();
-        
-        foreach($posts as $postTypes)
-        {
-        //    print_r($post['product_type']);
+        $brands = array();
+        $categories = array();
+
+        foreach ($posts as $postTypes) {
+            //    print_r($post['product_type']);
 
 
-        if (is_array($postTypes['product_type']) || is_object($postTypes['product_type']))
-            {
-                foreach ($postTypes['product_type'] as $key => $value)
-                {
-                    array_push($categories,$value);
+            if (is_array($postTypes['product_type']) || is_object($postTypes['product_type'])) {
+                foreach ($postTypes['product_type'] as $key => $value) {
+                    array_push($categories, $value);
                 }
             }
+        }
 
 
-           
-        } 
-            
-
-        foreach($posts as $postBrand)
-            {
-                if (is_array($postBrand['product_brand']) || is_object($postBrand['product_brand']))
-                {
-                    foreach ($postBrand['product_brand'] as $key => $value)
-                    {
-                        array_push($brands,$value);
-                    }
+        foreach ($posts as $postBrand) {
+            if (is_array($postBrand['product_brand']) || is_object($postBrand['product_brand'])) {
+                foreach ($postBrand['product_brand'] as $key => $value) {
+                    array_push($brands, $value);
                 }
             }
-		
+        }
+
 ?>
 
-		<div class="col-md-12">
+        <div class="col-md-12">
             <div class="col">
                 <div class="filter-section">
 
@@ -360,33 +367,31 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
                                         <option value="all">
                                             Select Brand
                                         </option>
-										<?php
-										foreach($brands as $key => $brand)
-										{?>
-											<option value="<?=$brand['slug']?>"><?=$brand['name']?></option>
-											<?php
-										}
-										?>
-                                        
+                                        <?php
+                                        foreach ($brands as $key => $brand) { ?>
+                                            <option value="<?= $brand['slug'] ?>"><?= $brand['name'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
+
                                     </select>
                                 </div>
 
                                 <div class="filter-scnd-btn">
                                     <select class="filter-two">
                                         <option value="all-category" class="all-category">Select Category</option>
-                                        
-										<?php
-										foreach($categories as $key => $category)
-										{                     
-                                            ?>
-                                            <option value="<?=$category['name']?>" class="category <?=$category['name']?>"><?=$category['name']?></option>
-											<?php
-										}
-										?>
-                                        
+
+                                        <?php
+                                        foreach ($categories as $key => $category) {
+                                        ?>
+                                            <option value="<?= $category['name'] ?>" class="category <?= $category['name'] ?>"><?= $category['name'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
+
                                     </select>
                                 </div>
-								
+
 
                             </div>
                         </div>
@@ -397,65 +402,58 @@ class MTN_Device_Filter1  extends \Elementor\Widget_Base
 
                 <div class="business-item-section">
                     <div class="row" id="category-items">
-					<?php
-						foreach($posts as $product)
-					{
-                        
-                        if (is_array($product['product_brand']) || is_object($product['product_brand']))
-                        {
-                            foreach ($product['product_brand'] as $key => $value)
-                                $brand = $value['slug'];
-                            
-                        }
-                        else
-                        $brand = "";
+                        <?php
+                        foreach ($posts as $product) {
 
-                        if (is_array($product['product_type']) || is_object($product['product_type']))
-                        {
-                            foreach ($product['product_type'] as $keys => $product_type)
-                                $category = $product_type['name'];
-                            
-                        }
-                        else
-                        $category = "";
-                               ?>
-                        <div class="col-md-4 filter categories <?=$brand?> <?=$category?>">
-                            <div class="deals-item">
-                                <div class="d-flex">
-                                    <div class="col-md-4">
-                                        <img src="<?=$product['thumbnail']?>" class="img-fluid" alt="">
+                            if (is_array($product['product_brand']) || is_object($product['product_brand'])) {
+                                foreach ($product['product_brand'] as $key => $value)
+                                    $brand = $value['slug'];
+                            } else
+                                $brand = "";
+
+                            if (is_array($product['product_type']) || is_object($product['product_type'])) {
+                                foreach ($product['product_type'] as $keys => $product_type)
+                                    $category = $product_type['name'];
+                            } else
+                                $category = "";
+                        ?>
+                            <div class="col-md-4 filter categories <?= $brand ?> <?= $category ?>">
+                                <div class="deals-item">
+                                    <div class="d-flex">
+                                        <div class="col-md-4">
+                                            <img src="<?= $product['thumbnail'] ?>" class="img-fluid" alt="">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="bottom-section">
-                                    <div class="btm-upper-section">
-                                        <h3><?=$product['title']?></h3>
-                                        <h1><?=$product['regular_price']?></h1>
-                                    </div>
-                                    <hr>
-                                    <div class="btm-down-section row">
-                                        <p><?=$product['warant_fee']?></p>
-                                        <a href="<?=$product['post-link']?>" class="deal-items-icon">
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
+                                    <div class="bottom-section">
+                                        <div class="btm-upper-section">
+                                            <h3><?= $product['title'] ?></h3>
+                                            <h1><?= $product['regular_price'] ?></h1>
+                                        </div>
+                                        <hr>
+                                        <div class="btm-down-section row">
+                                            <p><?= $product['warant_fee'] ?></p>
+                                            <a href="<?= $product['post-link'] ?>" class="deal-items-icon">
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-						<?php
-							}
-						?>
+                        <?php
+                        }
+                        ?>
 
                     </div>
                 </div>
 
-				<div class="col-md-12">
-                            <div class="see-all-btn">
-                                <a href="" class="">Load More</a>
-                            </div>
-                        </div>
+                <div class="col-md-12">
+                    <div class="see-all-btn">
+                        <a href="" class="">Load More</a>
+                    </div>
+                </div>
 
             </div>
         </div>
-		<?php
+<?php
     }
 }

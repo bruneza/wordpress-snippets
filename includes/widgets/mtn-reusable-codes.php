@@ -255,7 +255,7 @@ if (!function_exists('editor_control')) {
         $parentControl->add_control($name, $arr);
     }
 }
-if (!function_exists('number_control')) {
+/*if (!function_exists('number_control')) {
     /**
      * Number Control
      *
@@ -271,7 +271,7 @@ if (!function_exists('number_control')) {
      * ]
      * @return void
      */
-    function number_control($parentControl, $name, $extra = array())
+  /*function number_control($parentControl, $name, $extra = array())
     {
         if (!isset($extra['condition'])) $extra['condition'] = array();
         if (!isset($extra['label'])) $extra['label'] = 'URL';
@@ -283,7 +283,7 @@ if (!function_exists('number_control')) {
         ];
         $parentControl->add_control($name, $arr);
     }
-}
+}*/
 if (!function_exists('icon_control')) {
     /**
      * icon_control

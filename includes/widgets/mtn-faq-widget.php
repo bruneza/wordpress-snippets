@@ -74,8 +74,22 @@ class MTN_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        number_control($this, 'num_of_posts', ['default' => 5, 'label' => 'Number of Posts']);
-        number_control($this, 'num_of_columns', ['default' => 3, 'label' => 'Number of Columns']);
+        $this->add_control(
+            'num_of_posts',
+            [
+                'label' => esc_html__('Number of Posts', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 5,
+            ]
+        );
+        $this->add_control(
+            'num_of_columns',
+            [
+                'label' => esc_html__('Number of Columns', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 3,
+            ]
+        );
         text_control($this, 'view_more_btn', ['label' => 'View More Button']);
         $this->end_controls_section();
 

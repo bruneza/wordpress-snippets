@@ -95,18 +95,18 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 		);
 
 		// Title Style
-		heading_control($this, 'title_heading', 'Title');
-		color_control($this, 'title_color', 'Title Color', '.team-member-name');
+		heading_control($this, 'title_heading',['label'=>'Title']);
+		color_control($this, 'title_color', '.team-member-name',['label'=>'Title Color']);
 		typography_control($this, 'title_typography', '.team-member-name');
 
 		// Job Title Style
-		heading_control($this, 'job_title_heading', 'Job Title');
-		color_control($this, 'job_color', 'Job Title Color', '.job-title');
+		heading_control($this, 'job_title_heading',['label'=>'Job Title']);
+		color_control($this, 'job_color',  '.job-title',['label'=>'Job Title Color']);
 		typography_control($this, 'job_typography', '.job-title');
 
 		// Excerpt Style
-		heading_control($this, 'excerpt_title_heading', 'Excerpt');
-		color_control($this, 'excerpt_color', 'Excerpt Color', '.team-excerpt');
+		heading_control($this, 'excerpt_title_heading', ['label'=>'Excerpt']);
+		color_control($this, 'excerpt_color', '.team-excerpt',['label'=>'Excerpt Color']);
 		typography_control($this, 'excerpt_typography', '.team-excerpt');
 
 		$this->end_controls_section();
@@ -119,38 +119,38 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 		);
 
 		// Modal Grid Style
-		heading_control($this, 'modal_grid_heading', 'Modal Grid');
-		background_control($this, 'modal_background', 'Modal Background', '.mtn-modal-body', ['image']);
-		border_control($this, 'modal_border', 'Modal Border', '.mtn-modal-body');
+		heading_control($this, 'modal_grid_heading', ['label'=>'Modal Grid']);
+		background_control($this, 'modal_background','.mtn-modal-body', ['image'], ['label'=>'Modal Background']);
+		border_control($this, 'modal_border', '.mtn-modal-body', ['label'=>'Modal Border']);
 		border_radius_control($this, 'modal_border_radius', '.mtn-modal-body');
-		slider_control($this, 'modal_grid_height', 'Height', ['.mtn-modal-dialog', 'height'], 100);
-		slider_control($this, 'modal_grid_width', 'Width', ['.mtn-modal-dialog', 'width'], 100);
+		slider_control($this, 'modal_grid_height', ['.mtn-modal-dialog', 'height'], ['label'=>'Height','default'=>100]);
+		slider_control($this, 'modal_grid_width',['.mtn-modal-dialog', 'width'], ['label'=>'Width','default'=>100]);
 
 		// Modal Image Column
-		heading_control($this, 'modal_image_heading', 'Modal Image Colum');
-		slider_control($this, 'modal_image_column_width', 'Width', ['.team-member-img', 'max-width'], 100);
+		heading_control($this, 'modal_image_heading', ['label'=>'Modal Image Column']);
+		slider_control($this, 'modal_image_column_width', ['.team-member-img', 'max-width'], ['label'=>'Width','default'=>100]);
 
 		// Modal Content Column
-		heading_control($this, 'modal_content_heading', 'Modal Content Colum');
-		padding_control($this, 'modal_content_padding', 'Padding', '.team-member-info');
+		heading_control($this, 'modal_content_heading', ['label'=>'Modal Content Column']);
+		padding_control($this, 'modal_content_padding',  '.team-member-info', ['label'=>'Padding']);
 
 
 		// Title Style
-		heading_control($this, 'modal_title_heading', 'Title');
-		color_control($this, 'modal_title_color', 'Title Color', '.modal-member-name');
+		heading_control($this, 'modal_title_heading', ['label'=>'Title']);
+		color_control($this, 'modal_title_color', '.modal-member-name', ['label'=>'Title Color']);
 		typography_control($this, 'modal_title_typography', '.modal-member-name');
-		slider_control($this, 'modal_title_spacing', 'Spacing', ['.modal-member-name', 'margin-bottom'], 20);
+		slider_control($this, 'modal_title_spacing',  ['.modal-member-name', 'margin-bottom'], ['label'=>'Spacing','default'=>20]);
 
 		// Job Title Style
-		heading_control($this, 'modal_job_title_heading', 'Job Position');
-		color_control($this, 'modal_job_color', 'Color', '.modal-member-position');
+		heading_control($this, 'modal_job_title_heading',  ['label'=>'Job Position']);
+		color_control($this, 'modal_job_color',  '.modal-member-position', ['label'=>'Color']);
 		typography_control($this, 'modal_job_typography', '.modal-member-position');
-		slider_control($this, 'modal_job_spacing', 'Spacing', ['.modal-member-position', 'margin-bottom'], 20);
+		slider_control($this, 'modal_job_spacing',  ['.modal-member-position', 'margin-bottom'], ['label'=>'Spacing','default'=>20]);
 
 		// Excerpt Style
-		heading_control($this, 'content_title_heading', 'Content');
-		color_control($this, 'content_color', 'Excerpt Color', '.modal-member-bio');
-		typography_control($this, 'content_typography', 'Job Title Font', '.modal-member-bio');
+		heading_control($this, 'content_title_heading',  ['label'=>'Content']);	
+		color_control($this, 'content_color',  '.modal-member-bio', ['label'=>'Excerpt Color']);
+		typography_control($this, 'content_typography', '.modal-member-bio', ['label'=>'Job Title Font']);
 
 		$this->end_controls_section();
 
@@ -165,7 +165,7 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 		
 		typography_control($this, 'socialmedia_typography', '.team-more-btn');
 		border_radius_control($this, 'socialmedia_border_radius', '.team-more-btn');
-		padding_control($this, 'socialmedia_padding', 'Padding', '.team-more-btn');
+		padding_control($this, 'socialmedia_padding', '.team-more-btn', ['label'=>'Padding']);
 
 		// STATE TABS
 		$this->start_controls_tabs('tabs_dot_style');
@@ -178,8 +178,8 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 		);
 
 		color_control($this, 'socialmedia_color', 'Color', '.team-more-btn');
-		background_control($this, 'socialmedia_background', 'Button Background', '.team-more-btn', ['image']);
-		border_control($this, 'socialmedia_border', 'Border', '.team-more-btn');
+		background_control($this, 'socialmedia_background',  '.team-more-btn', ['image'], ['label'=>'Button Background']);
+		border_control($this, 'socialmedia_border', '.team-more-btn', ['label'=>'Border']);
 
 		$this->end_controls_tab();
 		// Hover State
@@ -189,9 +189,9 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 				'label' => esc_html__('Hover', 'elementor'),
 			]
 		);
-		color_control($this, 'socialmedia_hover_color', 'Color', '.team-more-btn:hover');
-		background_control($this, 'socialmedia_hover_background', 'Button Background', '.team-more-btn:hover', ['image']);
-		border_control($this, 'socialmedia_hover_border', 'Border', '.team-more-btn:hover');
+		color_control($this, 'socialmedia_hover_color', '.team-more-btn:hover', ['label'=>'Color']);
+		background_control($this, 'socialmedia_hover_background', '.team-more-btn:hover', ['image'], ['label'=>'Button Background']);
+		border_control($this, 'socialmedia_hover_border',  '.team-more-btn:hover', ['label'=>'Border']);
 
 		$this->end_controls_tab();
 		$this->end_controls_tabs();

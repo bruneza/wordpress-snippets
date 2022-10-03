@@ -77,20 +77,24 @@ class MTN_Roaming_Filter  extends \Elementor\Widget_Base
             ]
         );
 
-        $this->add_control( 
-			'grid_num_posts',
-		[
-            'label' => esc_html__('Number of Posts', 'textdomain'),
-            'type' => \Elementor\Controls_Manager::NUMBER,
-            'default' => -1,
-        ]
-    );
+		$this->add_control(
+            'grid_num_posts',
+            [
+                'label' => esc_html__('Number of Posts', 'mtn'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => -1,
+            ]
+        );
+
         $this->end_controls_section();
         /*** Style begins here***/
     }
 
     protected function render()
 	{
+
+		error_reporting(0);
+ini_set('display_errors', 0);
 
         $settings = $this->get_settings_for_display();
         $postType = $settings['mtn_posts_post_type'] = 'mtn_roamings';
@@ -101,19 +105,94 @@ class MTN_Roaming_Filter  extends \Elementor\Widget_Base
         $Allposts = postsRender($settings,null,$neededFields);
         // $Fieldposts = postsRender($settings,null,null);
         // $posts = postsRender($settings,null,$taxonomy, ['title','deadline','terms','post-link','region']);
+// print_r($planLocation);
+       
 
-        
-        echo '<br>********************************************************* <br>';
-		echo '<h3>POSTsaaa </h3>';
-		echo '********************************************************* <br><br><br>';
-		// $TermsId = array(92);
+?>
+<div class="col-md-12">
+	<div class="col">
+		<div class="roaming-nav">
+			<div class="row">
 
+			<div class="col-md-4">
+					<select name="" class="select-btn filter-2-btn">
+						<option value="all">Select Plan</option>
+						<?php
+						foreach ($planTaxonomy as $key => $service) {
+							?>
+							<option value="<?=$service['name']?>"><?=$service['name']?></option>
 
-		foreach ($planLocation as $location) {
-			echo 'Location: '.$location['name'].'<br>';
-		}
+						<?php }?>
+					</select>
+				</div>
+				<div class="col-md-4">
+					<select name="" class="select-btn filter-2-btn">
+						<option value="all">Select Location</option>
+						<?php
+							foreach ($planLocation as $key => $location) {
+								?>
+								<option value="<?=$key?>"><?=$location['name']?></option>
 
+							<?php }?>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="roaming-tble">
+				<table class="table roaming-table">
+					<?php
+						foreach($Allposts as $key => $post)
+						{
+							// print_r($post['roaming_price'][3]['price']);
+							?>
+							<tr class="services filter <?=$post['roaming_price'][1]['location'][0]?> <?=$post['roaming_price'][0]['plan_type'][1]['plan_type_name']?>">
+								<td><?=$post['title']?></td>
+								<td><?=$post['roaming_price'][0]['plan_type'][1]['plan_type_name']?></td>
+								<td><?=$post['roaming_price'][3]['price']?></td>
+							</tr>
+						<?php }
+					?>
+				</table>
 
-
+			</div>
+		</div>
+	</div>
+</div>
+<?php
     }
 }
+
+// Array ( 
+// 	[0] => Array ( 
+// 		[id] => 35504 
+// 		[title] => Call to the Rest of the World 
+// 		[roaming_price] => Array ( 
+// 			[0] => Array ( 
+// 				[plan_type] => Array ( 
+// 					[0] => Array ( 
+// 						[plan_type_id] => 73 ) 
+// 					[1] => Array ( 
+// 						[plan_type_name] => Postpaid ) 
+// 					) 
+// 				) 
+// 			[1] => Array ( 
+// 				[location] => Array ( 
+// 					[0] => 168 ) 
+// 				) 
+// 			[2] => Array ( 
+// 				[provider] => Array ( 
+// 					[0] => WP_Term Object ( 
+// 						[term_id] => 170 
+// 						[name] => AIRTEL Bharti Tele-Ventures2 
+// 						[slug] => airtel-bharti-tele-ventures2 
+// 						[term_group] => 0 
+// 						[term_taxonomy_id] => 170 
+// 						[taxonomy] => mtn_roaming_providers 
+// 						[description] => 
+// 						[parent] => 0 
+// 						[count] => 6 
+// 						[filter] => raw ) 
+// 					) 
+// 				) 
+// 			[3] => Array ( [price] =>

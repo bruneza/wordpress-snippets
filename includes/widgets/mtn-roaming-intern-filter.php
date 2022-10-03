@@ -79,7 +79,7 @@ class MTN_Roaming_International_Filter  extends \Elementor\Widget_Base
 
         $this->add_control( 'grid_num_posts',
 		[
-            'label' => esc_html__('Number of Posts', 'textdomain'),
+            'label' => esc_html__('Number of Posts', 'mtn'),
             'type' => \Elementor\Controls_Manager::NUMBER,
             'default' => -1,
         ]

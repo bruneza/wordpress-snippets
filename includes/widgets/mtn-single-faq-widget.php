@@ -76,7 +76,7 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
         $this->add_control(
             'num_of_posts',
             [
-                'label' => esc_html__('Number of Posts', 'textdomain'),
+                'label' => esc_html__('Number of Posts', 'mtn'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 5,
             ]
@@ -84,12 +84,25 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
         $this->add_control(
             'num_of_columns',
             [
-                'label' => esc_html__('Number of Columns', 'textdomain'),
+                'label' => esc_html__('Number of Columns', 'mtn'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 3,
             ]
         );
-        text_control($this, 'view_more_btn', ['label' => 'View More Button']);
+        $this->add_control(
+            'view_more_btn',
+            [
+                'label' => esc_html__('View More Button', 'mtn'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+                'placeholder' => esc_html__('Enter Value', 'mtn'),
+                'default' => esc_html__('View More', 'mtn'),
+                'dynamic' => [
+                    'active' => true,
+                ],
+            ]
+        );
+
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -108,8 +121,8 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
         );
 
         $this->end_controls_section();
-        /////STYLESSS
 
+        /////STYLESSS
         $this->start_controls_section(
             'grid_Style',
             [
@@ -118,10 +131,54 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        space_between_control($this, 'grid_space_between', '.faq-column', ['default' => 20]);
-        padding_control($this, 'grid_padding', '.faq-wrapper', ['label' => 'Grid Padding']);
-        box_shadow_control($this, '.faq-wrapper', ['label' => 'Box Shadow']);
-        border_radius_control($this, 'grid_border_radius', '.faq-wrapper');
+        $this->add_responsive_control(
+            'grid_space_between',
+            [
+                'label' => esc_html__('Space Between', 'mtn'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => [
+                    'unit' => 'px',
+                    'size' => 20
+                ],
+                'range' => [
+                    'px' => [
+                        'max' => 50,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .faq-column' => 'padding-bottom: {{SIZE}}{{UNIT}}',
+                    '{{WRAPPER}} .faq-column:not(:last-child)' => 'padding-right: calc({{SIZE}}{{UNIT}}/2)',
+                    '{{WRAPPER}} .faq-column:not(:first-child)' => 'padding-left: calc({{SIZE}}{{UNIT}}/2)',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'grid_padding',
+            [
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'label' => esc_html__('Padding', 'mtn'),
+                'size_units' => ['px', '%', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .faq-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(\Elementor\Group_Control_Box_Shadow::get_type(), [
+            'name' => 'tab_box_shadow',
+            'label' => esc_html__('Box Shadow', 'mtn'),
+            'selector' => '{{WRAPPER}} .faq-wrapper',
+        ]);
+
+        $this->add_responsive_control('grid_border_radius', [
+            'label' => esc_html__('Border Radius', 'mtn'),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => ['px', '%', 'em'],
+            'selectors' => [
+                '{{WRAPPER}} .faq-wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ],
+        ]);
 
         $this->end_controls_section();
 
@@ -133,13 +190,62 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        padding_control($this, 'heading_padding', 'Heading Padding', '.faq-header');
-        border_radius_control($this, 'heading_border_radius', '.faq-header');
-        typography_control($this, 'header_typography', '.faq-header h4');
+        $this->add_responsive_control(
+            'heading_padding',
+            [
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'label' => esc_html__('Padding', 'mtn'),
+                'size_units' => ['px', '%', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .faq-header' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_responsive_control('heading_border_radius', [
+            'label' => esc_html__('Border Radius', 'mtn'),
+            'type' => \Elementor\Controls_Manager::DIMENSIONS,
+            'size_units' => ['px', '%', 'em'],
+            'selectors' => [
+                '{{WRAPPER}} .faq-header' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+            ],
+        ]);
 
-        color_control($this, 'heading_color', '.faq-header h4', ['label' => 'Heading Color']);
-        heading_control($this, 'header_bg', ['label' => 'Background']);
-        background_control($this, 'header_background', '.faq-header', ['label' => 'Background']);
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'header_typography',
+                'selector' => '{{WRAPPER}} .faq-header h4',
+                'global' => [
+                    'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+                ],
+            ]
+        );
+
+        $this->add_control('heading_color', [
+            'label' => esc_html__('Heading Color', 'mtn'),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'global' => [
+                'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+            ],
+            'selectors' => [
+                '{{WRAPPER}} .faq-header h4' => 'color: {{VALUE}}',
+            ],
+        ]);
+        $this->add_control(
+            'header_bg',
+            [
+                'label' => esc_html__('Background', 'mtn'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+        $this->add_group_control(\Elementor\Group_Control_Background::get_type(), [
+    'name' => 'header_background',
+    'label' => esc_html__('Background', 'mtn'),
+    'types' => ['classic', 'gradient', 'video'],
+    'selector' => '{{WRAPPER}} .faq-header',
+]
+);
 
         $this->end_controls_section();
         $this->start_controls_section(
@@ -150,10 +256,53 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
             ]
         );
 
-        vertical_spacing_control($this, 'item_space_between', '.faq-item', ['default' => 20]);
-        padding_control($this, 'item_padding', '.faq-items', ['label' => 'Item Padding']);
-        heading_control($this, 'title_heading', ['label' => 'Title']);
-        typography_control($this, 'item_header_typography', 'a.faq-item');
+        $this->add_responsive_control('item_space_between', [
+            'label' => esc_html__('Space Between', 'mtn'),
+            'type' => \Elementor\Controls_Manager::SLIDER,
+            'default' => [
+                'unit' => 'px',
+                'size' => 20
+            ],
+            'range' => [
+                'px' => [
+                    'max' => 50,
+                ],
+            ],
+            'selectors' => [
+                '{{WRAPPER}} .faq-item:not(:last-child)' => 'padding-bottom: calc({{SIZE}}{{UNIT}}/2)',
+                '{{WRAPPER}} .faq-item:not(:first-child)' => 'padding-top: calc({{SIZE}}{{UNIT}}/2)',
+            ],
+        ]);
+
+        $this->add_responsive_control(
+            'item_padding',
+            [
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'label' => esc_html__('Padding', 'mtn'),
+                'size_units' => ['px', '%', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .faq-items' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'title_heading',
+            [
+                'label' => esc_html__('Title', 'mtn'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'item_header_typography',
+                'selector' => '{{WRAPPER}} a.faq-item',
+                'global' => [
+                    'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+                ],
+            ]
+        );
 
         $this->start_controls_tabs(
             'faq_item_state'
@@ -166,10 +315,35 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
             ]
 
         );
-        color_control($this, 'item_color', 'a.faq-item', ['label' => 'Heading Color']);
-        heading_control($this, 'item_header_bg', ['label' => 'Background']);
-        background_control($this, 'item_background', '.faq-item', ['label' => 'Background']);
-        border_control($this, 'item_border', '.faq-item', ['label' => 'Border']);
+        $this->add_control('item_color', [
+            'label' => esc_html__('Heading Color', 'mtn'),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'global' => [
+                'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+            ],
+            'selectors' => [
+                '{{WRAPPER}} a.faq-item' => 'color: {{VALUE}}',
+            ],
+        ]);
+        $this->add_control(
+            'item_header_bg',
+            [
+                'label' => esc_html__('Background', 'mtn'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+        $this->add_group_control(\Elementor\Group_Control_Background::get_type(), [
+    'name' => 'item_background',
+    'label' => esc_html__('Background', 'mtn'),
+    'types' => ['classic', 'gradient', 'video'],
+    'selector' => '{{WRAPPER}} .faq-item',
+]);
+        $this->add_group_control(\Elementor\Group_Control_Border::get_type(), [
+    'name' => 'item_border',
+    'label' => esc_html__('Border', 'mtn'),
+    'selector' => '{{WRAPPER}} .faq-item',
+]);
 
         $this->end_controls_tab();
 
@@ -180,10 +354,35 @@ class MTN_Single_Faqs  extends \Elementor\Widget_Base
             ]
 
         );
-        color_control($this, 'item_color_hover', 'a.faq-item:hover', ['label' => 'Heading Color']);
-        heading_control($this, 'item_header_bg_hover', ['label' => 'Background']);
-        background_control($this, 'item_background_hover', '.faq-item:hover', ['label' => 'Background']);
-        border_control($this, 'item_border_hover', '.faq-item:hover', ['label' => 'Border']);
+        $this->add_control('item_color_hover', [
+            'label' => esc_html__('Heading Color', 'mtn'),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'global' => [
+                'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+            ],
+            'selectors' => [
+                '{{WRAPPER}} a.faq-item:hover' => 'color: {{VALUE}}',
+            ],
+        ]);
+        $this->add_control(
+            'item_header_bg_hover',
+            [
+                'label' => esc_html__('Background', 'mtn'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+        $this->add_group_control(\Elementor\Group_Control_Background::get_type(), [
+    'name' => 'item_background_hover',
+    'label' => esc_html__('Background', 'mtn'),
+    'types' => ['classic', 'gradient', 'video'],
+    'selector' => '{{WRAPPER}} .faq-item:hover',
+]);
+        $this->add_group_control(\Elementor\Group_Control_Border::get_type(), [
+    'name' => 'item_border_hover',
+    'label' => esc_html__('Border', 'mtn'),
+    'selector' => '{{WRAPPER}} .faq-item:hover',
+]);
 
         $this->end_controls_tab();
         $this->end_controls_tabs();

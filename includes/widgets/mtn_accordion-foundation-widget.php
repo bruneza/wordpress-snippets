@@ -74,8 +74,25 @@ class MTN_Accordion_Foundation  extends \Elementor\Widget_Base
 
 		$repeater = new \Elementor\Repeater();
 
-		text_control($repeater, 'title', 'Title');
-		editor_control($repeater, 'description', 'Description');
+		$repeater->add_control(
+			'title',
+			[
+				'label' => esc_html__( 'Title', 'mtn' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'Default title', 'mtn' ),
+				'placeholder' => esc_html__( 'Type your title here', 'mtn' ),
+			]
+		);
+
+		$repeater->add_control(
+			'description',
+			[
+				'label' => esc_html__( 'Description', 'mtn' ),
+				'type' => \Elementor\Controls_Manager::WYSIWYG,
+				'default' => esc_html__( 'Default description', 'mtn' ),
+				'placeholder' => esc_html__( 'Type your description here', 'mtn' ),
+			]
+		);
 
 		$this->add_control(
 			'mtn_accordion',
@@ -103,13 +120,86 @@ class MTN_Accordion_Foundation  extends \Elementor\Widget_Base
 			]
 		);
 
-		padding_control($this, 'box_padding', 'Box Padding', '.section-navigator');
-		box_shadow_control($this, 'Box Shadow', '.section-navigator');
-		border_radius_control($this, 'tab_border_radius', '.section-navigator');
-		heading_control($this, 'tab_item_heading', 'Item Style');
-		padding_control($this, 'tab_item_padding', 'Padding', '.accordion-tab-btn');
-		border_radius_control($this, 'item_border_radius', '.accordion-tab-btn');
-		typography_control($this, 'item_typography', '.accordion-tab-btn');
+		$this->add_responsive_control(
+            'box_padding',
+            [
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'label' => esc_html__('Box Padding', 'mtn'),
+                'size_units' => ['px', 'em', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .section-navigator' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'box_shadow',
+				'label' => esc_html__( 'Box Shadow', 'mtn' ),
+				'selector' => '{{WRAPPER}} .section-navigator',
+			]
+		);
+
+		$this->add_responsive_control(
+            'tab_border_radius',
+            [
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'label' => esc_html__('Border Radius', 'mtn'),
+                'size_units' => ['px', 'em', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .section-navigator' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+
+		$this->add_control(
+            'tab_item_heading',
+            [
+                'label' => esc_html__('Item Style', 'mtn'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+
+		$this->add_responsive_control(
+            'tab_item_padding',
+            [
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'label' => esc_html__('Padding', 'mtn'),
+                'size_units' => ['px', 'em', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .accordion-tab-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+
+		$this->add_responsive_control(
+            'item_border_radius',
+            [
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'label' => esc_html__('Border Radius', 'mtn'),
+                'size_units' => ['px', 'em', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .accordion-tab-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ]
+			]
+        );
+
+		$this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'item_typography',
+                'global' => [
+                    'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+                ],
+                'selector' => '{{WRAPPER}} .accordion-tab-btn',
+			]
+        );
 
 		$this->start_controls_tabs(
 			'accordion_item_state'
@@ -123,8 +213,32 @@ class MTN_Accordion_Foundation  extends \Elementor\Widget_Base
 
 		);
 
-		background_control($this, 'background', 'Background', '.accordion-tab-btn');
-		color_control($this, 'item_color', 'Item Color', '.accordion-tab-btn');
+
+		$this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'background',
+                'label' => esc_html__('Background', 'mtn'),
+                'types' => ['classic', 'gradient', 'video'],
+                'selector' => '{{WRAPPER}} .accordion-tab-btn',
+                'exclude' => [
+                    // eg: image
+                ]
+            ]
+        );
+		$this->add_control(
+            'item_color',
+            [
+                'label' => esc_html__('Item Color', 'mtn'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'global' => [
+                    'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .accordion-tab-btn' => 'color: {{VALUE}}',
+                ],
+            ]
+        );
 		$this->end_controls_tab();
 		$this->start_controls_tab(
 			'item_hover_state',
@@ -134,8 +248,34 @@ class MTN_Accordion_Foundation  extends \Elementor\Widget_Base
 
 		);
 
-		background_control($this, 'hover_background', 'Background', '.accordion-tab-btn:hover');
-		color_control($this, 'item_hover_color', 'Item Color', '.accordion-tab-btn:hover');
+		// background_control($this, 'hover_background', '.accordion-tab-btn:hover', ['label' => 'Background']);
+
+		$this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'hover_background',
+                'label' => esc_html__('Background', 'mtn'),
+                'types' => ['classic', 'gradient', 'video'],
+                'selector' => '{{WRAPPER}} .accordion-tab-btn:hover',
+                'exclude' => [
+                    // eg: image
+                ]
+            ]
+        );
+
+		$this->add_control(
+            'item_hover_color',
+            [
+                'label' => esc_html__('Item Color', 'mtn'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'global' => [
+                    'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .accordion-tab-btn:hover' => 'color: {{VALUE}}',
+                ],
+            ]
+        );
 
 		$this->end_controls_tab();
 		$this->start_controls_tab(
@@ -146,8 +286,33 @@ class MTN_Accordion_Foundation  extends \Elementor\Widget_Base
 
 		);
 
-		background_control($this, 'active_background', 'Background', '.accordion-tab-btn.active');
-		color_control($this, 'item_active_color', 'Item Color', '.accordion-tab-btn.active');
+		
+		$this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'active_background',
+                'label' => esc_html__('Background', 'mtn'),
+                'types' => ['classic', 'gradient', 'video'],
+                'selector' => '{{WRAPPER}} .accordion-tab-btn.active',
+                'exclude' => [
+                    // eg: image
+                ]
+            ]
+        );
+
+		$this->add_control(
+            'item_active_color',
+            [
+                'label' => esc_html__('Item active Color', 'mtn'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'global' => [
+                    'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .accordion-tab-btn.active' => 'color: {{VALUE}}',
+                ],
+            ]
+        );
 
 		$this->end_controls_tab();
 		$this->end_controls_tabs();
@@ -161,11 +326,57 @@ class MTN_Accordion_Foundation  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
-		background_control($this, 'content_background', 'Background', '.tab-content');
-		color_control($this, 'content_color', 'Item Color', '.tab-content');
-		typography_control($this, 'content_typography', '.tab-content .tab-pane *');
-		padding_control($this, 'content_padding', 'Padding', '.tab-content');
 
+		$this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'content_background',
+                'label' => esc_html__('Background', 'mtn'),
+                'types' => ['classic', 'gradient', 'video'],
+                'selector' => '{{WRAPPER}} .tab-content',
+                'exclude' => [
+                    // eg: image
+                ]
+            ]
+        );
+
+		$this->add_control(
+            'content_color',
+            [
+                'label' => esc_html__('Item Color', 'mtn'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'global' => [
+                    'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .tab-content' => 'color: {{VALUE}}',
+                ],
+            ]
+        );
+
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'content_typography',
+                'global' => [
+                    'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+                ],
+                'selector' => '{{WRAPPER}} .tab-content .tab-pane *',
+            ]
+        );
+
+		$this->add_responsive_control(
+            'content_padding',
+            [
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'label' => esc_html__('Padding', 'mtn'),
+                'size_units' => ['px', 'em', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .tab-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
 
 		$this->end_controls_section();
 	}

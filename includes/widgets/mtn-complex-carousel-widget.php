@@ -220,7 +220,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'label' => esc_html__('Grid Padding', 'mtn'),
 				'size_units' => ['px', 'em', '%'],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}}.complex-column-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-column-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -351,7 +351,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 		// Content Title
-		$this->add_control(
+		$contentRepeater->add_control(
 			'show_grid_title',
 			[
 				'label' => esc_html__('Show Title', 'mtn'),
@@ -411,8 +411,21 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 
+		$contentRepeater->add_control(
+			'btn_icon',
+			[
+				'label' => esc_html__('Button Icon', 'mtn'),
+				'type' => \Elementor\Controls_Manager::ICONS,
+				'default' => [
+					'value' => 'fas fa-chevron-right',
+					'library' => 'fa-solid',
+				],
+				'fa4compatibility' => 'icon',
+			]
+		);
+
 		// Content Excerpt
-		$this->add_control(
+		$contentRepeater->add_control(
 			'show_grid_excerpt',
 			[
 				'label' => esc_html__('Show Excerpt', 'mtn'),
@@ -472,7 +485,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 		);
 
 		// Content Button
-		$this->add_control(
+		$contentRepeater->add_control(
 			'show_grid_button',
 			[
 				'label' => esc_html__('Show Button', 'mtn'),
@@ -557,7 +570,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			'carousel_settings_section',
 			[
 				'label' => esc_html__('Carousel Settings', 'mtn'),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
 
@@ -766,12 +779,210 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'name' => 'item_container_backgound',
 				'label' => esc_html__('Background', 'mtn'),
 				'types' => ['classic', 'gradient', 'video'],
-				'selector' => '{{WRAPPER}} .complex-column-item',
+				'selector' => '{{WRAPPER}} .complex-column-wrapper',
 				'exclude' => [
 					// eg: image
 				]
 			]
 		);
+
+		// ANCHOR: Complex Carousel -Grid Divider
+
+		$this->add_control(
+			'grid_divider_heading',
+			[
+				'label' => esc_html__('Grids Item Container', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->start_controls_tabs('tabs_divider_types');
+		$this->start_controls_tab(
+			'tab_top_divider',
+			[
+				'label' => esc_html__('Top', 'mtn'),
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_top_divider_type',
+			[
+				'label' => esc_html__('Type', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'none',
+				'options' => [
+					'none' => 'None',
+					'curve' => 'Curve',
+				],
+			]
+		);
+
+		$this->add_control(
+			'top_divider_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bru-divDivider-top .shape-fill' => 'fill: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_topDivider_width',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Width', 'mtn'),
+				'size_units' => ['%'],
+				'range' => [
+					'%' => [
+						'min' => 100,
+						'max' => 300,
+					],
+				],
+				'default' => [
+					'unit' => '%',
+					'size' => 100,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bru-divDivider-top' => 'width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_topDivider_height',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Width', 'mtn'),
+				'size_units' => ['px'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 500,
+					],
+				],
+				'default' => [
+					'unit' => '%',
+					'size' => 50,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bru-divDivider-top svg' => 'height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'invert_top_divider',
+			[
+				'label' => esc_html__('Invert', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_on' => esc_html__('Show', 'mtn'),
+				'label_off' => esc_html__('Hide', 'mtn'),
+				'return_value' => 'yes',
+			]
+		);
+
+		$this->end_controls_tab();
+		$this->start_controls_tab(
+			'tab_bottom_divider',
+			[
+				'label' => esc_html__('Bottom', 'mtn'),
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_bottom_divider_type',
+			[
+				'label' => esc_html__('Type', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'none',
+				'options' => [
+					'none' => 'None',
+					'curve' => 'Curve',
+				],
+			]
+		);
+
+		$this->add_control(
+			'bottom_divider_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bru-divDivider-top .shape-fill' => 'fill: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_bottomDivider_width',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Width', 'mtn'),
+				'size_units' => ['%'],
+				'range' => [
+					'%' => [
+						'min' => 100,
+						'max' => 300,
+					],
+				],
+				'default' => [
+					'unit' => '%',
+					'size' => 100,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bru-divDivider-bottom' => 'width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'grid_bottomDivider_height',
+			[
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'label' => esc_html__('Width', 'mtn'),
+				'size_units' => ['px'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 500,
+					],
+				],
+				'default' => [
+					'unit' => '%',
+					'size' => 50,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bru-divDivider-bottom svg' => 'height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'invert_bottom_divider',
+			[
+				'label' => esc_html__('Invert', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_on' => esc_html__('Show', 'mtn'),
+				'label_off' => esc_html__('Hide', 'mtn'),
+				'return_value' => 'yes',
+			]
+		);
+
+		$this->end_controls_tab();
+		$this->end_controls_tabs();
+
+
+
+
 
 		$this->end_controls_section();
 
@@ -859,7 +1070,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 		$this->start_controls_section(
 			'post_content_style',
 			[
-				'label' => esc_html__('Carousel Post COntent', 'mtn'),
+				'label' => esc_html__('Carousel Post Content', 'mtn'),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -1045,8 +1256,15 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'label' => esc_html__('Hover', 'elementor'),
 			]
 		);
-
-		background_control($this, 'dot_active_background', '.owl-dots .active span', ['label' => 'Dot Background']);
+		$this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'dot_active_background',
+                'label' => esc_html__('Background', 'mtn'),
+                'types' => ['classic', 'gradient', 'video'],
+                'selector' => '{{WRAPPER}} .owl-dots .active span',
+            ]
+        );
 		$this->add_group_control(
 			\Elementor\Group_Control_Background::get_type(),
 			[
@@ -1099,10 +1317,11 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 		$posts = postsRender($settings, null, $neededFields, array('skip_nothumbnail' => true));
 		$grid_cols = $settings['content_grid_cols'];
 		$grid_col_count = count($grid_cols);
+		$invert = null;
 		if (isset($grid_col_count) && isset($posts))
 			$posts = array_chunk($posts, $grid_col_count);
 
-		// print_r(get_posts($args));
+		// print_r($settings['invert_top_divider']);
 ?>
 
 
@@ -1141,25 +1360,52 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 		foreach ($posts as $key => $innerPosts) {
 			echo '<div class="complex-carousel-row">';
 			foreach ($innerPosts as $innerKey => $post) {
+				$btnIcon =  processSingleIcon($grid_cols[$innerKey]['btn_icon']);
+				// print_r($grid_cols[$innerKey]['btn_icon']);
 		?>
-				<div class="complex-column-item elementor-repeater-item-<?= $grid_cols[$innerKey]['_id']; ?>">
-					<?php if ($grid_cols[$innerKey]['custom_img_display'] != 'hide_display') { ?>
-						<div class="complex-grid-img-container">
-							<img class="complex-col-img" src="<?= $post['thumbnail']; ?>" />
-						</div>
-					<?php } ?>
-					<?php if ($grid_cols[$innerKey]['show_grid_content'] != 'hide_display') { ?>
-						<div class="complex-grid-col-content overlay-content">
-							<?php
-							if (isset($post['title']))
-								echo '<h3>' . $post['title'] . '</h3>';
-							if (isset($post['excerpt']))
-								echo '<P>' . $post['excerpt'] . '</P>';
-							if (isset($post['post-link']))
-								echo '<a class ="btn-white btn" href="' . $post['post-link'] . '"> Read More</a>'; ?>
-						</div>
-					<?php } ?>
 
+				<div class="complex-column-item elementor-repeater-item-<?= $grid_cols[$innerKey]['_id']; ?>">
+					<div class="complex-column-wrapper">
+						<?php
+						if (isset($settings['grid_top_divider_type'])) {
+							if ($settings['grid_top_divider_type'] != 'none') {
+								if ($settings['invert_top_divider'] == 'yes')
+									$invert = 'transform: rotate(180deg);';
+						?>
+								<div class="bru-divDivider bru-divDivider-top" style=" font-size:auto; <?= $invert; ?>"><?= bruShapeDivider($settings['grid_top_divider_type']); ?></div>
+						<?php
+							}
+						}
+						?>
+
+						<div class="complex-item-wrapper">
+							<?php if ($grid_cols[$innerKey]['custom_img_display'] != 'hide_display') { ?>
+								<div class="complex-grid-img-container">
+									<img class="complex-col-img" src="<?= $post['thumbnail']; ?>" />
+								</div>
+							<?php } ?>
+							<?php if ($grid_cols[$innerKey]['show_grid_content'] != 'hide_display') { ?>
+								<div class="complex-grid-col-content overlay-content">
+									<?php
+									if (isset($post['title']))
+										echo '<h3>' . $post['title'] . '</h3>';
+									if (isset($post['excerpt']))
+										echo '<P>' . $post['excerpt'] . '</P>';
+									if (isset($post['post-link']))
+										echo '<a class ="btn-white btn" href="' . $post['post-link'] . '">
+								<span>Read More </span>' . $btnIcon . '</a>'; ?>
+								</div>
+							<?php } ?>
+						</div>
+						<?php
+						if (isset($settings['grid_bottom_divider_type'])) {
+							if ($settings['grid_bottom_divider_type'] != 'none') {
+								if ($settings['invert_bottom_divider'] == 'yes') $binvert = 'transform: rotate(180deg);';
+								echo '<div class="bru-divDivider bru-divDivider-bottom" style =" font-size:auto; ' . $binvert . '"> ' . bruShapeDivider($settings['grid_bottom_divider_type']) . '</div>';
+							}
+						}
+						?>
+					</div>
 				</div>
 <?php
 

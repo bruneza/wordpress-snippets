@@ -10,12 +10,45 @@
            return $(this).prev();
         });
 
-        // $('.mtn-award-img .elementor-image-box-description').insertBefore( function() {
-        //    return $(this).parent();
-        // });
-        $(document).ready(function() {
+        var menuIndex; 
+        var selectedMega;
+
+            /*$('.mtn-megamenu-link-secion .menu-item').hover(function() {
+                menuIndex = $(this).index()+1;
+                selectedMega = ".mtn-megamenu-content-" + menuIndex;
+                $(selectedMega).addClass("active");
+            },function() {
+
+                $(selectedMega).mouseenter(function() {
+                    $(selectedMega).show();
+                });
+
+                $(selectedMega).removeClass("active");
+            }); */
+
+           /* $('.mtn-megamenu-link-secion .menu-item').mouseenter(function() {
+
+                menuIndex = $(this).index()+1;
+                selectedMega = ".mtn-megamenu-content-" + menuIndex;
+                $(selectedMega).addClass("active");
+
+            }).mouseleave(function() {      
+                $(selectedMega).mouseenter(function(){
+                    $(selectedMega).css("background","yellow");
+                }).mouseleave(function(){
+                    $(selectedMega).css("background","blue");
+                });
+                $(selectedMega).removeClass("active");
+            });*/
+
             
-        });
+
+            
+            
+        //     function(){
+        //         
+        // });
+
 
     });
     

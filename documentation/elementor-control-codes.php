@@ -84,19 +84,19 @@ class Elementor_controls_Widget  extends \Elementor\Widget_Base
         // ANCHOR: Code - Select2_control
 
         $this->add_control(
-			'show_elements',
-			[
-				'label' => esc_html__( 'Show Elements', 'mtn' ),
-				'type' => \Elementor\Controls_Manager::SELECT2,
-				'multiple' => true,
-				'options' => [
-					'title'  => esc_html__( 'Title', 'mtn' ),
-					'description' => esc_html__( 'Description', 'mtn' ),
-					'button' => esc_html__( 'Button', 'mtn' ),
-				],
-				'default' => [ 'title', 'description' ],
-			]
-		);
+            'show_elements',
+            [
+                'label' => esc_html__('Show Elements', 'mtn'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'multiple' => true,
+                'options' => [
+                    'title'  => esc_html__('Title', 'mtn'),
+                    'description' => esc_html__('Description', 'mtn'),
+                    'button' => esc_html__('Button', 'mtn'),
+                ],
+                'default' => ['title', 'description'],
+            ]
+        );
         // ANCHOR: Code - heading_control
         $this->add_control(
             'code_control_key',
@@ -104,9 +104,6 @@ class Elementor_controls_Widget  extends \Elementor\Widget_Base
                 'label' => esc_html__('code_control_label', 'mtn'),
                 'type' => \Elementor\Controls_Manager::HEADING,
                 'separator' => 'before',
-                'condition' => [
-                    // condition goes here
-                ],
             ]
         );
 
@@ -149,9 +146,6 @@ class Elementor_controls_Widget  extends \Elementor\Widget_Base
                     'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
                 ],
                 'selector' => '{{WRAPPER}} .title',
-                'condition' => [
-                    // condition goes here
-                ],
             ]
         );
 
@@ -195,45 +189,70 @@ class Elementor_controls_Widget  extends \Elementor\Widget_Base
         // ANCHOR: Code - text_control
 
         $this->add_control(
-			'widget_title',
-			[
-				'label' => esc_html__( 'Title', 'mtn' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => esc_html__( 'Default title', 'mtn' ),
-				'placeholder' => esc_html__( 'Type your title here', 'mtn' ),
-			]
-		);
+            'widget_title',
+            [
+                'label' => esc_html__('Title', 'mtn'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => esc_html__('Default title', 'mtn'),
+                'placeholder' => esc_html__('Type your title here', 'mtn'),
+            ]
+        );
         // ANCHOR: Code - Editor_control
 
         $this->add_control(
-			'item_description',
-			[
-				'label' => esc_html__( 'Description', 'mtn' ),
-				'type' => \Elementor\Controls_Manager::WYSIWYG,
-				'default' => esc_html__( 'Default description', 'mtn' ),
-				'placeholder' => esc_html__( 'Type your description here', 'mtn' ),
-			]
-		);
+            'item_description',
+            [
+                'label' => esc_html__('Description', 'mtn'),
+                'type' => \Elementor\Controls_Manager::WYSIWYG,
+                'default' => esc_html__('Default description', 'mtn'),
+                'placeholder' => esc_html__('Type your description here', 'mtn'),
+            ]
+        );
         // ANCHOR: Code - box_shadow_control
 
         $this->add_group_control(
-			\Elementor\Group_Control_Box_Shadow::get_type(),
-			[
-				'name' => 'box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'mtn' ),
-				'selector' => '{{WRAPPER}} .your-class',
-			]
-		);
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'box_shadow',
+                'label' => esc_html__('Box Shadow', 'mtn'),
+                'selector' => '{{WRAPPER}} .your-class',
+            ]
+        );
         // ANCHOR: Code - number_control
         $this->add_control(
-			'number',
-			[
-				'label' => esc_html__( 'Price', 'textdomain' ),
-				'type' => \Elementor\Controls_Manager::NUMBER,
-				'default' => 10,
-			]
-		);
-        // ANCHOR: Code - _control
+            'number',
+            [
+                'label' => esc_html__('Price', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 10,
+            ]
+        );
+
+        // ANCHOR: Code - icon_control
+        $this->add_control(
+            'icon',
+            [
+                'label' => esc_html__('Icon', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::ICONS,
+                'default' => [
+                    'value' => 'fas fa-circle',
+                    'library' => 'fa-solid',
+                ],
+                'recommended' => [
+                    'fa-solid' => [
+                        'circle',
+                        'dot-circle',
+                        'square-full',
+                    ],
+                    'fa-regular' => [
+                        'circle',
+                        'dot-circle',
+                        'square-full',
+                    ],
+                ],
+            ]
+        );
+
         // ANCHOR: Code - _control
         // ANCHOR: Code - _control
         // ANCHOR: Code - _control
@@ -243,16 +262,16 @@ class Elementor_controls_Widget  extends \Elementor\Widget_Base
 
         // ANCHOR: Code - Tabs_control
         $this->start_controls_tabs('tabs_dot_style');
-            $this->start_controls_tab(
-                'tab_dot_normal',
-                [
-                    'label' => esc_html__('Normal', 'elementor'),
-                ]
-            );
+        $this->start_controls_tab(
+            'tab_dot_normal',
+            [
+                'label' => esc_html__('Normal', 'elementor'),
+            ]
+        );
 
-            // COntrols here
+        // COntrols here
 
-            $this->end_controls_tab();
+        $this->end_controls_tab();
         $this->end_controls_tabs();
 
 

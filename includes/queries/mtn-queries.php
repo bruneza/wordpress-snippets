@@ -93,26 +93,6 @@ function mtnTerms($postType = 'post', $taxonomy = null, $termsArray = null, $ign
     return apply_filters('mtn_term_options', $output, $postType);
 }
 
-function mtn_terms_options($postType = 'post')
-{
-
-
-    $terms = mtnTerms($postType);
-
-    $output['all_terms'] = 'All';
-
-    if ($postType == 'kura_videos') {
-        foreach ($terms as $slug => $term) {
-            $output[$slug] = $term['name'];
-        }
-    } else {
-        foreach ($terms as $slug => $term) {
-            $output[$term['taxonomy'] . ':/:' . $slug] = esc_html($term['label'] . ': ' . $term['name']);
-        }
-    }
-
-    return apply_filters('mtn_term_options', $output, $postType);
-}
 
 function getPostTerms($post_id, $taxonomy = null)
 {
@@ -216,16 +196,18 @@ function processOutput($query =null)
         $output['post-link'] = get_permalink();
         $output['date'] = esc_attr(get_the_date());
         $output['posted-date'] = esc_html($initDate);
-        $output['cpt-description'] = meta_validator($post_id, '_mtn_description');
-        $output['cpt-jobtitle'] = meta_validator($post_id, '_mtn_job_title');
-        $output['cpt-linkedin'] = meta_validator($post_id, '_mtn_linkdin_url');
 
+        if ($output['post_type'] == 'mtn_documents' || isset($arg)) {
+            $output['doc_info'] = meta_validator($post_id, 'document__pdf');
+            $output['doc_category'] = getPostTerms($post_id, array('mtn_documentscategory'));
+        }
         if ($output['post_type'] == 'job_listing' || isset($arg)) {
             $output['location'] = get_the_job_location($post_id);
             $output['deadline'] = meta_date_validator($post_id, '_job_expires');
         }
         if ($output['post_type'] == 'mtn_teams' || isset($arg)) {
             $output['job-title'] = meta_validator($post_id, '_mtn_job_title');
+            $output['cpt-linkedin'] = meta_validator($post_id, '_mtn_linkdin_url');
         }
         if ($output['post_type'] == 'mtn_products' || isset($arg)) {
             $output['storage'] = meta_validator($post_id, '_mtn_storage');
@@ -420,6 +402,7 @@ function meta_date_validator($post_id, $field, $format = 'd M Y')
  * @param  mixed $key
  * @param  mixed $res
  * @return void
+ * 
  */
 function find_key($array, $key, $res = array())
 {
@@ -448,11 +431,12 @@ function find_key($array, $key, $res = array())
  * 
  * Check if Array is Associative Array or sequential
  *
- * @param  {Array} $array - Array to check
+ * @param  {Array} $array
  * 
  * @return void
  * 
  **/
+
 function is_associative($array = array())
 {
     if (array_keys($array) !== range(0, count($array) - 1))
@@ -487,6 +471,49 @@ function processIcon($settings)
             $output[$key] = '<i aria-hidden="true" class="' . $value . '"></i>';
         }
     }
+}
+
+function processSingleIcon($array)
+{
+        $value = $array['value'];
+        $library = $array['library'];
+        $output = null;
+
+        if (empty($library)) {
+            return false;
+        }
+
+        if ('svg' === $library) {
+            if (!isset($value['id'])) return '';
+
+            $output = get_post_meta($value['id'], '_elementor_inline_svg', true);
+        } else {
+            $output = '<i aria-hidden="true" class="' . $value . '"></i>';
+        }
 
     return apply_filters('post_filter_icon', $output);
 }
+
+// ANCHOR: Custom Designs
+
+function bruShapeDivider($shape) {
+    
+    if ($shape == 'curve') {
+    ?>
+    <svg data-name="shape-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z" class="shape-fill"></path>
+    </svg>
+    <?php
+    }
+}
+
+// ANCHOR: Count to a specific point
+function count_to($number =10){
+    $count = range(1, $number);
+   $count = array_combine($count, $count);
+
+   return $count;
+}
+
+
+// MANUAL

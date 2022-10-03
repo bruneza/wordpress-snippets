@@ -95,19 +95,104 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 		);
 
 		// Title Style
-		heading_control($this, 'title_heading',['label'=>'Title']);
-		color_control($this, 'title_color', '.team-member-name',['label'=>'Title Color']);
-		typography_control($this, 'title_typography', '.team-member-name');
+		$this->add_control(
+			'title_heading',
+			[
+				'label' => esc_html__('Title', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_control(
+			'title_color',
+			[
+				'label' => esc_html__('Title Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .team-member-name' => 'color: {{VALUE}}',
+				],
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'title_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} .team-member-name',
+			]
+		);
 
 		// Job Title Style
-		heading_control($this, 'job_title_heading',['label'=>'Job Title']);
-		color_control($this, 'job_color',  '.job-title',['label'=>'Job Title Color']);
-		typography_control($this, 'job_typography', '.job-title');
+		$this->add_control(
+			'job_title_heading',
+			[
+				'label' => esc_html__('Job Title', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'job_color',
+			[
+				'label' => esc_html__('Job Title Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .job-title' => 'color: {{VALUE}}',
+				],
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'job_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} .job-title',
+			]
+		);
 
 		// Excerpt Style
-		heading_control($this, 'excerpt_title_heading', ['label'=>'Excerpt']);
-		color_control($this, 'excerpt_color', '.team-excerpt',['label'=>'Excerpt Color']);
-		typography_control($this, 'excerpt_typography', '.team-excerpt');
+		$this->add_control(
+			'excerpt_title_heading',
+			[
+				'label' => esc_html__('Excerpt', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_control(
+			'excerpt_color',
+			[
+				'label' => esc_html__('Excerpt Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .team-excerpt' => 'color: {{VALUE}}',
+				],
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'excerpt_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} .team-excerpt',
+			]
+		);
 
 		$this->end_controls_section();
 		$this->start_controls_section(
@@ -119,38 +204,304 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 		);
 
 		// Modal Grid Style
-		heading_control($this, 'modal_grid_heading', ['label'=>'Modal Grid']);
-		background_control($this, 'modal_background','.mtn-modal-body', ['image'], ['label'=>'Modal Background']);
-		border_control($this, 'modal_border', '.mtn-modal-body', ['label'=>'Modal Border']);
-		border_radius_control($this, 'modal_border_radius', '.mtn-modal-body');
-		slider_control($this, 'modal_grid_height', ['.mtn-modal-dialog', 'height'], ['label'=>'Height','default'=>100]);
-		slider_control($this, 'modal_grid_width',['.mtn-modal-dialog', 'width'], ['label'=>'Width','default'=>100]);
+		$this->add_control(
+			'modal_grid_heading',
+			[
+				'label' => esc_html__('Modal Grid', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'modal_background',
+				'label' => esc_html__('Modal Background', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .mtn-modal-body',
+				'exclude' => [
+					'image'
+				]
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name' => 'modal_border',
+				'selector' => '{{WRAPPER}} .mtn-modal-body',
+			]
+		);
+		$this->add_responsive_control(
+			'modal_border_radius',
+			[
+				'label' => esc_html__('Border Radius', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .mtn-modal-body' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				]
+			]
+		);
+		$this->add_responsive_control(
+			'modal_grid_height',
+			[
+				'label' => esc_html__('Height', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => ['%', 'px'],
+				'default' => [
+					'unit' => 'px',
+					'size' => 100
+				],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .mtn-modal-dialog' => 'height: {{SIZE}}{{UNIT}}',
+				],
+
+			]
+		);
+
+		$this->add_responsive_control(
+			'modal_grid_width',
+			[
+				'label' => esc_html__('Width', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => ['%', 'px'],
+				'default' => [
+					'unit' => 'px',
+					'size' => 100
+				],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .mtn-modal-dialog' => 'width: {{SIZE}}{{UNIT}}',
+				],
+
+			]
+		);
 
 		// Modal Image Column
-		heading_control($this, 'modal_image_heading', ['label'=>'Modal Image Column']);
-		slider_control($this, 'modal_image_column_width', ['.team-member-img', 'max-width'], ['label'=>'Width','default'=>100]);
+		$this->add_control(
+			'modal_image_heading',
+			[
+				'label' => esc_html__('Modal Image Column', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_responsive_control(
+			'modal_image_column_width',
+			[
+				'label' => esc_html__('Width', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => ['%', 'px'],
+				'default' => [
+					'unit' => 'px',
+					'size' => 100
+				],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .team-member-img' => 'max-width: {{SIZE}}{{UNIT}}',
+				],
+
+			]
+		);
 
 		// Modal Content Column
-		heading_control($this, 'modal_content_heading', ['label'=>'Modal Content Column']);
-		padding_control($this, 'modal_content_padding',  '.team-member-info', ['label'=>'Padding']);
-
+		$this->add_control(
+			'modal_content_heading',
+			[
+				'label' => esc_html__('Modal Content Column', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_responsive_control(
+			'modal_content_padding',
+			[
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'label' => esc_html__('Padding', 'mtn'),
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .team-member-info' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				]
+			]
+		);
 
 		// Title Style
-		heading_control($this, 'modal_title_heading', ['label'=>'Title']);
-		color_control($this, 'modal_title_color', '.modal-member-name', ['label'=>'Title Color']);
-		typography_control($this, 'modal_title_typography', '.modal-member-name');
-		slider_control($this, 'modal_title_spacing',  ['.modal-member-name', 'margin-bottom'], ['label'=>'Spacing','default'=>20]);
+		$this->add_control(
+			'modal_title_heading',
+			[
+				'label' => esc_html__('Title', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_control(
+			'modal_title_color',
+			[
+				'label' => esc_html__('Title Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .modal-member-name' => 'color: {{VALUE}}',
+				],
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'modal_title_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} .modal-member-name',
+			]
+		);
+		$this->add_responsive_control(
+			'modal_title_spacing',
+			[
+				'label' => esc_html__('Spacing', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => ['%', 'px'],
+				'default' => [
+					'unit' => 'px',
+					'size' => 20
+				],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .modal-member-name' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+				],
+
+			]
+		);
 
 		// Job Title Style
-		heading_control($this, 'modal_job_title_heading',  ['label'=>'Job Position']);
-		color_control($this, 'modal_job_color',  '.modal-member-position', ['label'=>'Color']);
-		typography_control($this, 'modal_job_typography', '.modal-member-position');
-		slider_control($this, 'modal_job_spacing',  ['.modal-member-position', 'margin-bottom'], ['label'=>'Spacing','default'=>20]);
+		$this->add_control(
+			'modal_job_title_heading',
+			[
+				'label' => esc_html__('Job Position', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_control(
+			'modal_job_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .modal-member-position' => 'color: {{VALUE}}',
+				],
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'modal_job_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} .modal-member-position',
+			]
+		);
+		$this->add_responsive_control(
+			'modal_job_spacing',
+			[
+				'label' => esc_html__('Spacing', 'mtn'),
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => ['%', 'px'],
+				'default' => [
+					'unit' => 'px',
+					'size' => 20
+				],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .modal-member-position' => 'margin-bottom: {{SIZE}}{{UNIT}}',
+				],
+			]
+		);
 
 		// Excerpt Style
-		heading_control($this, 'content_title_heading',  ['label'=>'Content']);	
-		color_control($this, 'content_color',  '.modal-member-bio', ['label'=>'Excerpt Color']);
-		typography_control($this, 'content_typography', '.modal-member-bio', ['label'=>'Job Title Font']);
+		$this->add_control(
+			'content_title_heading',
+			[
+				'label' => esc_html__('Content', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_control(
+			'content_color',
+			[
+				'label' => esc_html__('Excerpt Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .modal-member-bio' => 'color: {{VALUE}}',
+				],
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'content_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} .modal-member-bio',
+			]
+		);
 
 		$this->end_controls_section();
 
@@ -162,10 +513,39 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 			]
 		);
 
-		
-		typography_control($this, 'socialmedia_typography', '.team-more-btn');
-		border_radius_control($this, 'socialmedia_border_radius', '.team-more-btn');
-		padding_control($this, 'socialmedia_padding', '.team-more-btn', ['label'=>'Padding']);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'socialmedia_typography',
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector' => '{{WRAPPER}} .team-more-btn',
+			]
+		);
+		$this->add_responsive_control(
+			'socialmedia_border_radius',
+			[
+				'label' => esc_html__('Border Radius', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .team-more-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				]
+			]
+		);
+		$this->add_responsive_control(
+			'socialmedia_padding',
+			[
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'label' => esc_html__('Padding', 'mtn'),
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .team-more-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				]
+			]
+		);
 
 		// STATE TABS
 		$this->start_controls_tabs('tabs_dot_style');
@@ -177,9 +557,38 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 			]
 		);
 
-		color_control($this, 'socialmedia_color', 'Color', '.team-more-btn');
-		background_control($this, 'socialmedia_background',  '.team-more-btn', ['image'], ['label'=>'Button Background']);
-		border_control($this, 'socialmedia_border', '.team-more-btn', ['label'=>'Border']);
+		$this->add_control(
+			'socialmedia_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .team-more-btn' => 'color: {{VALUE}}',
+				],
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'socialmedia_background',
+				'label' => esc_html__('Button Background', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .team-more-btn',
+				'exclude' => [
+					'image'
+				]
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name' => 'socialmedia_border',
+				'selector' => '{{WRAPPER}} .team-more-btn',
+			]
+		);
 
 		$this->end_controls_tab();
 		// Hover State
@@ -189,9 +598,38 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 				'label' => esc_html__('Hover', 'elementor'),
 			]
 		);
-		color_control($this, 'socialmedia_hover_color', '.team-more-btn:hover', ['label'=>'Color']);
-		background_control($this, 'socialmedia_hover_background', '.team-more-btn:hover', ['image'], ['label'=>'Button Background']);
-		border_control($this, 'socialmedia_hover_border',  '.team-more-btn:hover', ['label'=>'Border']);
+		$this->add_control(
+			'socialmedia_hover_color',
+			[
+				'label' => esc_html__('Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'global' => [
+					'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Colors::COLOR_PRIMARY,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .team-more-btn:hover' => 'color: {{VALUE}}',
+				],
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'socialmedia_hover_background',
+				'label' => esc_html__('Button Background', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .team-more-btn:hover',
+				'exclude' => [
+					'image'
+				]
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name' => 'socialmedia_hover_border',
+				'selector' => '{{WRAPPER}} .team-more-btn:hover',
+			]
+		);
 
 		$this->end_controls_tab();
 		$this->end_controls_tabs();
@@ -202,8 +640,8 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 	protected function render()
 	{
 		$settings = $this->get_settings_for_display();
-		$neededFields =  ['id', 'thumbnail', 'title', 'cpt-jobtitle', 'excerpt', 'post-link', 'content', 'job-title'];
-		$posts = postsRender($settings, null, $neededFields);
+		$neededFields =  ['id', 'thumbnail', 'title', 'excerpt', 'post-link', 'content', 'job-title'];
+		$posts = postsRender($settings, ['mtn_team_category'=>$settings['mtn_posts_include_term_ids']], $neededFields);
 
 		/*** Start Content Section ***/
 		echo '
@@ -223,7 +661,7 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 								</div>
 								<div class="col-md-8">
 									<h3 class="team-member-name"><?= $post['title']; ?></h3>
-									<span class="job-title"><?= $post['cpt-jobtitle']; ?></span>
+									<span class="job-title"><?= $post['job-title']; ?></span>
 								</div>
 							</div>
 						</div>

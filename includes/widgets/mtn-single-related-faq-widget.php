@@ -72,7 +72,6 @@ class MTN_Related_Faqs  extends \Elementor\Widget_Base
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
-		select_callback_control($this, 'faq_terms', $label = 'Term / Category', null);
 
 		$this->end_controls_section();
 	}

@@ -87,10 +87,10 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 		$repeater->add_control(
 			'description',
 			[
-				'label' => esc_html__( 'Description', 'textdomain' ),
+				'label' => esc_html__( 'Description', 'mtn' ),
 				'type' => \Elementor\Controls_Manager::WYSIWYG,
-				'default' => esc_html__( 'Default description', 'textdomain' ),
-				'placeholder' => esc_html__( 'Type your description here', 'textdomain' ),
+				'default' => esc_html__( 'Default description', 'mtn' ),
+				'placeholder' => esc_html__( 'Type your description here', 'mtn' ),
 			]
 		);
 
@@ -124,7 +124,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
             'box_padding',
             [
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'label' => esc_html__('Box Padding', 'textdomain'),
+                'label' => esc_html__('Box Padding', 'mtn'),
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
                     '{{WRAPPER}} .section-navigator' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -137,7 +137,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'textdomain' ),
+				'label' => esc_html__( 'Box Shadow', 'mtn' ),
 				'selector' => '{{WRAPPER}} .section-navigator',
 			]
 		);
@@ -146,7 +146,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
             'tab_border_radius',
             [
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'label' => esc_html__('Border Radius', 'textdomain'),
+                'label' => esc_html__('Border Radius', 'mtn'),
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
                     '{{WRAPPER}} .section-navigator' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -158,7 +158,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
 		$this->add_control(
             'tab_item_heading',
             [
-                'label' => esc_html__('Item Style', 'textdomain'),
+                'label' => esc_html__('Item Style', 'mtn'),
                 'type' => \Elementor\Controls_Manager::HEADING,
                 'separator' => 'before',
             ]
@@ -169,7 +169,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
             'tab_item_padding',
             [
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'label' => esc_html__('Padding', 'textdomain'),
+                'label' => esc_html__('Padding', 'mtn'),
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
                     '{{WRAPPER}} .accordion-tab-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -182,7 +182,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
             'item_border_radius',
             [
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'label' => esc_html__('Border Radius', 'textdomain'),
+                'label' => esc_html__('Border Radius', 'mtn'),
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
                     '{{WRAPPER}} .accordion-tab-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -198,6 +198,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
                     'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_PRIMARY,
                 ],
                 'selector' => '{{WRAPPER}} .accordion-tab-btn',
+			]
         );
 
 		$this->start_controls_tabs(
@@ -217,7 +218,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
             \Elementor\Group_Control_Background::get_type(),
             [
                 'name' => 'background',
-                'label' => esc_html__('Background', 'textdomain'),
+                'label' => esc_html__('Background', 'mtn'),
                 'types' => ['classic', 'gradient', 'video'],
                 'selector' => '{{WRAPPER}} .accordion-tab-btn',
                 'exclude' => [
@@ -253,7 +254,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
             \Elementor\Group_Control_Background::get_type(),
             [
                 'name' => 'hover_background',
-                'label' => esc_html__('Background', 'textdomain'),
+                'label' => esc_html__('Background', 'mtn'),
                 'types' => ['classic', 'gradient', 'video'],
                 'selector' => '{{WRAPPER}} .accordion-tab-btn:hover',
                 'exclude' => [
@@ -290,7 +291,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
             \Elementor\Group_Control_Background::get_type(),
             [
                 'name' => 'active_background',
-                'label' => esc_html__('Background', 'textdomain'),
+                'label' => esc_html__('Background', 'mtn'),
                 'types' => ['classic', 'gradient', 'video'],
                 'selector' => '{{WRAPPER}} .accordion-tab-btn.active',
                 'exclude' => [
@@ -330,7 +331,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
             \Elementor\Group_Control_Background::get_type(),
             [
                 'name' => 'content_background',
-                'label' => esc_html__('Background', 'textdomain'),
+                'label' => esc_html__('Background', 'mtn'),
                 'types' => ['classic', 'gradient', 'video'],
                 'selector' => '{{WRAPPER}} .tab-content',
                 'exclude' => [
@@ -369,7 +370,7 @@ class MTN_Accordion  extends \Elementor\Widget_Base
             'content_padding',
             [
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'label' => esc_html__('Padding', 'textdomain'),
+                'label' => esc_html__('Padding', 'mtn'),
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
                     '{{WRAPPER}} .tab-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',

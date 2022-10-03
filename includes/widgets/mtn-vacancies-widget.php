@@ -76,13 +76,25 @@ class MTN_Vacancies  extends \Elementor\Widget_Base
 
 		$this->add_control( 'num_of_columns', 
 		[
-            'label' => esc_html__('Number of Columns', 'textdomain'),
+            'label' => esc_html__('Number of Columns', 'mtn'),
             'type' => \Elementor\Controls_Manager::NUMBER,
             'default' => 3,
         ]
     );
 	
-		text_control($this, 'view_more_btn', ['label' => 'View More Button']);
+	$this->add_control(
+		'view_more_btn',
+		[
+			'label' => esc_html__('View More Button', 'mtn'),
+			'type' => \Elementor\Controls_Manager::TEXT,
+			'label_block' => true,
+			'placeholder' => esc_html__('Enter Value', 'mtn'),
+			'default' => esc_html__('View More', 'mtn'),
+			'dynamic' => [
+				'active' => true,
+			],
+		]
+	);
 		$this->end_controls_section();
 	}
 

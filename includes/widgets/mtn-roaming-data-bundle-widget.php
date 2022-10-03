@@ -80,7 +80,7 @@ class MTN_Roaming_Data_Bundle_Filter  extends \Elementor\Widget_Base
         $this->add_control( 
 			'grid_num_posts',
 		[
-            'label' => esc_html__('Number of Posts', 'textdomain'),
+            'label' => esc_html__('Number of Posts', 'mtn'),
             'type' => \Elementor\Controls_Manager::NUMBER,
             'default' => -1,
         ]
@@ -105,7 +105,6 @@ ini_set('display_errors', 0);
         $Allposts = postsRender($settings,null,$neededFields);
         // $Fieldposts = postsRender($settings,null,null);
         // $posts = postsRender($settings,null,$taxonomy, ['title','deadline','terms','post-link','region']);
-// print_r($planProvider);
        
 
 ?>

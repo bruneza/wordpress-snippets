@@ -265,7 +265,7 @@ class Elementor_controls_Widget  extends \Elementor\Widget_Base
         $this->start_controls_tab(
             'tab_dot_normal',
             [
-                'label' => esc_html__('Normal', 'elementor'),
+                'label' => esc_html__('Normal', 'mtn'),
             ]
         );
 
@@ -297,3 +297,11 @@ class Elementor_controls_Widget  extends \Elementor\Widget_Base
         $this->end_controls_section();
     }
 }
+
+/****
+ * 
+ * 
+ * SECTION: BUTTON  
+ */
+
+ 

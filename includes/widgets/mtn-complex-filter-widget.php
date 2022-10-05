@@ -101,17 +101,6 @@ class MTN_Complex_Filter_Widget  extends \Elementor\Widget_Base
 
 		$this->end_controls_section();
 
-		// Filter Settings
-		$this->start_controls_section(
-			'filter_settings_section',
-			[
-				'label' => esc_html__('Filter Settings', 'mtn'),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
-		);
-
-		$this->end_controls_section();
-
 		// ANCHOR: Complex Filter - Grid Query Controls
 		$this->start_controls_section(
 			'section_query',
@@ -127,7 +116,7 @@ class MTN_Complex_Filter_Widget  extends \Elementor\Widget_Base
 				'name' => 'mtn_posts',
 			]
 		);
-		$this->add_control(
+		/*$this->add_control(
 			'grid_filter_heading',
 			[
 				'label' => esc_html__('Filter By', 'mtn'),
@@ -159,9 +148,10 @@ class MTN_Complex_Filter_Widget  extends \Elementor\Widget_Base
 				'autocomplete' => [
 					'object' => Module_Query::QUERY_OBJECT_CPT_TAX,
 					'display' => 'detailed',
+					'post_type' => 'mtn_posts_post_type'
 				],
 			]
-		);
+		);*/
 
 		$this->end_controls_section();
 
@@ -190,9 +180,8 @@ class MTN_Complex_Filter_Widget  extends \Elementor\Widget_Base
 		// 	$neededFields =  ['post-link'];
 
 		$postType = $settings['mtn_posts_post_type'];
-		$taxonomy = $settings['choose_grid_taxonomy'];
 		$posts = postsRender($settings, null);
-		$terms = mtnTerms($posts, $taxonomy, $settings['mtn_posts_include_term_ids']);
+		$terms = mtnTerms($posts, null, $settings['mtn_posts_include_term_ids']);
 		$selectedKeys = array();
 		
 		/*** Start Content Section ***/

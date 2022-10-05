@@ -116,6 +116,14 @@ h6 {
   grid-gap: 20px;
 }
 
+
+
+/*** HEADER***/
+
+.mtn-bottom-header{
+  width: fit-content;
+  margin: auto;
+}
 /*** MEGAMENU CONTENT***/
 
 .mtn_mega_nav_content{

@@ -97,11 +97,12 @@ ini_set('display_errors', 0);
 
         $settings = $this->get_settings_for_display();
         $postType = $settings['mtn_posts_post_type'] = 'mtn_roamings';
+		$roamingCategories = mtnTerms($postType, 'mtn_roaming_category');
 		$planTaxonomy = mtnTerms($postType, 'mtn_roaming_plans');
 		$planLocation = mtnTerms($postType, 'mtn_roaming_locations');
 		$planProvider = mtnTerms($postType, 'mtn_roaming_providers');
         $neededFields =  ['id','title','package','roaming_price','plan_type','roaming_location','roaming_provider'];
-        $Allposts = postsRender($settings,null,$neededFields);
+        $Allposts = postsRender($settings,array('mtn_roaming_category' => '75'),$neededFields);
         // $Fieldposts = postsRender($settings,null,null);
         // $posts = postsRender($settings,null,$taxonomy, ['title','deadline','terms','post-link','region']);
 // print_r($planProvider);

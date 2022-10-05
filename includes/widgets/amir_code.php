@@ -1,43 +1,73 @@
 <?php
 
-function amir_codes($that)
-{
-    print_r('bruces');
+namespace MTN_FEATURES\Widgets;
 
-    heading_control($that, "style_settings", "Style Settings");
-    padding_control($that, 'grid_padding', "Grid Padding" ,'.mtn-complex-column');
-
-    switcher_control($that, 'show_image', 'Show Image');
-    heading_control($that, "grid_img", "Grid Image Settings");
-    slider_control($that, 'img_hight', 'Set Image Height', ['.mtn-complex-column-img','height'], null);
-
-
-    switcher_control($that, 'show_contents_title', 'Show Title');
-    heading_control($that, "content_title", "Content Title");
-
-    select_callback_control(
-        $that,
-        'title-color-settings',
-        [
-            'default_style' => 'Default',
-            'custom_style' => 'Custom',
-
-        ],
-        [
-            'default' => 'default_style',
-            'label' => 'Title Color Settings',
-            'condition'	=> [
-            'show_contents_title' => 'yes',
-            ]
-            ]
-    );
-
-    typography_control($that, 'content_section_typography', '.mtn-complex-column-content');
-
-	// slider_control($that, 'modal_title_spacing', 'Spacing', ['.modal-member-name', 'margin-bottom'], 20);
-
-
-
-    // select_value_control($that, "grid_column_start",'Grid Column Start', ['.mtn-complex-column','grid-column-start'], 'auto');
-    // select_value_control($that, "grid_column_end",'Grid Column End', ['.mtn-complex-column','grid-column-end'], 'auto');
+if (!defined('ABSPATH')) {
+	exit;
 }
+
+	class MTN_Amiri_Code  extends \Elementor\Widget_Base
+	{
+
+		/**
+		 * Get widget name.
+		 *
+		 * Retrieve test widget name.
+		 *
+		 * @since 1.0.0
+		 * @access public
+		 * @return string Widget name.
+		 */
+		public function get_name()
+		{
+			return 'Amiri Code';
+		}
+		/**
+		 * Get widget title.
+		 *
+		 * Retrieve test widget title.
+		 *
+		 * @since 1.0.0
+		 * @access public
+		 * @return string Widget title.
+		 */
+		public function get_title()
+		{
+			return esc_html__('Amiri Code', 'mtn');
+		}
+
+		/**
+		 * Get widget icon.
+		 *
+		 * Retrieve test widget icon.
+		 *
+		 * @since 1.0.0
+		 * @access public
+		 * @return string Widget icon.
+		 */
+		public function get_icon()
+		{
+			return 'eicon-code';
+		}
+
+		public function get_categories()
+		{
+			return ['basic'];
+		}
+
+
+		private function postType()
+		{
+			return 'post';
+		}
+        
+        protected function render()
+		{
+			?>
+			<div class="title-wrapper">
+			<h1 class="title">Hello</h1>
+			</div>
+
+			<?php
+        }
+    }

@@ -2,10 +2,10 @@
 
 namespace MTN_FEATURES\Widgets;
 
-use ElementorPro\Modules\QueryControl\Module as Module_Query;
 use ElementorPro\Modules\QueryControl\Controls\Group_Control_Related;
 use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
+use \ElementorPro\Modules\QueryControl\Controls\Group_MTN_Query;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -71,195 +71,21 @@ class MTN_Tariffs_Widget  extends \Elementor\Widget_Base
 		$count_to_ten = array_combine($count_to_ten, $count_to_ten);
 
         $this->start_controls_section(
-            'mtn_Tariffs_lists',
+            'tariff_content',
             [
-                'label' => esc_html__('Tariff Lists', 'mtn'),
+                'label' => esc_html__('Tariff Content', 'mtn'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
 
-        $this->add_control(
-            'mtn_tariff_phone',
-            [
-                'label' => esc_html__('Phone Number', 'mtn'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => esc_html__('+25078...', 'mtn'),
-            ]
-        );
-
-        $this->add_control(
-            'mtn_tariff_email',
-            [
-                'label' => esc_html__('Email Contact', 'mtn'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => esc_html__('john@example.com', 'mtn'),
-            ]
-        );
-
-        $this->add_control(
-			'Num_of_col',
+        $this->add_group_control(
+			Group_MTN_Query::get_type(),
 			[
-				'label' => esc_html__('Number of Columns', 'mtn'),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'label' => esc_html__('Slides Per View', 'mtn'),
-                'default' => 6,
-				'options' => ['' => esc_html__('Default', 'mtn')] + $count_to_ten,
+				'name' => 'mtn_posts',
+				'exclude' => [
+				],
 			]
 		);
-
-        $repeater = new \Elementor\Repeater();
-
-        $repeater->add_control(
-            'show_type_title',
-            [
-                'label' => esc_html__('Show Tariff Title', 'mtn'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Show', 'mtn'),
-                'label_off' => esc_html__('Hide', 'mtn'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-        $repeater->add_control(
-            'type_title',
-            [
-                'label' => esc_html__('Tariff Title', 'mtn'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'label_block' => true,
-                'placeholder' => esc_html__('xxxx', 'mtn'),
-                'dynamic' => [
-                    'active' => true,
-                ],
-                'condition' => [
-                    'show_type_title' => 'yes',
-                ]
-            ]
-        );
-
-        $repeater->add_control(
-            'show_dedicated_speed',
-            [
-                'label' => esc_html__('Show Dedicated Speed', 'mtn'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Show', 'mtn'),
-                'label_off' => esc_html__('Hide', 'mtn'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-
-        $repeater->add_control(
-            'dedicated_speed',
-            [
-                'label' => esc_html__('Dedicated Speed', 'mtn'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'label_block' => true,
-                'placeholder' => esc_html__('xxxx', 'mtn'),
-                'dynamic' => [
-                    'active' => true,
-                ],
-                'condition' => [
-                    'show_dedicated_speed' => 'yes',
-                ]
-            ]
-        );
-        $repeater->add_control(
-            'show_normal_fee',
-            [
-                'label' => esc_html__('Show Normal Fee', 'mtn'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Show', 'mtn'),
-                'label_off' => esc_html__('Hide', 'mtn'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-
-        $repeater->add_control(
-            'normal_fee',
-            [
-                'label' => esc_html__('Normal Fee', 'mtn'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'label_block' => true,
-                'placeholder' => esc_html__('xxxx', 'mtn'),
-                'dynamic' => [
-                    'active' => true,
-                ],
-                'condition' => [
-                    'show_normal_fee' => 'yes',
-                ],
-            ],
-        );
-        $repeater->add_control(
-            'show_monthly_fee',
-            [
-                'label' => esc_html__('Show Monthly Fee', 'mtn'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Show', 'mtn'),
-                'label_off' => esc_html__('Hide', 'mtn'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-
-        $repeater->add_control(
-            'monthly_fee',
-            [
-                'label' => esc_html__('Monthly Fee', 'mtn'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'label_block' => true,
-                'placeholder' => esc_html__('xxxx', 'mtn'),
-                'dynamic' => [
-                    'active' => true,
-                ],
-                'condition' => [
-                    'show_monthly_fee' => 'yes',
-                ],
-            ],
-        );
-
-        $repeater->add_control(
-            'show_router_fee',
-            [
-                'label' => esc_html__('Show Router Fee', 'mtn'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Show', 'mtn'),
-                'label_off' => esc_html__('Hide', 'mtn'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-        $repeater->add_control(
-            'router_fee',
-            [
-                'label' => esc_html__('Router Fee', 'mtn'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'label_block' => true,
-                'placeholder' => esc_html__('xxxx', 'mtn'),
-                'dynamic' => [
-                    'active' => true,
-                ],
-                'condition' => [
-                    'show_router_fee' => 'yes',
-                ],
-            ],
-        );
-
-
-        $this->add_control(
-            'mtn_tariff_items',
-            [
-                'label' => esc_html__('Mtn Tariff Items', 'plugin-name'),
-                'type' => \Elementor\Controls_Manager::REPEATER,
-                'fields' => $repeater->get_controls(),
-                'default' => [
-                    [
-                        'tariff_type_title' => esc_html__('xxxx #1', 'plugin-name'),
-                    ],
-                ],
-                'title_field' => 'Tariffs {{{ monthly_fee }}}  {{{ normal_fee }}} ',
-            ]
-        );
 
         $this->end_controls_section();
 

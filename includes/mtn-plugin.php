@@ -2,6 +2,8 @@
 
 namespace MTN_FEATURES;
 
+use \ElementorPro\Modules\QueryControl\Controls\Group_MTN_Query;
+
 if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
@@ -79,6 +81,7 @@ final class MTN_Features
 
 		// Register Widget Styles
 		add_action('elementor/frontend/after_enqueue_styles', [$this, 'frontend_widget_styles'], 999);
+		add_action( 'elementor/controls/register',  [$this, 'register_control'], 999 );
 
 		// Register Widget Scripts
 		add_action("elementor/frontend/after_enqueue_scripts", [$this, 'frontend_assets_scripts']);
@@ -256,6 +259,28 @@ final class MTN_Features
 		wp_enqueue_script("mtn-mtn-js", MTN_ASSETS . 'js/mtn-script.js', array('jquery'), rand(1, 1000), true);
 		wp_enqueue_script("mtn-test-js", MTN_ASSETS . 'js/test-js.js', array('jquery'), rand(1, 1000), true);
 	}
+
+/**
+ * Register Currency Control.
+ *
+ * Include control file and register control class.
+ *
+ * @since 1.0.0
+ * @param \Elementor\Controls_Manager $controls_manager Elementor controls manager.
+ * @return void
+ */
+
+function register_control( $controls_manager ) {
+
+	foreach (glob(MTN_DIR . "/includes/controls/*.php") as $filename) {
+		require_once $filename;
+	}
+
+    // $controls_manager->register( new \MTN_FEATURES\Controls\Taxo_select_Control () );
+    // $controls_manager->register( new \MTN_FEATURES\Controls\Group_MTN_Related() );
+	$controls_manager->add_group_control( Group_MTN_Query::get_type(), new Group_MTN_Query() );
+
+}
 	/**
 	 * Register Widgets
 	 *
@@ -275,8 +300,10 @@ final class MTN_Features
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Deals_Carousel());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Complex_Carousel_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Complex_Filter_Widget());
-		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Viewed_Topics());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Advanced_Roaming());
+		
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Viewed_Topics());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Flex_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_News_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Post_Grid());
@@ -293,6 +320,7 @@ final class MTN_Features
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_International_Filter());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Test_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Data_Bundle_Filter());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Amiri_Code());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Simplex_Filter());
 	}
 }

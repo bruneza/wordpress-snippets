@@ -30,9 +30,9 @@ if (!class_exists('MTN_Tariff_Cpt')) :
         {
             add_action('init', [$this, 'register_cpt'], 0);
 
-            require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-tariffs-cfields.php';
-			
-			\MTN_FEATURES\Custom_Field\MTN_Tariff_fields::instance();
+            // require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-tariffs-cfields.php';
+
+            // \MTN_FEATURES\Custom_Field\MTN_Tariff_fields::instance();
 
 
         }
@@ -66,7 +66,7 @@ if (!class_exists('MTN_Tariff_Cpt')) :
                     'menu_icon' => 'dashicons-tag',
                     'public' => true,
                     'hierarchy' => false,
-                    'supports' => array('title','editor','revisions', 'excerpt'),
+                    'supports' => array('title', 'revisions', 'excerpt'),
                     'taxonomies' => array('post_tag'),
                     'capability_type' => 'post',
                     'rewrite' => array('slug' => 'tariffs'),
@@ -80,6 +80,7 @@ if (!class_exists('MTN_Tariff_Cpt')) :
             if (taxonomy_exists('mtn_tariff_category')) {
                 return;
             }
+
             register_taxonomy('mtn_tariff_category', ["mtn_tariffs"], array(
                 "label" => __("Tariff Categories", "mtn"),
                 'labels'                     => array(
@@ -94,7 +95,7 @@ if (!class_exists('MTN_Tariff_Cpt')) :
                 'show_admin_column'          => true,
                 'show_in_nav_menus'          => true,
                 'query_var'                  => true,
-                'rewrite'                    => array('slug' => 'tariff-categories', 'with_front' => true,),
+                'rewrite'                    => array('slug' => 'tariff-types', 'with_front' => true,),
                 "show_in_rest" => true,
                 "show_tagcloud" => false,
                 "rest_base" => "bru_tariff_category",
@@ -104,7 +105,37 @@ if (!class_exists('MTN_Tariff_Cpt')) :
                 "sort" => false,
                 "show_in_graphql" => false,
             ));
+
+            /**
+             * Create Tariffs Type Taxonomy
+             */
+            if (taxonomy_exists('tariff_package')) {
+                return;
+            }
+            register_taxonomy('tariff_package', ["mtn_tariffs"], array(
+                "label" => esc_html__("Tariff Packages", "mtn"),
+                "labels" => [
+                    "name" => esc_html__("Tariff Packages", "mtn"),
+                    "singular_name" => esc_html__("Tariff Package", "mtn"),
+                ],
+                "public" => true,
+                "publicly_queryable" => true,
+                "hierarchical" => true,
+                "show_ui" => true,
+                "show_in_menu" => true,
+                "show_in_nav_menus" => true,
+                "query_var" => true,
+                "rewrite" => ['slug' => 'tariff_packge', 'with_front' => true,],
+                "show_admin_column" => false,
+                "show_in_rest" => true,
+                "show_tagcloud" => false,
+                "rest_base" => "tariff_packge",
+                "rest_controller_class" => "WP_REST_Terms_Controller",
+                "rest_namespace" => "wp/v2",
+                "show_in_quick_edit" => true,
+                "sort" => true,
+                "show_in_graphql" => false,
+            ));
         }
-        
     }
 endif; // End if class_exists check.

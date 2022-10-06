@@ -35,72 +35,15 @@ class Group_MTN_Query extends Group_Control_Query
         $tabs_wrapper = $name . '_query_args';
         $include_wrapper = $name . '_query_include';
 
-        $fields['post_type']['options']['related'] = esc_html__('Related', 'mtn');
-        $fields['include_term_ids']['condition']['post_type!'][] = 'related';
-        $fields['related_taxonomies']['condition']['post_type'][] = 'related';
-        $fields['include_authors']['condition']['post_type!'][] = 'related';
-        $fields['exclude_authors']['condition']['post_type!'][] = 'related';
-        $fields['avoid_duplicates']['condition']['post_type!'][] = 'related';
-        $fields['offset']['condition']['post_type!'][] = 'related';
-
         // TAXONOMY
-        $fields['include_term_ids']['condition']['post_type!'][] = 'mtn-taxonomy';
-        // $fields['related_taxonomies']['condition']['post_type'][] = 'mtn-taxonomy';
-        $fields['include_authors']['condition']['post_type!'][] = 'mtn-taxonomy';
-        $fields['include_term_ids']['condition']['post_type!'][] = 'mtn-taxonomy';
-        $fields['exclude_authors']['condition']['post_type!'][] = 'mtn-taxonomy';
-        $fields['avoid_duplicates']['condition']['post_type!'][] = 'mtn-taxonomy';
 
-        $fields['post_type']['options']['mtn-taxonomy'] = esc_html__('MTN Taxonomy', 'mtn');
+        // $fields['related_taxonomies']['condition']['post_type'][] = 'mtn-query';
+        $fields['include_authors']['condition']['post_type!'][] = 'mtn-query';
+        $fields['exclude_authors']['condition']['post_type!'][] = 'mtn-query';
+        $fields['avoid_duplicates']['condition']['post_type!'][] = 'mtn-query';
+
+        $fields['post_type']['options']['mtn-query'] = esc_html__('MTN Query', 'mtn');
         $fields['include']['options']['include_taxonomies'] = esc_html__('Taxonomy', 'mtn');
-
-        $related_taxonomies = [
-            'label' => esc_html__('Term', 'mtn'),
-            'type' => Controls_Manager::SELECT2,
-            'options' => $this->get_supported_taxonomies(),
-            'label_block' => true,
-            'multiple' => true,
-            'condition' => [
-                'include' => 'terms',
-                'post_type' => [
-                    'related',
-                ],
-            ],
-            'tabs_wrapper' => $tabs_wrapper,
-            'inner_tab' => $include_wrapper,
-        ];
-
-        $related_fallback = [
-            'label' => esc_html__('Fallback', 'mtn'),
-            'type' => Controls_Manager::SELECT,
-            'options' => [
-                'fallback_none' => esc_html__('None', 'mtn'),
-                'fallback_by_id' => esc_html__('Manual Selection', 'mtn'),
-                'fallback_recent' => esc_html__('Recent Posts', 'mtn'),
-            ],
-            'default' => 'fallback_none',
-            'description' => esc_html__('Displayed if no relevant results are found. Manual selection display order is random', 'mtn'),
-            'condition' => [
-                'post_type' => 'related',
-            ],
-            'separator' => 'before',
-        ];
-
-        $fallback_ids = [
-            'label' => esc_html__('Search & Select', 'mtn'),
-            'type' => Query_Module::QUERY_CONTROL_ID,
-            'options' => [],
-            'label_block' => true,
-            'multiple' => true,
-            'autocomplete' => [
-                'object' => Query_Module::QUERY_OBJECT_POST,
-            ],
-            'condition' => [
-                'post_type' => 'related',
-                'related_fallback' => 'fallback_by_id',
-            ],
-            'export' => false,
-        ];
 
         $mtn_cpt = [
             'label' => esc_html__('Post Type', 'mtn'),
@@ -109,7 +52,7 @@ class Group_MTN_Query extends Group_Control_Query
             'condition' => [
                 'include' => 'include_taxonomies',
                 'post_type' => [
-                    'mtn-taxonomy'
+                    'mtn-query'
             ],
             ],
             'separator' => 'before',
@@ -124,18 +67,16 @@ class Group_MTN_Query extends Group_Control_Query
             'condition' => [
                 'include' => 'include_taxonomies',
                 'post_type' => [
-                    'mtn-taxonomy'
+                    'mtn-query'
                 ],
             ],
             'tabs_wrapper' => $tabs_wrapper,
             'inner_tab' => $include_wrapper,
         ];
 
-        $fields = \Elementor\Utils::array_inject($fields, 'include_term_ids', ['related_taxonomies' => $related_taxonomies]);
+
         $fields = \Elementor\Utils::array_inject($fields, 'include_term_ids', ['selected_cpt' => $mtn_cpt]);
         $fields = \Elementor\Utils::array_inject($fields, 'include_term_ids', ['include_taxonomy_slugs' => $mtn_taxonomies]);
-        $fields = \Elementor\Utils::array_inject($fields, 'offset', ['related_fallback' => $related_fallback]);
-        $fields = \Elementor\Utils::array_inject($fields, 'related_fallback', ['fallback_ids' => $fallback_ids]);
 
         return $fields;
     }

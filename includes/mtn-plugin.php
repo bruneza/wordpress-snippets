@@ -97,7 +97,7 @@ final class MTN_Features
 		$this->deal_cpt = \MTN_FEATURES\CPT\MTN_Deal_Cpt::instance();
 		$this->tariff_cpt = \MTN_FEATURES\CPT\MTN_Tariff_Cpt::instance();
 		$this->faq_cpt = \MTN_FEATURES\CPT\MTN_Faq_Cpt::instance();
-		$this->docs_cpt = \MTN_FEATURES\CPT\MTN_Roaming_Cpt::instance();
+		// $this->docs_cpt = \MTN_FEATURES\CPT\MTN_Roaming_Cpt::instance();
 		$this->docs_cpt = \MTN_FEATURES\CPT\MTN_Document_Cpt::instance();
 
 		// EXTRA 
@@ -301,25 +301,25 @@ function register_control( $controls_manager ) {
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Complex_Carousel_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Complex_Filter_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Tariffs_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Advanced_Roaming());
 		
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Viewed_Topics());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Flex_Grid());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_News_Grid());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Post_Grid());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Tariffs_Widget());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Device_Filter1());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Posts_Filter());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Faqs());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Single_Faqs());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Vacancies());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Filter());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Related_Faqs());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion_Foundation());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_International_Filter());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_News_Grid());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Post_Grid());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Device_Filter1());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Posts_Filter());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Faqs());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Single_Faqs());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Vacancies());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Filter());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Related_Faqs());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion_Foundation());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_International_Filter());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Test_Widget());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Data_Bundle_Filter());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Data_Bundle_Filter());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Amiri_Code());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Simplex_Filter());
 	}

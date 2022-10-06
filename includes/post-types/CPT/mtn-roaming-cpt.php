@@ -133,16 +133,16 @@ if (!class_exists('MTN_Roaming_Cpt')) :
                 "show_in_graphql" => false,
             ));
             /**
-             * Create Roaming Location Taxonomy
+             * Create Roaming Continent Taxonomy
              */
-            if (taxonomy_exists('mtn_roaming_countries')) {
+            if (taxonomy_exists('mtn_roaming_continents')) {
                 return;
             }
-            register_taxonomy('mtn_roaming_locations', ["mtn_roamings"], array(
-                "label" => __("Roaming Location", "mtn"),
+            register_taxonomy('mtn_roaming_continents', ["mtn_roamings"], array(
+                "label" => __("Roaming Continents", "mtn"),
                 'labels'                     => array(
-                    'name'                       => _x('Roaming Location', 'Taxonomy General Name', 'mtn'),
-                    'singular_name'              => _x('Roaming Location', 'Taxonomy Singular Name', 'mtn'),
+                    'name'                       => _x('Roaming Continents', 'Taxonomy General Name', 'mtn'),
+                    'singular_name'              => _x('Roaming Continent', 'Taxonomy Singular Name', 'mtn'),
                 ),
                 'hierarchical'               => true,
                 'public'                     => true,
@@ -152,10 +152,10 @@ if (!class_exists('MTN_Roaming_Cpt')) :
                 'show_admin_column'          => true,
                 'show_in_nav_menus'          => true,
                 'query_var'                  => true,
-                'rewrite'                    => array('slug' => 'roaming-locations', 'with_front' => true,),
+                'rewrite'                    => array('slug' => 'roaming-continents', 'with_front' => true,),
                 "show_in_rest" => true,
                 "show_tagcloud" => false,
-                "rest_base" => "bru_roaming_countries",
+                "rest_base" => "roaming_continents",
                 "rest_controller_class" => "WP_REST_Terms_Controller",
                 "rest_namespace" => "wp/v2",
                 "show_in_quick_edit" => false,

@@ -46,8 +46,14 @@ function search_in_array($type, $array, $search)
     }
 }
 
-function mtnTerms($postType = 'post', $taxonomy = null, $termsArray = null, $ignore = null)
+function mtnTerms( $mtnSettings = array('x_post_type' => null, 'x_taxonomy' => null, 'x_terms' => null, 'x_ignore' => null))
 {
+    (isset($mtnSettings ['x_post_type']))   ? $postType     =   $mtnSettings ['x_post_type'] : $postType = 'post' ;
+    (isset($mtnSettings['x_taxonomy']))     ? $taxonomy     =   $mtnSettings['x_taxonomy'] : $taxonomy = null ;
+    (isset($mtnSettings['x_terms']))        ? $termsArray   =   $mtnSettings['x_terms'] : $termsArray = array() ;
+    (isset($mtnSettings['x_ignore']))       ? $ignore       =   $mtnSettings['x_ignore'] : $ignore = array() ;
+    
+
     $output = array();
 
     if (isset($termsArray)) {
@@ -73,7 +79,7 @@ function mtnTerms($postType = 'post', $taxonomy = null, $termsArray = null, $ign
 
             if (search_in_array('value', $ignore, $key)) continue;
 
-            if ($taxonomy)
+            if (isset($taxonomy))
                 $key = $taxonomy;
 
             $terms = get_terms(array('taxonomy' => $key));

@@ -106,7 +106,7 @@ if (!class_exists('MTN_Tariff_Cpt')) :
                 "show_in_graphql" => false,
             ));
 
-            /**
+             /**
              * Create Tariffs Type Taxonomy
              */
             if (taxonomy_exists('tariff_package')) {
@@ -134,6 +134,68 @@ if (!class_exists('MTN_Tariff_Cpt')) :
                 "rest_namespace" => "wp/v2",
                 "show_in_quick_edit" => true,
                 "sort" => true,
+                "show_in_graphql" => false,
+            ));
+
+            /**
+             * Create Roaming Continent Taxonomy
+             */
+            if (taxonomy_exists('mtn_roaming_continents')) {
+                return;
+            }
+            register_taxonomy('mtn_roaming_continents', ["mtn_tariffs"], array(
+                "label" => __("Roaming Continents", "mtn"),
+                'labels'                     => array(
+                    'name'                       => _x('Roaming Continents', 'Taxonomy General Name', 'mtn'),
+                    'singular_name'              => _x('Roaming Continent', 'Taxonomy Singular Name', 'mtn'),
+                ),
+                'hierarchical'               => true,
+                'public'                     => true,
+                "publicly_queryable" => true,
+                'show_ui'                    => false,
+                "show_in_menu" => true,
+                'show_admin_column'          => true,
+                'show_in_nav_menus'          => true,
+                'query_var'                  => true,
+                'rewrite'                    => array('slug' => 'roaming-continents', 'with_front' => true,),
+                "show_in_rest" => false,
+                "show_tagcloud" => false,
+                "rest_base" => "roaming_continents",
+                "rest_controller_class" => "WP_REST_Terms_Controller",
+                "rest_namespace" => "wp/v2",
+                "show_in_quick_edit" => false,
+                "sort" => false,
+                "show_in_graphql" => false,
+            ));
+            
+            /**
+             * Create Telecom Companies Taxonomy
+             */
+            if (taxonomy_exists('mtn_telecom_companies')) {
+                return;
+            }
+            register_taxonomy('mtn_telecom_companies', ["mtn_tariffs"], array(
+                "label" => __("Roaming Telecom Companies", "mtn"),
+                'labels'                     => array(
+                    'name'                       => _x('Roaming Telecom Companies', 'Taxonomy General Name', 'mtn'),
+                    'singular_name'              => _x('Roaming Telecom Companies', 'Taxonomy Singular Name', 'mtn'),
+                ),
+                'hierarchical'               => true,
+                'public'                     => true,
+                "publicly_queryable" => true,
+                'show_ui'                    => false,
+                "show_in_menu" => true,
+                'show_admin_column'          => true,
+                'show_in_nav_menus'          => true,
+                'query_var'                  => true,
+                'rewrite'                    => array('slug' => 'roaming-telecom Companies', 'with_front' => true,),
+                "show_in_rest" => false,
+                "show_tagcloud" => false,
+                "rest_base" => "bru_telecom_companies",
+                "rest_controller_class" => "WP_REST_Terms_Controller",
+                "rest_namespace" => "wp/v2",
+                "show_in_quick_edit" => false,
+                "sort" => false,
                 "show_in_graphql" => false,
             ));
         }

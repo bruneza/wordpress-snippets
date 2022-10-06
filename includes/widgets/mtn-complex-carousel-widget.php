@@ -67,7 +67,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 	// Register Controller
 	protected function register_controls()
 	{
-		$count = range(1, 15);
+		$count = range(0, 15);
 		$count = array_combine($count, $count);
 
 		// ANCHOR: Complex Carousel - Content Control
@@ -94,7 +94,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-carousel-row' => 'grid-template-columns : repeat({{SIZE}}, minmax(0, 1fr));',
+					'{{WRAPPER}} .complex-carousel-row' => 'grid-template-columns : repeat({{SIZE}}, minmax(0, 1fr));',
 				],
 			]
 		);
@@ -114,7 +114,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-carousel-row' => 'grid-template-rows : repeat({{SIZE}}, minmax(0, 1fr));',
+					'{{WRAPPER}} .complex-carousel-row' => 'grid-template-rows : repeat({{SIZE}}, minmax(0, 1fr));',
 				],
 			]
 		);
@@ -130,6 +130,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'label' => esc_html__('Grid Style Type', 'mtn'),
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'default' => 'custom_display',
+				'devices' => ['desktop', 'tablet', 'mobile'],
 				'options' => [
 					'default_display' => 'default',
 					'custom_display' => 'Custom',
@@ -144,8 +145,23 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'type' => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
-					'custom_grid_styling' => 'custom_display'
+					'custom_grid_styling' => 'custom_display',
 				],
+				'device_args' => [
+					'desktop' => [
+						'condition' => [
+							'custom_grid_styling' => 'custom_display',
+						]
+					],
+					'tablet' => [
+						'condition' => [
+							'custom_grid_styling' => 'custom_display',
+						]
+					],
+					'mobile' => [
+						'custom_grid_styling' => 'custom_display',
+					]
+				]
 			]
 		);
 
@@ -160,8 +176,23 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 					'{{WRAPPER}} {{CURRENT_ITEM}}.complex-column-item' => 'grid-row-start: {{VALUE}};',
 				],
 				'condition' => [
-					'custom_grid_styling' => 'custom_display'
+					'custom_grid_styling' => 'custom_display',
 				],
+				'device_args' => [
+					'desktop' => [
+						'condition' => [
+							'custom_grid_styling' => 'custom_display',
+						]
+					],
+					'tablet' => [
+						'condition' => [
+							'custom_grid_styling' => 'custom_display',
+						]
+					],
+					'mobile' => [
+						'custom_grid_styling' => 'custom_display',
+					]
+				]
 			]
 		);
 
@@ -176,8 +207,23 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 					'{{WRAPPER}} {{CURRENT_ITEM}}.complex-column-item' => 'grid-row-end: {{VALUE}};',
 				],
 				'condition' => [
-					'custom_grid_styling' => 'custom_display'
+					'custom_grid_styling' => 'custom_display',
 				],
+				'device_args' => [
+					'desktop' => [
+						'condition' => [
+							'custom_grid_styling' => 'custom_display',
+						]
+					],
+					'tablet' => [
+						'condition' => [
+							'custom_grid_styling' => 'custom_display',
+						]
+					],
+					'mobile' => [
+						'custom_grid_styling' => 'custom_display',
+					]
+				]
 			]
 		);
 
@@ -192,8 +238,23 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 					'{{WRAPPER}} {{CURRENT_ITEM}}.complex-column-item' => 'grid-column-start: {{VALUE}};',
 				],
 				'condition' => [
-					'custom_grid_styling' => 'custom_display'
+					'custom_grid_styling' => 'custom_display',
 				],
+				'device_args' => [
+					'desktop' => [
+						'condition' => [
+							'custom_grid_styling' => 'custom_display',
+						]
+					],
+					'tablet' => [
+						'condition' => [
+							'custom_grid_styling' => 'custom_display',
+						]
+					],
+					'mobile' => [
+						'custom_grid_styling' => 'custom_display',
+					]
+				]
 			]
 		);
 
@@ -208,8 +269,23 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 					'{{WRAPPER}} {{CURRENT_ITEM}}.complex-column-item' => 'grid-column-end: {{VALUE}};',
 				],
 				'condition' => [
-					'custom_grid_styling' => 'custom_display'
+					'custom_grid_styling' => 'custom_display',
 				],
+				'device_args' => [
+					'desktop' => [
+						'condition' => [
+							'custom_grid_styling' => 'custom_display',
+						]
+					],
+					'tablet' => [
+						'condition' => [
+							'custom_grid_styling' => 'custom_display',
+						]
+					],
+					'mobile' => [
+						'custom_grid_styling' => 'custom_display',
+					]
+				]
 			]
 		);
 
@@ -351,7 +427,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 		// Content Title
-		$contentRepeater->add_control(
+		$this->add_control(
 			'show_grid_title',
 			[
 				'label' => esc_html__('Show Title', 'mtn'),
@@ -425,7 +501,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 		);
 
 		// Content Excerpt
-		$contentRepeater->add_control(
+		$this->add_control(
 			'show_grid_excerpt',
 			[
 				'label' => esc_html__('Show Excerpt', 'mtn'),
@@ -485,7 +561,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 		);
 
 		// Content Button
-		$contentRepeater->add_control(
+		$this->add_control(
 			'show_grid_button',
 			[
 				'label' => esc_html__('Show Button', 'mtn'),
@@ -570,7 +646,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			'carousel_settings_section',
 			[
 				'label' => esc_html__('Carousel Settings', 'mtn'),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
@@ -652,7 +728,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 					'size' => 300,
 				],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-carousel-row' => 'height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .complex-carousel-row' => 'height: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -674,7 +750,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 					'size' => 30,
 				],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-carousel-row' => 'grid-gap: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .complex-carousel-row' => 'grid-gap: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -768,7 +844,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 				'label' => esc_html__('Border Radius', 'mtn'),
 				'size_units' => ['px', 'em', '%'],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .complex-column-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .complex-column-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -1257,14 +1333,14 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			]
 		);
 		$this->add_group_control(
-            \Elementor\Group_Control_Background::get_type(),
-            [
-                'name' => 'dot_active_background',
-                'label' => esc_html__('Background', 'mtn'),
-                'types' => ['classic', 'gradient', 'video'],
-                'selector' => '{{WRAPPER}} .owl-dots .active span',
-            ]
-        );
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'dot_active_background',
+				'label' => esc_html__('Background', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .owl-dots .active span',
+			]
+		);
 		$this->add_group_control(
 			\Elementor\Group_Control_Background::get_type(),
 			[
@@ -1308,6 +1384,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 	protected function render()
 	{
 		$settings = $this->get_settings_for_display();
+		// print_r($settings);
 
 		if ($settings['choose_grid_fields'])
 			$neededFields =  $settings['choose_grid_fields'];

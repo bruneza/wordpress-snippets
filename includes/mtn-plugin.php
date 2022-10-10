@@ -303,6 +303,7 @@ function register_control( $controls_manager ) {
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Tariffs_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Advanced_Roaming());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Faqs());
 		
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Viewed_Topics());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Flex_Grid());
@@ -311,7 +312,6 @@ function register_control( $controls_manager ) {
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Device_Filter1());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Posts_Filter());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion());
-		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Faqs());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Single_Faqs());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Vacancies());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Filter());

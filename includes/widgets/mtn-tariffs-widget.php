@@ -85,6 +85,24 @@ class MTN_Tariffs_Widget  extends \Elementor\Widget_Base
             ]
         );
 
+        $this->add_control(
+            'grid_fields_heading',
+            [
+                'label' => esc_html__('Choose Fields', 'mtn'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+        $this->add_control(
+            'choose_grid_fields',
+            [
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'multiple' => true,
+                'options' => processOutput()['fields'],
+                'default' => ['thumbnail', 'post-link']
+            ]
+        );
+
         $this->end_controls_section();
 
         /*** Style begins here***/
@@ -101,14 +119,27 @@ class MTN_Tariffs_Widget  extends \Elementor\Widget_Base
     protected function render()
     {
         $settings = $this->get_settings_for_display();
-        $termsID = $settings['mtn_posts_include_term_ids'];
-        $terms = mtnTerms(array('x_terms' => $termsID));
         $selectedKeys = array();
 
+        if ($settings['choose_grid_fields'])
+            $neededFields =  $settings['choose_grid_fields'];
+        else
+            $neededFields =  ['title'];
 
+        $mtnSettings = [
+            'x_posts_per_page' => $settings['mtn_posts_posts_per_page'],
+            'x_terms' => $settings['mtn_posts_include_term_ids'],
+            'x_show' => 'first_term',
+            'x_outputs' => $neededFields,
+        ];
+        $terms = mtnTerms($mtnSettings);
+        if ($settings['mtn_posts_post_type'] == 'mtn-query')
+            $mtnSettings['x_post_type']  = get_taxonomy_by_term($terms);
+        else
+            $mtnSettings['x_post_type']  = $settings['mtn_posts_post_type'];
 
-        // print_r($terms);
-        // print_r($settings['mtn_posts_include']);
+        $posts = postsRender($mtnSettings);
+
         /*** Start Content Section ***/
 ?>
         <div class="mtn-tariff-section">
@@ -117,23 +148,60 @@ class MTN_Tariffs_Widget  extends \Elementor\Widget_Base
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <?php if (isset($terms)) {
                     foreach ($terms as $key => $value) {
-                        // print_r(array_key_first($terms));
-                        array_push($selectedKeys, array($key, $value['taxonomy']));
+                       
+                        array_push($selectedKeys, array($key, $value['taxonomy'], $value['slug']));
+                        if (array_key_first($terms) === $key) {
                 ?>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link <?php if (intval($key) == array_key_first($terms))  echo 'active'; ?>" id="pills-home-<?= $key; ?>" data-bs-toggle="pill" data-bs-target="#pills-<?= $key; ?>" type="button" role="tab" aria-controls="pills-<?= $key; ?>" aria-selected="true"><?= $value['name']; ?></button>
-                        </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-home-all" data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-controls="pills-all" aria-selected="true">All</button>
+                            </li>
+                        <?php
+                        } else {
+                        ?>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-home-<?= $key; ?>" data-bs-toggle="pill" data-bs-target="#pills-<?= $key; ?>" type="button" role="tab" aria-controls="pills-<?= $key; ?>" aria-selected="true"><?= $value['name']; ?></button>
+                            </li>
                 <?php
+                        }
                     }
                 } ?>
+            </ul>
+            <!-- ANCHOR: Tariff - Content Section -->
+            <div class="tab-content" id="pills-tabContent">
+                <?php
+                foreach ($selectedKeys as $key => $value) {
+                    $result = filterArray($posts,  $value[0]);
+                ?>
+                    <div class="mtn-tariff-items tab-pane fade show <?php if ($key == 0) echo 'active'; ?>" id="pills-<?= ($key == 0) ? 'all' : $value[0]; ?>" role="tabpanel" aria-labelledby="pills-<?= ($key == 0) ? 'all' : $value[0]; ?>-tab">
 
-        </div>
-        <!-- ANCHOR: Tariff - Content Section -->
-        <div class="row mtn-tariff-items">
+                        <div class="mtn-tariff-item card-section">
+                            <?php
 
+                            foreach ($result['posts'] as $post) {
+                                $validity = $post['tariff_package'];
+                            ?>
+                                <div class="bundle-card">
+                                    <div class="tariff-price">
+                                        <h5>Price</h5>
+                                        <p><?= $post['tariff_infos']['price']; ?> Rwf</p>
+                                    </div>
+                                    <hr>
+                                    <div class="tariff-ressources">
+                                        <h5>Ressources</h5>
+                                    </div>
+                                    <p><?= $post['tariff_infos']['ressources']; ?></p>
+                                    <hr>
+                                    <div class="tariff-validity">
+                                        <h5>Validity</h5>
+                                    </div>
+                                    <p><?= getTariffValidity(array_key_first($validity), $value[1]); ?></p>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                <?php  } ?>
+            </div>
         </div>
-        </div>
-<?php
-        /*** End Content Section ***/
+<?php /*** End Content Section ***/
     }
 }

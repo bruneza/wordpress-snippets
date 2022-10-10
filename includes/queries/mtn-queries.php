@@ -1,5 +1,32 @@
 <?php
 
+
+function validatedSettings($arr)
+{
+    $defArr = [
+        'x_post_type' => 'post',
+        'x_posts_per_page' => -1,
+        'x_terms' => null,
+        'x_outputs' => null,
+        'x_taxonomy' => null,
+        'x_ignore' => null,
+        'x_show' => 'all',
+        'x_conditions' => [
+            'x_skip_nothumbnail' => false,
+        ],
+    ];
+
+    foreach ($arr as $key => $val) {
+        if (isset($arr[$key]) && !empty($arr[$key])) {
+            $sanitize_arr[$key] = $val;
+        }
+    }
+    $arr = $sanitize_arr;
+
+    $defArr = wp_parse_args($arr, $defArr);
+
+    return $defArr;
+}
 function mtn_post_types()
 {
 
@@ -14,8 +41,8 @@ function mtn_post_types()
 
 function getPostType($settings)
 {
-    if ($settings['mtn_posts_post_type'])
-        return $settings['mtn_posts_post_type'];
+    if ($settings['post_type'])
+        return $settings['post_type'];
     else
         return null;
 }
@@ -34,6 +61,22 @@ function mtn_get_taxonomies($postType = 'post')
     return $taxonomies;
 }
 
+function get_taxonomy_by_term($input)
+{
+
+    if ($input) {
+        if (is_array($input)) {
+            $term = $input[array_key_first($input)];
+            $taxonomy = $term['taxonomy'];
+        } else {
+            $taxonomy = $input;
+        }
+
+        return get_taxonomy($taxonomy)->object_type[0];
+    }
+    return null;
+}
+
 function search_in_array($type, $array, $search)
 {
     if (!$type || !isset($array) || !is_array($array) || !$search) return false;
@@ -46,13 +89,15 @@ function search_in_array($type, $array, $search)
     }
 }
 
-function mtnTerms( $mtnSettings = array('x_post_type' => null, 'x_taxonomy' => null, 'x_terms' => null, 'x_ignore' => null))
+function mtnTerms($mtnSettings = null)
 {
-    (isset($mtnSettings ['x_post_type']))   ? $postType     =   $mtnSettings ['x_post_type'] : $postType = 'post' ;
-    (isset($mtnSettings['x_taxonomy']))     ? $taxonomy     =   $mtnSettings['x_taxonomy'] : $taxonomy = null ;
-    (isset($mtnSettings['x_terms']))        ? $termsArray   =   $mtnSettings['x_terms'] : $termsArray = array() ;
-    (isset($mtnSettings['x_ignore']))       ? $ignore       =   $mtnSettings['x_ignore'] : $ignore = array() ;
-    
+    $mtnSettings = validatedSettings($mtnSettings);
+
+    $postType     =   $mtnSettings['x_post_type'];
+    $taxonomy     =   $mtnSettings['x_taxonomy'];
+    $termsArray   =   $mtnSettings['x_terms'];
+    $ignore       =   $mtnSettings['x_ignore'];
+
 
     $output = array();
 
@@ -96,6 +141,7 @@ function mtnTerms( $mtnSettings = array('x_post_type' => null, 'x_taxonomy' => n
             }
         }
     }
+
     return apply_filters('mtn_term_options', $output, $postType);
 }
 
@@ -106,12 +152,22 @@ function getPostTerms($post_id, $taxonomy = null)
     if (!isset($post_id)) return null;
 
     if (isset($taxonomy)) {
-        foreach ($taxonomy as $taxo) {
-            $rawTerms = get_the_terms($post_id, $taxo);
-            if (is_wp_error($rawTerms)) continue;
+        if (!is_array($taxonomy)) {
+            $rawTerms = get_the_terms($post_id, $taxonomy);
+
             if (!empty($rawTerms)) {
                 foreach ($rawTerms as $key => $term)
                     $terms[$term->term_id] = array('name' => $term->name, 'slug' => $term->slug, 'taxonomy' => $term->taxonomy);
+            }
+        } else {
+
+            foreach ($taxonomy as $taxo) {
+                $rawTerms = get_the_terms($post_id, $taxo);
+                if (is_wp_error($rawTerms)) continue;
+                if (!empty($rawTerms)) {
+                    foreach ($rawTerms as $key => $term)
+                        $terms[$term->term_id] = array('name' => $term->name, 'slug' => $term->slug, 'taxonomy' => $term->taxonomy);
+                }
             }
         }
         return $terms;
@@ -148,9 +204,15 @@ function getPostTerms($post_id, $taxonomy = null)
 function getTaxQuery($terms = null)
 {
     if (!isset($terms)) return null;
-
     $selectedTerms = array();
+
     foreach ($terms as $key => $value) {
+
+        if (is_numeric($key)) {
+            $key = get_term($value)->taxonomy;
+            $value = get_term($value)->term_id;
+        }
+
         array_push($selectedTerms, array(
             'taxonomy' => $key,
             'field' => 'term_id',
@@ -159,10 +221,29 @@ function getTaxQuery($terms = null)
     }
     return $selectedTerms;
 }
-// function mtn_posts($args = null, $taxonomy = null, $terms = null)
-// {
+function getTariffValidity($termID, $taxo)
+{
 
-// }
+    if (is_array($termID))
+        $termSlug = get_term(array_key_first($termID))->slug;
+    else
+        $termSlug = get_term($termID);
+
+    switch ($termSlug->slug) {
+        case 'daily':
+            return '24 Hrs';
+            break;
+        case 'weekly':
+            return '7 Days';
+            break;
+        case 'daily':
+            return '1 Month';
+            break;
+        default:
+            return $termSlug->name;
+            break;
+    }
+}
 
 /**
  * process post Output and convert in array
@@ -172,21 +253,31 @@ function getTaxQuery($terms = null)
  * 
  * @return array
  */
-function processOutput($query =null)
+function processOutput($input = null)
 {
     $finalOutput = array();
     $fields = array();
-
     $arg = null;
-    if(!isset($query)){
+    if (isset($input)) {
+        if (isset($input['query'])) {
+            $query = $input['query'];
+        }
+        if (isset($input['post_type'])) {
+            $arg = [
+                'post_type' => $input['post_type'],
+            ];
+            $query = new WP_Query($arg);
+        }
+    } else {
         $arg = [
             'post_type' => null,
         ];
-        $query = new WP_Query( $arg );
+        $query = new WP_Query($arg);
     }
-    
+
     while ($query->have_posts()) {
         $post = $query->the_post();
+
 
         $post_id = get_the_ID();
         $initDate = wp_date("d-m-Y", get_post_timestamp());
@@ -222,29 +313,40 @@ function processOutput($query =null)
             $output['product_type'] = getPostTerms($post_id, array('mtn_product_type'));
             $output['product_brand'] = getPostTerms($post_id, array('mtn_product_brand'));
         }
-        if ($output['post_type'] == 'mtn_roamings' || isset($arg)) {
-            $output['roaming_price'] = array();
-            $output['roaming_price_array'] = get_field('price', $post_id);
-            $output['plan_type'] = getPostTerms($post_id, array('mtn_roaming_plans'));
-            $output['roaming_location'] = getPostTerms($post_id, array('mtn_roaming_locations'));
-            $output['roaming_provider'] =  getPostTerms($post_id, array('mtn_roaming_providers'));
 
-            if (get_field('price')) {
-                foreach ($output['roaming_price_array'] as $repeater) {
-                    $ptpTemp = array();
-                    if (isset($repeater['plan_type_price']) && $repeater['plan_type_price']) {
-                        foreach ($repeater['plan_type_price'] as $ptp) {
-                            array_push($ptpTemp, array('plan_type_id' => $ptp->term_id));
-                            array_push($ptpTemp, array('plan_type_name' => $ptp->name));
-                        }
+        if ($output['post_type'] == 'mtn_tariffs' || isset($arg)) {
 
-                        array_push($output['roaming_price'], array('plan_type' => $ptpTemp));
-                    }
+            $output['tariff_type'] = meta_acf_validator($post_id, '_tariff_type');
+            $output['location_type'] = meta_acf_validator($post_id, '_tariff_location_type');
 
-                    array_push($output['roaming_price'], array('location' => $repeater['location_price']));
-                    array_push($output['roaming_price'], array('provider' => $repeater['provider_price']));
-                    array_push($output['roaming_price'], array('price' => $repeater['roaming_price']));
+            $output['tariff_telecom'] = meta_acf_validator($post_id, '_tariff_telecom_companies');
+            $output['tariff_continent'] = meta_acf_validator($post_id, '_tariff_continent');
+
+            $output['tariff_package'] = getPostTerms($post_id, array('tariff_package'));
+            $output['tariff_category'] = getPostTerms($post_id, array('mtn_tariff_category'));
+
+            $output['tariff_infos'] = meta_acf_validator($post_id, '_tarriff_information');
+
+            if (get_field('_tarriff_information')) {
+                $tarInfo = array();
+                foreach ($output['tariff_infos'] as $key => $repeater) {
+
+                    $tarInfo = array_merge($tarInfo, array(
+                        'ressources' => $repeater['_tariff_ressources']
+                    ));
+                    $tarInfo = array_merge($tarInfo, array(
+                        'price' => $repeater['_tariff_price']
+                    ));
+                    $tarInfo = array_merge($tarInfo, array(
+                        'code' => $repeater['_tariff_code']
+                    ));
+                    $tarInfo = array_merge($tarInfo, array(
+                        'additional_info' => $repeater['_tariff_additional_info']
+                    ));
+
+                    $tarInfoTemp = array();
                 }
+                $output['tariff_infos'] = $tarInfo;
             }
         }
 
@@ -252,9 +354,9 @@ function processOutput($query =null)
 
         array_push($finalOutput, $output);
     }
-    
-    foreach(array_keys($output) as $out){
-        $label = ucfirst (str_replace(str_split('-_'),' ',$out));
+
+    foreach (array_keys($output) as $out) {
+        $label = ucfirst(str_replace(str_split('-_'), ' ', $out));
         $fields[$out] = esc_html($label);
     }
 
@@ -271,7 +373,7 @@ function processArgs($additionalArgs, $conditions)
     );
 
     if (isset($conditions)) {
-        if ($conditions['skip_nothumbnail']) {
+        if (!empty($conditions['x_skip_nothumbnail'])) {
             $thumbnailArgs = array(
                 'meta_query' => array(
                     array(
@@ -289,35 +391,19 @@ function processArgs($additionalArgs, $conditions)
 }
 
 
-/**
- * postsRender
- *
- * @param  mixed $settings
- * @param  mixed $output
- * @param  array $terms
- * @param  array $conditions[
- * 'skip_nothumbnail' = boolean,
- * ]
- * @return array
- * 
- *  $terms = array($taxonomy1 => array($term_id1,$term_id2, $term_id3,...$term_idN),$taxonomyN => array($term_id1,$term_id2, $term_id3,...$term_idN),...$taxonomyN => array($term_id1,$term_id2, $term_id3,...$term_idN))
- */
-
-function postsRender($settings, $terms = null, $output = null, $conditions = null)
+function postsRender($mtnSettings = null)
 {
-    if (is_string($settings)) {
-        $postType = $settings;
+    $mtnSettings = validatedSettings($mtnSettings);
+    if (is_string($mtnSettings)) {
+        $postType = $mtnSettings;
         $NumofPosts = -1;
-    } else if (is_array($settings)) {
-        if (isset($settings['mtn_posts_post_type']))
-            $postType = $settings['mtn_posts_post_type'];
-
-        if (isset($settings['mtn_posts_posts_per_page']))
-            $NumofPosts = $settings['mtn_posts_posts_per_page'];
-        else
-            $NumofPosts = -1;
-    } else {
-        $NumofPosts = -1;
+    } else if (is_array($mtnSettings)) {
+        $postType   =  $mtnSettings['x_post_type'];
+        $NumofPosts =  $mtnSettings['x_posts_per_page'];
+        $terms      =  $mtnSettings['x_terms'];
+        $display      =  $mtnSettings['x_show'];
+        $output     =  $mtnSettings['x_outputs'];
+        $conditions =  $mtnSettings['x_conditions'];
     }
 
     $additionalArgs = [
@@ -325,15 +411,18 @@ function postsRender($settings, $terms = null, $output = null, $conditions = nul
         'posts_per_page' => $NumofPosts,
     ];
 
+    if ($display == 'first_term') {
+        $terms = array($terms[array_key_first($terms)]);
+    }
 
-    if ($terms && is_array($terms)) {
+
+    if ($terms && is_array($terms) && $display != 'all') {
         $additionalArgs['tax_query'] = getTaxQuery($terms);
     }
 
     $args = processArgs($additionalArgs, $conditions);
-
-    if (isset($settings['mtn_posts_include_term_ids']) && $settings['mtn_posts_include_term_ids']) {
-        foreach ($settings['mtn_posts_include_term_ids'] as $key => $termIds) {
+    if (isset($terms)) {
+        foreach ($terms as $key => $termIds) {
             $termInfo = get_term($termIds);
             $terms[$termInfo->taxonomy] = $termIds;
         }
@@ -341,12 +430,12 @@ function postsRender($settings, $terms = null, $output = null, $conditions = nul
 
     $query = new WP_Query($args);
 
-    
+
     if ($query->have_posts()) {
         if (isset($output))
-            $posts = filterPost(processOutput($query)['data'], $output);
+            $posts = filterPost($conditions, processOutput(['query' => $query])['data'], $output);
         else
-            $posts = processOutput($query)['data'];
+            $posts = processOutput(['query' => $query])['data'];
 
         return $posts;
     }
@@ -354,10 +443,39 @@ function postsRender($settings, $terms = null, $output = null, $conditions = nul
     return null;
 }
 
-function filterPost($posts, $fields)
+function filterArray($array, $data)
+{
+    $result = [];
+    $output = [];
+    $selectedTerm = (array) get_term($data);
+    
+    foreach ($array as $key => $items) {
+
+        $newArray = array();
+
+        foreach ($items['terms'] as $termKey => $itemTerm) {
+            // $itemFirstKey = array_key_first($items['terms']);
+            if (stripos(strval($termKey), strval($data)) !== false) {
+                
+
+                array_push($newArray,$items);
+            }
+        }
+        $output = array_merge($output,$newArray);
+    }
+
+    $selectedTerm['posts'] = $output;
+    
+    return $selectedTerm;
+}
+
+function filterPost($filter_by = null, $posts, $fields)
 {
 
     $result = array();
+    $in = array();
+
+
     if (isset($fields) && is_array($fields)) {
         foreach ($posts as $k => $post) {
             foreach ($fields as $value) {
@@ -388,6 +506,15 @@ function meta_validator($post_id, $field)
     $postMeta = get_post_meta($post_id, $field, true);
     if (isset($postMeta) && $postMeta)
         return esc_attr($postMeta);
+    else
+        return null;
+}
+function meta_acf_validator($post_id, $field)
+{
+    $postMeta = get_field($field, $post_id);
+
+    if (isset($postMeta) && $postMeta)
+        return $postMeta;
     else
         return null;
 }
@@ -481,44 +608,46 @@ function processIcon($settings)
 
 function processSingleIcon($array)
 {
-        $value = $array['value'];
-        $library = $array['library'];
-        $output = null;
+    $value = $array['value'];
+    $library = $array['library'];
+    $output = null;
 
-        if (empty($library)) {
-            return false;
-        }
+    if (empty($library)) {
+        return false;
+    }
 
-        if ('svg' === $library) {
-            if (!isset($value['id'])) return '';
+    if ('svg' === $library) {
+        if (!isset($value['id'])) return '';
 
-            $output = get_post_meta($value['id'], '_elementor_inline_svg', true);
-        } else {
-            $output = '<i aria-hidden="true" class="' . $value . '"></i>';
-        }
+        $output = get_post_meta($value['id'], '_elementor_inline_svg', true);
+    } else {
+        $output = '<i aria-hidden="true" class="' . $value . '"></i>';
+    }
 
     return apply_filters('post_filter_icon', $output);
 }
 
 // ANCHOR: Custom Designs
 
-function bruShapeDivider($shape) {
-    
+function bruShapeDivider($shape)
+{
+
     if ($shape == 'curve') {
-    ?>
-    <svg data-name="shape-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z" class="shape-fill"></path>
-    </svg>
-    <?php
+?>
+        <svg data-name="shape-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z" class="shape-fill"></path>
+        </svg>
+<?php
     }
 }
 
 // ANCHOR: Count to a specific point
-function count_to($number =10){
+function count_to($number = 10)
+{
     $count = range(1, $number);
-   $count = array_combine($count, $count);
+    $count = array_combine($count, $count);
 
-   return $count;
+    return $count;
 }
 
 

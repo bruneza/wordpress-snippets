@@ -96,14 +96,19 @@ class MTN_Advanced_Roaming  extends \Elementor\Widget_Base
 	{
 
 		$settings = $this->get_settings_for_display();
+
+		
 		// $postType = $settings['mtn_posts_post_type'] = 'mtn_roamings';
-		// $planTaxonomy = mtnTerms($postType, 'mtn_roaming_plans');
-		// $planLocation = mtnTerms($postType, 'mtn_roaming_locations');
-		// $planProvider = mtnTerms($postType, 'mtn_roaming_providers');
 		$neededFields =  ['id', 'title', 'package', 'roaming_price', 'plan_type', 'roaming_location', 'roaming_provider'];
-		$Allposts = postsRender($settings, null, $neededFields);
-		// $Fieldposts = postsRender($settings,null,null);
-		// $posts = postsRender($settings,null,$taxonomy, ['title','deadline','terms','post-link','region']);
+		
+		$mtnSettings = [
+			'x_post_type' => $settings['mtn_posts_post_type'],
+			'x_posts_per_page' => $settings['mtn_posts_posts_per_page'],
+			'x_terms' => $settings['mtn_posts_include_term_ids'],
+			'x_outputs' => $neededFields
+		];
+
+		$Allposts = postsRender($mtnSettings);
 
 /*
 ?>

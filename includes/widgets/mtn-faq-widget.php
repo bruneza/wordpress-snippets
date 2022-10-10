@@ -4,6 +4,7 @@ namespace MTN_FEATURES\Widgets;
 
 use ElementorPro\Modules\QueryControl\Module as Module_Query;
 use ElementorPro\Modules\QueryControl\Controls\Group_Control_Related;
+use \ElementorPro\Modules\QueryControl\Controls\Group_MTN_Query;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -106,18 +107,37 @@ class MTN_Faqs  extends \Elementor\Widget_Base
 
         $this->end_controls_section();
 
+        
         $this->start_controls_section(
-            'section_query',
+            'tariff_content',
             [
-                'label' => esc_html__('Query', 'elementor-pro'),
+                'label' => esc_html__('Tariff Content', 'mtn'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
 
         $this->add_group_control(
-            Group_Control_Related::get_type(),
+            Group_MTN_Query::get_type(),
             [
                 'name' => 'mtn_posts',
+            ]
+        );
+
+        $this->add_control(
+            'grid_fields_heading',
+            [
+                'label' => esc_html__('Choose Fields', 'mtn'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+        $this->add_control(
+            'choose_grid_fields',
+            [
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'multiple' => true,
+                'options' => processOutput()['fields'],
+                'default' => ['thumbnail', 'post-link']
             ]
         );
 
@@ -405,7 +425,17 @@ class MTN_Faqs  extends \Elementor\Widget_Base
     {
         $settings = $this->get_settings_for_display();
         $postType = $settings['mtn_posts_post_type'] = 'mtn_faqs';
-        $terms = mtnTerms($postType, 'mtn_faq_category');
+
+        $mtnSettings = [
+			'x_post_type' => $settings['mtn_posts_post_type'],
+			'x_posts_per_page' => $settings['mtn_posts_posts_per_page'],
+            'x_taxonomy' => $settings['mtn_posts_include_taxonomy_slugs'],
+			'x_conditions' => [
+				'x_skip_nothumbnail' => true,
+			]
+		];
+
+        $terms = mtnTerms($mtnSettings);
         $colNum = intval(12 / $settings['num_of_columns']);
 
 
@@ -421,9 +451,9 @@ class MTN_Faqs  extends \Elementor\Widget_Base
                     </div>
                     <div class="faq-items  vertical-space">
                         <?php
-                        $settings['mtn_posts_include_term_ids'] = array($key);
-                        $posts = postsRender($settings);
-
+                        $mtnSettings['x_terms'] = array($key);
+                        $posts = postsRender($mtnSettings);
+                        print_r($posts);
                         foreach ($posts as $post) {
                         ?>
                             <a href="<?= $post['post-link']; ?>" class="faq-item"><?= $post['title']; ?></a>

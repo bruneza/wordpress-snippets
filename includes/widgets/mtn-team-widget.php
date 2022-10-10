@@ -641,7 +641,16 @@ class MTN_Team_Grid  extends \Elementor\Widget_Base
 	{
 		$settings = $this->get_settings_for_display();
 		$neededFields =  ['id', 'thumbnail', 'title', 'excerpt', 'post-link', 'content', 'job-title'];
-		$posts = postsRender($settings, ['mtn_team_category'=>$settings['mtn_posts_include_term_ids']], $neededFields);
+
+		$mtnSettings = [
+			'x_post_type' => $settings['mtn_posts_post_type'],
+			'x_posts_per_page' => $settings['mtn_posts_posts_per_page'],
+			'x_terms' => $settings['mtn_posts_include_term_ids'],
+			'x_outputs' => $neededFields
+		];
+		
+		// $posts = postsRender($settings, ['mtn_team_category'=>$settings['mtn_posts_include_term_ids']], $neededFields);
+		$posts = postsRender($mtnSettings);
 
 		/*** Start Content Section ***/
 		echo '

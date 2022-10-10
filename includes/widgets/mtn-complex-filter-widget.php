@@ -157,11 +157,253 @@ class MTN_Complex_Filter_Widget  extends \Elementor\Widget_Base
 
 		// ANCHOR: Complex Filter - Style Controls Section
 		// ANCHOR: Complex Filter - Grid Style
+
+		$this->start_controls_section(
+			'filter_btn_style',
+			[
+				'label' => esc_html__('Filter Style', 'mtn'),
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'filter_btn_padding',
+			[
+				'label' => esc_html__('Padding', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .nav-link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+		$this->add_control(
+			'filter_btn_br',
+			[
+				'label' => esc_html__('Border Radius', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .nav-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'background_filter_btn',
+				'label' => esc_html__('Set Filter Bg', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .nav-link',
+			]
+		);
+
+		$this->add_control(
+			'filter_btn_text_color',
+			[
+				'label' => esc_html__('Text Color', 'textdomain'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .nav-link' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'content_typography',
+				'selector' => '{{WRAPPER}} .nav-link',
+			]
+		);
+
+
+
+		$this->end_controls_section();
+
 		$this->start_controls_section(
 			'grid_style',
 			[
 				'label' => esc_html__('Grid Style', 'mtn'),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+
+		$this->add_control(
+			'filter_grid_padding',
+			[
+				'label' => esc_html__('Padding', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .document-card' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+		$this->add_control(
+			'filter_grid_br',
+			[
+				'label' => esc_html__('Border Radius', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .document-card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'background_filter_grid',
+				'label' => esc_html__('Set Filter Bg', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .document-card',
+			]
+		);
+
+		$this->add_control(
+			'filter_grid_text_color',
+			[
+				'label' => esc_html__('Text Color', 'textdomain'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .document-card' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'grid_icon_style',
+			[
+				'label' => esc_html__('Grid Icon Style', 'mtn'),
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'icon_grid_br',
+			[
+				'label' => esc_html__('Border Radius', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'background_grid_icon',
+				'label' => esc_html__('Set Filter Bg', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .icon',
+			]
+		);
+
+		$this->end_controls_section();
+		$this->start_controls_section(
+			'grid_text_style',
+			[
+				'label' => esc_html__('Grid Text Style', 'mtn'),
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'content_text_typography',
+				'selector' => '{{WRAPPER}} .content-title',
+			]
+		);
+		$this->add_control(
+			'grid_text_color',
+			[
+				'label' => esc_html__('Text Color', 'textdomain'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .content-title' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+		$this->start_controls_section(
+			'grid_btn_style',
+			[
+				'label' => esc_html__('Grid Button Style', 'mtn'),
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'grid_btn_padding',
+			[
+				'label' => esc_html__('Padding', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+		$this->add_control(
+			'grid_btn_br',
+			[
+				'label' => esc_html__('Border Radius', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'background_grid_btn',
+				'label' => esc_html__('Background', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .btn',
+			]
+		);
+
+		$this->add_control(
+			'grid_btn_text_color',
+			[
+				'label' => esc_html__('Text Color', 'textdomain'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .btn' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'grid_btn_typography',
+				'selector' => '{{WRAPPER}} .btn',
+			]
+		);
+
+		$this->add_control(
+			'custom_box_shadow',
+			[
+				'label' => esc_html__('Box Shadow', 'textdomain'),
+				'type' => \Elementor\Controls_Manager::BOX_SHADOW,
+				'selectors' => [
+					'{{WRAPPER}} .btn' => 'box-shadow: {{HORIZONTAL}}px {{VERTICAL}}px {{BLUR}}px {{SPREAD}}px {{COLOR}};',
+				],
 			]
 		);
 
@@ -179,11 +421,17 @@ class MTN_Complex_Filter_Widget  extends \Elementor\Widget_Base
 		// else
 		// 	$neededFields =  ['post-link'];
 
-		$postType = $settings['mtn_posts_post_type'];
-		$posts = postsRender($settings, null);
-		$terms = mtnTerms($posts, null, $settings['mtn_posts_include_term_ids']);
+		$mtnSettings = [
+			'x_post_type' => $settings['mtn_posts_post_type'],
+			'x_posts_per_page' => $settings['mtn_posts_posts_per_page'],
+			'x_terms' => $settings['mtn_posts_include_term_ids'],
+		];
+
+		$posts = postsRender($mtnSettings);
+
+		$terms = mtnTerms($mtnSettings);
 		$selectedKeys = array();
-		
+
 		/*** Start Content Section ***/
 		echo '<div class="complex-filter-section">';
 ?>
@@ -199,30 +447,34 @@ class MTN_Complex_Filter_Widget  extends \Elementor\Widget_Base
 					</li>
 				<?php } ?>
 			</ul>
-		</div>		
+		</div>
 		<?php
 		foreach ($selectedKeys as $key => $value) { ?>
-		<div class="tab-content" id="pills-tabContent">
-			<div class="tab-pane fade show <?php if($key == 0) echo 'active'; ?>" id="pills-<?=$value[0];?>" role="tabpanel" aria-labelledby="pills-<?=$value[0];?>-tab">
-			<div class="grid filter-tab-contents">
-			<?php $posts = postsRender($settings,array($value[1] =>$value[0]));
-			// print_r($posts);
-			foreach ($posts as $post) {
-		?>
-				<div class="document-card">
-						<div class="icon">
-							<i class="fa fa-file-pdf"></i>
-						</div>
-						<div class="title">
-							<p class="content-title"><?=$post['title'];?></p>
-						</div>
-						<a href="<?=$post['post-link'];?>" class="btn">Download</a>
-					</div>
-<?php
+			<div class="tab-content" id="pills-tabContent">
+				<div class="tab-pane fade show <?php if ($key == 0) echo 'active'; ?>" id="pills-<?= $value[0]; ?>" role="tabpanel" aria-labelledby="pills-<?= $value[0]; ?>-tab">
+					<div class="grid filter-tab-contents">
+
+						<?php $mtnSettings = wp_parse_args([
+							'x_terms' => array($value[1] => $value[0])
+						], $mtnSettings);
+						$posts = postsRender($mtnSettings);
+						// print_r($posts);
+						foreach ($posts as $post) {
+						?>
+							<div class="document-card">
+								<div class="icon">
+									<i class="fa fa-file-pdf"></i>
+								</div>
+								<div class="title">
+									<p class="content-title"><?= $post['title']; ?></p>
+								</div>
+								<a href="<?= $post['post-link']; ?>" class="btn">Download</a>
+							</div>
+			<?php
+						}
+						echo '</div></div></div>';
+					}
+					echo '</div></div>';
+					/*** End Content Section ***/
+				}
 			}
-			echo '</div></div></div>';
-		}
-		echo '</div></div>';
-		/*** End Content Section ***/
-	}
-}

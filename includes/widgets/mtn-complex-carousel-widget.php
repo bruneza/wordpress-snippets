@@ -1377,6 +1377,122 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 
 
 		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'coursel_btn_style',
+			[
+				'label' => esc_html__('Button Style', 'mtn'),
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'coursel_btn_padding',
+			[
+				'label' => esc_html__('Padding', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .btn-white' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+		$this->add_control(
+			'coursel_btn_br',
+			[
+				'label' => esc_html__('Border Radius', 'mtn'),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .btn-white' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'content_coursel_btn_typography',
+				'selector' => '{{WRAPPER}} .btn-white',
+			]
+		);
+		$this->start_controls_tabs(
+			'btn_style_tabs'
+		);
+
+
+		$this->start_controls_tab(
+			'btn_style_normal_tab',
+			[
+				'label' => esc_html__('Normal', 'mtn'),
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'background_coursel_btn',
+				'label' => esc_html__('Set Background', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .btn-white',
+			]
+		);
+
+		$this->add_control(
+			'coursel_btn_text_color',
+			[
+				'label' => esc_html__('Text Color', 'textdomain'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .btn-white' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+
+		$this->start_controls_tab(
+			'btn_hover_style_normal_tab',
+			[
+				'label' => esc_html__('Hover', 'mtn'),
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => 'background_coursel_btn_hover',
+				'label' => esc_html__('Set Background', 'mtn'),
+				'types' => ['classic', 'gradient', 'video'],
+				'selector' => '{{WRAPPER}} .btn-white:hover',
+			]
+		);
+
+		$this->add_control(
+			'coursel_btn_hover_text_color',
+			[
+				'label' => esc_html__('Text Color', 'mtn'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .btn-white:hover' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+
+		$this->end_controls_tabs();
+
+
+
+
+
+
+		$this->end_controls_section();
 	}
 
 
@@ -1384,21 +1500,30 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 	protected function render()
 	{
 		$settings = $this->get_settings_for_display();
-		// print_r($settings);
 
 		if ($settings['choose_grid_fields'])
 			$neededFields =  $settings['choose_grid_fields'];
 		else
 			$neededFields =  ['thumbnail'];
 
-		$posts = postsRender($settings, null, $neededFields, array('skip_nothumbnail' => true));
+		$mtnSettings = [
+			'x_post_type' => $settings['mtn_posts_post_type'],
+			'x_posts_per_page' => $settings['mtn_posts_posts_per_page'],
+			'x_terms' => $settings['mtn_posts_include_term_ids'],
+			'x_outputs' => $neededFields,
+			'x_conditions' => [
+				'x_skip_nothumbnail' => true,
+			]
+		];
+
+		$posts = postsRender($mtnSettings);
+
 		$grid_cols = $settings['content_grid_cols'];
 		$grid_col_count = count($grid_cols);
 		$invert = null;
 		if (isset($grid_col_count) && isset($posts))
 			$posts = array_chunk($posts, $grid_col_count);
 
-		// print_r($settings['invert_top_divider']);
 ?>
 
 
@@ -1438,7 +1563,6 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			echo '<div class="complex-carousel-row">';
 			foreach ($innerPosts as $innerKey => $post) {
 				$btnIcon =  processSingleIcon($grid_cols[$innerKey]['btn_icon']);
-				// print_r($grid_cols[$innerKey]['btn_icon']);
 		?>
 
 				<div class="complex-column-item elementor-repeater-item-<?= $grid_cols[$innerKey]['_id']; ?>">

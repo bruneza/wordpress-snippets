@@ -44,7 +44,7 @@ if (!class_exists('MTN_Event_Cpt')) :
         /**
          * Create events Post Type
          */
-        public function register_Events_cpt()
+        public function register_cpt()
         {
             /**
              * Create events CPT

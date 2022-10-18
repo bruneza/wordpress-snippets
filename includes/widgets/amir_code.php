@@ -3,69 +3,71 @@
 namespace MTN_FEATURES\Widgets;
 
 use ElementorPro\Modules\QueryControl\Module as Module_Query;
-use ElementorPro\Modules\QueryControl\Controls\Group_Control_Related;
+use ElementorPro\Modules\QueryControl\Controls\Group_MTN_Query;
 
 if (!defined('ABSPATH')) {
 	exit;
 }
 
-	class MTN_Amiri_Code  extends \Elementor\Widget_Base
+class MTN_Date_Bundles  extends \Elementor\Widget_Base
+{
+
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve test widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string Widget name.
+	 */
+	public function get_name()
+	{
+		return 'Mtn Bundles';
+	}
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve test widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string Widget title.
+	 */
+	public function get_title()
+	{
+		return esc_html__('Mtn Bundles', 'mtn');
+	}
+
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve test widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string Widget icon.
+	 */
+	public function get_icon()
+	{
+		return 'eicon-code';
+	}
+
+	public function get_categories()
+	{
+		return ['basic'];
+	}
+
+
+	private function postType()
+	{
+		return 'post';
+	}
+
+    protected function register_controls()
 	{
 
-		/**
-		 * Get widget name.
-		 *
-		 * Retrieve test widget name.
-		 *
-		 * @since 1.0.0
-		 * @access public
-		 * @return string Widget name.
-		 */
-		public function get_name()
-		{
-			return 'Amiri Code';
-		}
-		/**
-		 * Get widget title.
-		 *
-		 * Retrieve test widget title.
-		 *
-		 * @since 1.0.0
-		 * @access public
-		 * @return string Widget title.
-		 */
-		public function get_title()
-		{
-			return esc_html__('Amiri Code', 'mtn');
-		}
-
-		/**
-		 * Get widget icon.
-		 *
-		 * Retrieve test widget icon.
-		 *
-		 * @since 1.0.0
-		 * @access public
-		 * @return string Widget icon.
-		 */
-		public function get_icon()
-		{
-			return 'eicon-code';
-		}
-
-		public function get_categories()
-		{
-			return ['basic'];
-		}
-
-
-		private function postType()
-		{
-			return 'post';
-		}
-        
-        protected function register_controls()
-	{$count = range(1, 15);
+		$count = range(1, 15);
 		$count = array_combine($count, $count);
 
 		// ANCHOR: Complex Filter - Content Control
@@ -101,56 +103,38 @@ if (!defined('ABSPATH')) {
 
 		// ANCHOR: Complex Filter - Grid Query Controls
 		$this->start_controls_section(
-			'section_query',
+			'Query',
 			[
-				'label' => esc_html__('Query', 'elementor-pro'),
+				'label' => esc_html__('MTN Query', 'mtn'),
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
 
 		$this->add_group_control(
-			Group_Control_Related::get_type(),
+			Group_MTN_Query::get_type(),
 			[
 				'name' => 'mtn_posts',
 			]
 		);
-		/*$this->add_control(
-			'grid_filter_heading',
+
+		$this->add_control(
+			'grid_fields_heading',
 			[
-				'label' => esc_html__('Filter By', 'mtn'),
+				'label' => esc_html__('Choose Fields', 'mtn'),
 				'type' => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
 		);
-
-		$this->add_control(
-			'choose_grid_taxonomy',
+	/*	$this->add_control(
+			'choose_grid_fields',
 			[
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'label' => esc_html__('Select Taxonomy', 'mtn'),
-				'multiple' => false,
-				'options' => [
-					'mtn_documentscategory' => "Documents Category",
-				],
-				'default' => 'mtn_documentscategory',
+				'type' => \Elementor\Controls_Manager::SELECT2,
+				'multiple' => true,
+				'options' => processOutput()['fields'],
+				'default' => ['thumbnail', 'post-link']
 			]
 		);
-
-		$this->add_control(
-			'mtn_posts_grid_terms_filter',
-			[
-				'type' => Module_Query::QUERY_CONTROL_ID,
-				'label' => esc_html__('Terms to Filter', 'mtn'),
-				'multiple' => true,
-				'options' => [],
-				'autocomplete' => [
-					'object' => Module_Query::QUERY_OBJECT_CPT_TAX,
-					'display' => 'detailed',
-					'post_type' => 'mtn_posts_post_type'
-				],
-			]
-		);*/
-
+*/
 		$this->end_controls_section();
 
 		// ANCHOR: Complex Filter - Style Controls Section
@@ -171,7 +155,7 @@ if (!defined('ABSPATH')) {
 				'type' => \Elementor\Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
-					'{{WRAPPER}} .nav-link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .navigator-country' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -182,7 +166,7 @@ if (!defined('ABSPATH')) {
 				'type' => \Elementor\Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
-					'{{WRAPPER}} .nav-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .navigator-country' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -193,7 +177,7 @@ if (!defined('ABSPATH')) {
 				'name' => 'background_filter_btn',
 				'label' => esc_html__( 'Set Filter Bg', 'mtn' ),
 				'types' => [ 'classic', 'gradient', 'video' ],
-				'selector' => '{{WRAPPER}} .nav-link',
+				'selector' => '{{WRAPPER}} .navigator-country',
 			]
 		);
 
@@ -203,7 +187,7 @@ if (!defined('ABSPATH')) {
 				'label' => esc_html__( 'Text Color', 'textdomain' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .nav-link' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .navigator-country' => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -212,7 +196,7 @@ if (!defined('ABSPATH')) {
 			\Elementor\Group_Control_Typography::get_type(),
 			[
 				'name' => 'content_typography',
-				'selector' => '{{WRAPPER}} .nav-link',
+				'selector' => '{{WRAPPER}} .navigator-country',
 			]
 		);
 
@@ -236,7 +220,7 @@ if (!defined('ABSPATH')) {
 				'type' => \Elementor\Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
-					'{{WRAPPER}} .document-card' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .bundles' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -247,7 +231,7 @@ if (!defined('ABSPATH')) {
 				'type' => \Elementor\Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
-					'{{WRAPPER}} .document-card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .bundles' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -258,7 +242,7 @@ if (!defined('ABSPATH')) {
 				'name' => 'background_filter_grid',
 				'label' => esc_html__( 'Set Filter Bg', 'mtn' ),
 				'types' => [ 'classic', 'gradient', 'video' ],
-				'selector' => '{{WRAPPER}} .document-card',
+				'selector' => '{{WRAPPER}} .bundles',
 			]
 		);
 
@@ -268,7 +252,7 @@ if (!defined('ABSPATH')) {
 				'label' => esc_html__( 'Text Color', 'textdomain' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .document-card' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .bundles' => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -407,62 +391,294 @@ if (!defined('ABSPATH')) {
 
 		$this->end_controls_section();
 
+    
     }
-        protected function render()
-		{
-            $settings = $this->get_settings_for_display();
 
-			$mtnSettings = [
-				'x_post_type' => $settings['mtn_posts_post_type'],
-				'x_posts_per_page' => $settings['mtn_posts_posts_per_page'],
-				'x_terms' => $settings['mtn_posts_include_term_ids']
+    protected function render()
+	{
+		$settings = $this->get_settings_for_display();
+		$selectedKeys = array();
 
-			];
+		$neededFields = validateNeededFields($settings, 'choose_grid_fields');
+		$postType = validateEleCPT($settings, 'mtn_posts_post_type', 'mtn_posts_selected_cpt');
 
-            $posts = postsRender($settings);
-            $terms = mtnTerms($posts, null, );
-            $selectedKeys = array();
-            
-            /*** Start Content Section ***/
-            echo '<div class="complex-filter-section">';
+        if ($settings['choose_grid_fields'])
+            $neededFields =  $settings['choose_grid_fields'];
+        else
+            $neededFields =  ['title'];
+
+        $mtnSettings = [
+			'x_post_type' => $postType,
+			'x_posts_per_page' => validateEleCPT($settings, 'mtn_posts_posts_per_page'),
+			'x_terms' => validateEleCPT($settings, 'mtn_posts_include_term_ids'),
+			'x_taxonomy' => validateEleCPT($settings, 'mtn_posts_include_taxonomy_slugs'),
+			'x_show' => 'by_taxonomy',
+        ];
+
+        $terms = getTerms($mtnSettings);
+
+		echo '<br>-----$settings-----<br';
+		print_r($mtnSettings);
+		echo '<br>----------<br';
+		$continents = array();
+		foreach ($terms as $term){
+			array_push($continents, 
+			[
+				'name' => $term['name'], 
+				'key' => $term['slug']
+			]);
+		}
+
+		$posts = postsRender($mtnSettings);
+		
+		$country = array();
+		$countryId = null;
+		foreach ( $posts as $post){
+			if(isset($countryId[$post['id']]))continue;
+			$countryId[$post['id']] = $post['id'];
+				array_push($country, 
+			[
+				'name' => $post['title'], 
+				'key' => $post['slug'],
+			]);
+			
+			
+			echo '<br>-----tariff_continent-----<br>';
+			print_r($post);
+			echo '<br>----------<br>';
+			};
+			
+       
+        $countries = array( 
+            array( 
+                "name"=>"Uganda",
+				"key"=>"uganda",
+                "continent"=>"africe" 
+                ), 
+            array( "name"=>"Kenya", "key"=>"kenya",
+            "continent"=>"africe"  ), 
+            array( "name"=>"South Sudan", "key"=>"south-sudan",
+            "continent"=>"africe" ), 
+            array( "name"=>"USA", "key"=>"usa",
+            "continent"=>"north-america" ), 
+            array( "name"=>"Canada", "key"=>"canada",
+            "continent"=>"north-america" ), 
+            array("name"=>"China", "key"=>"china",
+            "continent"=>"asia" ), 
+            array( "name"=>"South Africa", "key"=>"south-africa",
+            "continent"=>"africe" ),
+            array("name"=>"Unitad Kingdom", "key"=>"uk",
+            "continent"=>"europe" ), 
+            array("name"=>"Beligium", "key"=>"beligium",
+            "continent"=>"europe" ), 
+            ); 
+            $operators = array(
+                array(
+                    "name"=>"Orange",
+                    "country"=>"uk"
+                ),
+                array(
+                    "name"=>"Mobistar",
+                    "country"=>"beligium"
+                ),
+                array(
+                    "name"=>"Belgacom",
+                    "country"=>"beligium"
+                ),
+                array(
+                    "name"=>"T-Mobile",
+                    "country"=>"uk"
+                ),
+            );
+            $bundles = array( 
+                array( 
+                    "country"=>"uganda", 
+                    "price"=>"500 Rwf",
+                    "resources"=>"7 min",
+                    "validity"=>"24 Hrs"
+                ),
+                array( 
+                    "country"=>"usa", 
+                    "price"=>"500 Rwf",
+                    "resources"=>"7 min",
+                    "validity"=>"24 Hrs"
+                ),
+                array( 
+                    "country"=>"uganda", 
+                    "price"=>"1,000 Rwf",
+                    "resources"=>"13 min",
+                    "validity"=>"24 Hrs"
+                ), 
+                array( 
+                    "country"=>"uganda", 
+                    "price"=>"3,000 Rwf",
+                    "resources"=>"43 min",
+                    "validity"=>"24 Hrs"
+                ), 
+                array( 
+                    "country"=>"uganda", 
+                    "price"=>"5,000 Rwf",
+                    "resources"=>"71 min",
+                    "validity"=>"24 Hrs"
+                ),
+                array( 
+                    "country"=>"kenya", 
+                    "price"=>"5,000 Rwf",
+                    "resources"=>"71 min",
+                    "validity"=>"24 Hrs"
+                ), 
+                array( 
+                    "country"=>"beligium", 
+                    "price"=>"1,100 Rwf",
+                    "resources"=>"50 MB",
+                    "validity"=>"3 Days"
+                ), 
+                array( 
+                    "country"=>"beligium", 
+                    "price"=>"2,200 Rwf",
+                    "resources"=>"100 MB",
+                    "validity"=>"3 Days"
+                ),
+                array( 
+                    "country"=>"uk", 
+                    "price"=>"14,00 Rwf",
+                    "resources"=>"400 MB",
+                    "validity"=>"3 Days"
+                ), 
+            );
     ?>
-            <div class="mtn-filter-tab">
-                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-    
-                    <?php foreach ($terms as $key => $value) {
-                        // print_r(array_key_first($terms));
-                        array_push($selectedKeys, array($key, $value['taxonomy']));
+
+        <div class="col-md-12">
+            <div class="container">
+                <div class="navigator-countries">
+                    <?php
+                    $counter = 0;
+                    foreach($continents as $continent)
+                    {
                     ?>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link <?php if (intval($key) == array_key_first($terms))  echo 'active'; ?>" id="pills-home-<?= $key; ?>" data-bs-toggle="pill" data-bs-target="#pills-<?= $key; ?>" type="button" role="tab" aria-controls="pills-<?= $key; ?>" aria-selected="true"><?= $value['name']; ?></button>
-                        </li>
-                    <?php } ?>
-                </ul>
-            </div>		
-            <?php
-            foreach ($selectedKeys as $key => $value) { ?>
-            <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade show <?php if($key == 0) echo 'active'; ?>" id="pills-<?=$value[0];?>" role="tabpanel" aria-labelledby="pills-<?=$value[0];?>-tab">
-                <div class="grid filter-tab-contents">
-                <?php $posts = postsRender(array('x_settings' => $settings, 'x_terms' => array($value[1] =>$value[0])));
-                // print_r($posts);
-                foreach ($posts as $post) {
-            ?>
-                    <div class="document-card">
-                            <div class="icon">
-                                <i class="fa fa-file-pdf"></i>
+                        <a class="navigator-country <?php echo $counter == 0 ? 'active-filter':'';?>" data-filter="<?=$continent['key']?>">
+                            <?=$continent['name']?>
+                        </a>
+                        <?php
+                        $counter++;
+                    } ?>
+                </div>
+
+                <div class="bundles-section">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="row">
+                        <?php
+                    $couter = 0;
+                    foreach($countries as $country)
+                    {
+                    ?>
+                    
+                            <div class="col-md-6 bundle-contents <?=$country['continent']?>" style="display: none;">
+                                <div class="bundles">
+                                    <table class="table">
+                                        <thead>
+                                            <div class="country-name">
+                                                <h3>
+                                                    <?=$country['name']?>
+                                                </h3>
+                                            </div>
+
+                                            <div class="d-flex" style="margin: 10px;">
+                                                <div class="col-md-3">
+                                                    <h4>Operators</h4>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="operators">
+                                                        <?php
+                                                    foreach($operators as $operator)
+                                                {
+                                                    if($operator['country'] != $country['key']) continue;
+                                                    ?>
+                                                        <span class=""><?=$operator['name']?></span>
+                                                        <?php
+                    }
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>Price</th>
+                                                <th>Resources</th>
+                                                <th>Validity</th>
+                                            </tr>
+                                            <?php
+                                                $couter = 0;
+                                                foreach($bundles as $bundle)
+                                                {
+                                                    if($bundle['country'] != $country['key']) continue;
+                                                ?>
+                                                <tr class="bundle">
+                                                    <td>
+                                                        <?=$bundle['price']?>
+                                                    </td>
+                                                    <td>
+                                                        <?=$bundle['resources']?>
+                                                    </td>
+                                                    <td>
+                                                        <?=$bundle['validity']?>
+                                                    </td>
+                                                </tr>
+                                                <?php }
+                                                ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <div class="title">
-                                <p class="content-title"><?=$post['title'];?></p>
-                            </div>
-                            <a href="<?=$post['post-link'];?>" class="btn">Download</a>
-                        </div>
-    <?php
-                }
-                echo '</div></div></div>';
+                            <?php
+                    }
+                    ?>
+</div>
+                    </div>
+
+                                <div class="col-md-2">
+                                    <div class="bunner">
+                                        <div class="bunner-texts">
+                                            <h3>Enjoy MTN roaming</h3>
+                                            <p>
+                                                Dial <strong>*140#</strong> and select <strong>6</strong> to access international bundles.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function($) {
+            var header = document.querySelector(".navigator-countries");
+            var btns = header.getElementsByClassName("navigator-country");
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].addEventListener("click", function() {
+                    var current = document.getElementsByClassName("active-filter");
+                    current[0].className = current[0].className.replace(" active-filter", "");
+                    this.className += " active-filter";
+                });
             }
-            echo '</div></div>';
-            /*** End Content Section ***/
-        }
+
+            var value = $(".active-filter").attr("data-filter");
+            $(".bundle-contents").not('.' + value).hide('1000');
+            $('.bundle-contents').filter('.' + value).show('3000');
+
+            $(".navigator-country").click(function() {
+                var value = $(this).attr("data-filter");
+
+
+                $(".bundle-contents").not('.' + value).hide('1000');
+                $('.bundle-contents').filter('.' + value).show('3000');
+
+            });
+        })(jQuery);
+        </script>
+            <?php
     }
-    
+}

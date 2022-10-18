@@ -1511,6 +1511,7 @@ class MTN_Complex_Carousel_Widget  extends \Elementor\Widget_Base
 			'x_posts_per_page' => $settings['mtn_posts_posts_per_page'],
 			'x_terms' => $settings['mtn_posts_include_term_ids'],
 			'x_outputs' => $neededFields,
+			'x_show' => 'by_terms',
 			'x_conditions' => [
 				'x_skip_nothumbnail' => true,
 			]

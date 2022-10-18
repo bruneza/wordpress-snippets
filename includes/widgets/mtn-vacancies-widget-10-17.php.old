@@ -1,0 +1,271 @@
+<?php
+
+namespace MTN_FEATURES\Widgets;
+
+use ElementorPro\Modules\QueryControl\Module as Module_Query;
+use ElementorPro\Modules\QueryControl\Controls\Group_Control_Related;
+use ElementorPro\Modules\QueryControl\Controls\Group_MTN_Query;
+
+if (!defined('ABSPATH')) {
+	exit;
+}
+
+class MTN_Vacancies  extends \Elementor\Widget_Base
+{
+
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve test widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string Widget name.
+	 */
+	public function get_name()
+	{
+		return 'Vacancies Widget';
+	}
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve test widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string Widget title.
+	 */
+	public function get_title()
+	{
+		return esc_html__('Vacancies Widget', 'mtn');
+	}
+
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve test widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string Widget icon.
+	 */
+	public function get_icon()
+	{
+		return 'eicon-code';
+	}
+
+	public function get_categories()
+	{
+		return ['basic'];
+	}
+
+
+	private function postType()
+	{
+		return 'post';
+	}
+
+	protected function register_controls()
+	{
+		$this->start_controls_section(
+			'content_section',
+			[
+				'label' => esc_html__('Content', 'mtn'),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'num_of_columns',
+			[
+				'label' => esc_html__('Number of Columns', 'mtn'),
+				'type' => \Elementor\Controls_Manager::NUMBER,
+				'default' => 3,
+			]
+		);
+
+		$this->add_control(
+			'view_more_btn',
+			[
+				'label' => esc_html__('View More Button', 'mtn'),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'label_block' => true,
+				'placeholder' => esc_html__('Enter Value', 'mtn'),
+				'default' => esc_html__('View More', 'mtn'),
+				'dynamic' => [
+					'active' => true,
+				],
+			]
+		);
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'Query',
+			[
+				'label' => esc_html__('MTN Query', 'mtn'),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_group_control(
+			Group_MTN_Query::get_type(),
+			[
+				'name' => 'mtn_posts',
+			]
+		);
+
+		$this->add_control(
+			'grid_fields_heading',
+			[
+				'label' => esc_html__('Choose Fields', 'mtn'),
+				'type' => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$this->add_control(
+			'choose_grid_fields',
+			[
+				'type' => \Elementor\Controls_Manager::SELECT2,
+				'multiple' => true,
+				'options' => processOutput()['fields'],
+				'default' => ['thumbnail', 'post-link']
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+
+
+	protected function render()
+	{
+		$settings = $this->get_settings_for_display();
+		$postType = validateEleCPT($settings, 'mtn_posts_post_type', 'mtn_posts_selected_cpt');
+
+		$mtnSettings = [
+			'x_post_type' => $postType,
+			'x_posts_per_page' => validateEleCPT($settings, 'mtn_posts_posts_per_page'),
+			'x_taxonomy' => validateEleCPT($settings, 'mtn_posts_include_taxonomy_slugs'),
+			'x_show' => 'by_terms',
+		];
+
+		$taxonomies = xgetTerms($mtnSettings);
+
+
+
+		// echo '<br>-----$Department-----<br>';
+		// print_r($taxonomies);
+		// echo '<br>----------<br>';
+
+		$postMeta = array();
+
+?>
+
+		<div class="col-md-12">
+			<div class="col">
+				<div class="filter-section">
+
+					<div class="row">
+						<div class="col-md-5">
+							<div class="d-flex" style="gap:20px">
+
+								<div class="filter-scnd-btn">
+									<?php
+									foreach ($taxonomies as $taxKey => $terms) {
+										$taxSlug = get_taxonomy($taxKey)->rewrite['slug'];
+										$taxLabel = get_taxonomy($taxKey)->label;
+										// echo '<br>-----$taxKey-----<br>';
+										// print_r();
+										// echo '<br>----------<br';
+									?>
+										<select class="filter-two">
+
+											<?php foreach ($terms as $termKey => $term) {
+												if (array_key_first($terms) == $termKey) {
+
+													array_push($postMeta, [
+														'tax-key' => $taxKey,
+														'tax-slug' => $taxSlug,
+														'tax-label' => $taxLabel,
+														'term-id' => null,
+														'option-val' => $taxSlug . '-all',
+														'option-class' => 'all-' . $taxSlug,
+													]);
+													echo '<option value="' . $taxSlug . '-all" class="all-' . $taxSlug . '">' . $taxLabel . '</option>';
+												}
+												array_push($postMeta, [
+													'tax-key' => $taxKey,
+													'tax-slug' => $taxSlug,
+													'tax-label' => $taxLabel,
+													'term-id' => $termKey,
+													'term-name' => $term['name'],
+													'option-val' => $taxSlug . '-' . $termKey,
+													'option-class' => $taxSlug . '-' . $termKey,
+												]);
+											?>
+
+												<option value="<?= $taxSlug . '-' . $termKey ?>" class="category <?= $taxSlug . '-' . $termKey ?>"><?= $term['name'] ?></option>
+											<?php } ?>
+
+										</select>
+									<?php } ?>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+				<div class="business-item-section">
+					<div class="row" id="category-items">
+						<?php
+						foreach ($postMeta as $postData) {
+							if (isset($postData['term-id'])) {
+								$mtnSettings['x_show'] = 'by_terms';
+								$mtnSettings['x_terms'] = [$postData['term-id']];
+							}
+							$posts = xpostsRender($mtnSettings);
+							
+							foreach ($posts as $post) {
+								$term = get_the_terms($post['id'],$postData['tax-key'])[0];								
+						?>
+
+								<div class="col-md-6 filter categories <?= $postData['option-class'] ?>">
+									<div class="vacancies">
+										<div class="d-flex">
+											<div class="col-md-10">
+												<h4><?= $post['title'] ?></h4>
+												<p><?= $term->name; ?></p>
+												<i><?= $post['closing_data'] ?></i>
+											</div>
+											<div class="col-md-2">
+												<a href="<?= $post['post-link'] ?>" class="deal-items-icon">
+													<i class="fa fa-angle-right"></i>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+
+						<?php
+							}
+						}
+						?>
+
+					</div>
+				</div>
+
+				<div class="col-md-12">
+					<div class="see-all-btn">
+						<a href="" class="">Load More</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+<?php
+	}
+}

@@ -181,6 +181,7 @@ class MTN_Tariffs_Widget  extends \Elementor\Widget_Base
                                 $validity = $post['tariff_package'];
                             ?>
                                 <div class="bundle-card">
+                                    <!-- <div class="card-header">xxxx</div> -->
                                     <div class="tariff-price">
                                         <h5>Price</h5>
                                         <p><?= $post['tariff_infos']['price']; ?> Rwf</p>

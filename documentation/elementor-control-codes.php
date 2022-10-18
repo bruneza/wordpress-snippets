@@ -222,7 +222,7 @@ class Elementor_controls_Widget  extends \Elementor\Widget_Base
         $this->add_control(
             'number',
             [
-                'label' => esc_html__('Price', 'textdomain'),
+                'label' => esc_html__('Price', 'mtn'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 10,
             ]
@@ -232,7 +232,7 @@ class Elementor_controls_Widget  extends \Elementor\Widget_Base
         $this->add_control(
             'icon',
             [
-                'label' => esc_html__('Icon', 'textdomain'),
+                'label' => esc_html__('Icon', 'mtn'),
                 'type' => \Elementor\Controls_Manager::ICONS,
                 'default' => [
                     'value' => 'fas fa-circle',

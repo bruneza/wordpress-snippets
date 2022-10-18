@@ -81,32 +81,35 @@ final class MTN_Features
 
 		// Register Widget Styles
 		add_action('elementor/frontend/after_enqueue_styles', [$this, 'frontend_widget_styles'], 999);
-		add_action( 'elementor/controls/register',  [$this, 'register_control'], 999 );
+		add_action('elementor/controls/register',  [$this, 'register_control'], 999);
 
 		// Register Widget Scripts
 		add_action("elementor/frontend/after_enqueue_scripts", [$this, 'frontend_assets_scripts']);
 
 		// Include Custom Post Type
+		register_activation_hook( __FILE__, [$this, 'cpt_activate'] );
 
+		
 		foreach (glob(MTN_DIR . "/includes/post-types/CPT/*.php") as $filename) {
 			require_once $filename;
 		}
-
+		
 		$this->team_cpt = \MTN_FEATURES\CPT\MTN_Team_Cpt::instance();
 		$this->product_cpt = \MTN_FEATURES\CPT\MTN_Product_Cpt::instance();
 		$this->deal_cpt = \MTN_FEATURES\CPT\MTN_Deal_Cpt::instance();
 		$this->tariff_cpt = \MTN_FEATURES\CPT\MTN_Tariff_Cpt::instance();
 		$this->faq_cpt = \MTN_FEATURES\CPT\MTN_Faq_Cpt::instance();
-		// $this->docs_cpt = \MTN_FEATURES\CPT\MTN_Roaming_Cpt::instance();
 		$this->docs_cpt = \MTN_FEATURES\CPT\MTN_Document_Cpt::instance();
-
+		$this->jobs_cpt = \MTN_FEATURES\CPT\MTN_Job_Cpt::instance();
+		
 		// EXTRA 
 		include_once MTN_DIR . '/includes/post-types/EXTRA/taxonomy.php';
-
+		
 		$this->page_taxonomy = \MTN_FEATURES\EXTRA\MTN_Page_Taxonomy::instance();
+		
 
 		//MAP
-		
+
 		require_once MTN_DIR . '/includes/map-locator/mtn-map-locator.php';
 		require_once MTN_DIR . '/includes/map-locator/wpsl-templates/wpsl-helper.php';
 
@@ -231,7 +234,34 @@ final class MTN_Features
 
 		load_plugin_textdomain('mtn');
 		add_action('elementor/widgets/register', [$this, 'register_widgets']);
-		require_once MTN_DIR . '/includes/queries/mtn-queries.php';
+
+		foreach (glob(MTN_DIR . "/includes/queries/*.php") as $filename) {
+			require_once $filename;
+		}
+		foreach (glob(MTN_DIR . "/includes/queries/content-template/*.php") as $filename) {
+			require_once $filename;
+		}
+	}
+
+	public function cpt_activate()
+	{
+		unregister_post_type('mtn_teams');
+		unregister_post_type('mtn_products');
+		unregister_post_type('mtn_deals');
+		unregister_post_type('mtn_tariffs');
+		unregister_post_type('mtn_faqs');
+		unregister_post_type('mtn_documents');
+		unregister_post_type('mtn_jobs');
+		
+		$this->team_cpt->register_cpt();;
+		$this->product_cpt->register_cpt();
+		$this->deal_cpt->register_cpt();
+		$this->tariff_cpt->register_cpt();
+		$this->faq_cpt->register_cpt();
+		$this->docs_cpt->register_cpt();
+		$this->jobs_cpt->register_cpt();
+
+		flush_rewrite_rules();
 	}
 
 	// Extra functionality
@@ -260,27 +290,27 @@ final class MTN_Features
 		wp_enqueue_script("mtn-test-js", MTN_ASSETS . 'js/test-js.js', array('jquery'), rand(1, 1000), true);
 	}
 
-/**
- * Register Currency Control.
- *
- * Include control file and register control class.
- *
- * @since 1.0.0
- * @param \Elementor\Controls_Manager $controls_manager Elementor controls manager.
- * @return void
- */
+	/**
+	 * Register Currency Control.
+	 *
+	 * Include control file and register control class.
+	 *
+	 * @since 1.0.0
+	 * @param \Elementor\Controls_Manager $controls_manager Elementor controls manager.
+	 * @return void
+	 */
 
-function register_control( $controls_manager ) {
+	function register_control($controls_manager)
+	{
 
-	foreach (glob(MTN_DIR . "/includes/controls/*.php") as $filename) {
-		require_once $filename;
+		foreach (glob(MTN_DIR . "/includes/controls/*.php") as $filename) {
+			require_once $filename;
+		}
+
+		// $controls_manager->register( new \MTN_FEATURES\Controls\Taxo_select_Control () );
+		// $controls_manager->register( new \MTN_FEATURES\Controls\Group_MTN_Related() );
+		$controls_manager->add_group_control(Group_MTN_Query::get_type(), new Group_MTN_Query());
 	}
-
-    // $controls_manager->register( new \MTN_FEATURES\Controls\Taxo_select_Control () );
-    // $controls_manager->register( new \MTN_FEATURES\Controls\Group_MTN_Related() );
-	$controls_manager->add_group_control( Group_MTN_Query::get_type(), new Group_MTN_Query() );
-
-}
 	/**
 	 * Register Widgets
 	 *
@@ -302,26 +332,32 @@ function register_control( $controls_manager ) {
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Complex_Filter_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Tariffs_Widget());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Advanced_Roaming());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Filter_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Faqs());
-		
+
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Vacancies());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Advanced_Roaming());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion_Foundation());
+
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Viewed_Topics());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Flex_Grid());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_News_Grid());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Post_Grid());
-		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Device_Filter1());
-		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Posts_Filter());
-		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Single_Faqs());
-		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Vacancies());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Filter());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Related_Faqs());
-		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion_Foundation());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_International_Filter());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Test_Widget());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Data_Bundle_Filter());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Device_Filter1());
+		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Posts_Filter());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Amiri_Code());
-		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Simplex_Filter());
+		//CONTROL ERROR// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Simplex_Filter());
+
+		// begin
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Calling_tarrifs());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Date_Bundles());
+		//end
 	}
 }
-

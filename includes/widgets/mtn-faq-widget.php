@@ -107,7 +107,7 @@ class MTN_Faqs  extends \Elementor\Widget_Base
 
         $this->end_controls_section();
 
-        
+
         $this->start_controls_section(
             'tariff_content',
             [
@@ -260,13 +260,15 @@ class MTN_Faqs  extends \Elementor\Widget_Base
                 'separator' => 'before',
             ]
         );
-        $this->add_group_control(\Elementor\Group_Control_Background::get_type(), [
-    'name' => 'header_background',
-    'label' => esc_html__('Background', 'mtn'),
-    'types' => ['classic', 'gradient', 'video'],
-    'selector' => '{{WRAPPER}} .faq-header',
-]
-);
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'header_background',
+                'label' => esc_html__('Background', 'mtn'),
+                'types' => ['classic', 'gradient', 'video'],
+                'selector' => '{{WRAPPER}} .faq-header',
+            ]
+        );
 
         $this->end_controls_section();
         $this->start_controls_section(
@@ -355,16 +357,16 @@ class MTN_Faqs  extends \Elementor\Widget_Base
             ]
         );
         $this->add_group_control(\Elementor\Group_Control_Background::get_type(), [
-    'name' => 'item_background',
-    'label' => esc_html__('Background', 'mtn'),
-    'types' => ['classic', 'gradient', 'video'],
-    'selector' => '{{WRAPPER}} .faq-item',
-]);
+            'name' => 'item_background',
+            'label' => esc_html__('Background', 'mtn'),
+            'types' => ['classic', 'gradient', 'video'],
+            'selector' => '{{WRAPPER}} .faq-item',
+        ]);
         $this->add_group_control(\Elementor\Group_Control_Border::get_type(), [
-    'name' => 'item_border',
-    'label' => esc_html__('Border', 'mtn'),
-    'selector' => '{{WRAPPER}} .faq-item',
-]);
+            'name' => 'item_border',
+            'label' => esc_html__('Border', 'mtn'),
+            'selector' => '{{WRAPPER}} .faq-item',
+        ]);
 
         $this->end_controls_tab();
 
@@ -394,16 +396,16 @@ class MTN_Faqs  extends \Elementor\Widget_Base
             ]
         );
         $this->add_group_control(\Elementor\Group_Control_Background::get_type(), [
-    'name' => 'item_background_hover',
-    'label' => esc_html__('Background', 'mtn'),
-    'types' => ['classic', 'gradient', 'video'],
-    'selector' => '{{WRAPPER}} .faq-item:hover',
-]);
+            'name' => 'item_background_hover',
+            'label' => esc_html__('Background', 'mtn'),
+            'types' => ['classic', 'gradient', 'video'],
+            'selector' => '{{WRAPPER}} .faq-item:hover',
+        ]);
         $this->add_group_control(\Elementor\Group_Control_Border::get_type(), [
-    'name' => 'item_border_hover',
-    'label' => esc_html__('Border', 'mtn'),
-    'selector' => '{{WRAPPER}} .faq-item:hover',
-]);
+            'name' => 'item_border_hover',
+            'label' => esc_html__('Border', 'mtn'),
+            'selector' => '{{WRAPPER}} .faq-item:hover',
+        ]);
 
         $this->end_controls_tab();
         $this->end_controls_tabs();
@@ -427,22 +429,24 @@ class MTN_Faqs  extends \Elementor\Widget_Base
         $postType = $settings['mtn_posts_post_type'] = 'mtn_faqs';
 
         $mtnSettings = [
-			'x_post_type' => $settings['mtn_posts_post_type'],
-			'x_posts_per_page' => $settings['mtn_posts_posts_per_page'],
+            'x_post_type' => $settings['mtn_posts_post_type'],
+            'x_posts_per_page' => $settings['mtn_posts_posts_per_page'],
             'x_taxonomy' => $settings['mtn_posts_include_taxonomy_slugs'],
-			'x_conditions' => [
-				'x_skip_nothumbnail' => true,
-			]
-		];
+            'x_show' => 'by_terms',
+        ];
+
+        $postArgs = [
+            'post_type' => $postType
+        ];
 
         $terms = mtnTerms($mtnSettings);
         $colNum = intval(12 / $settings['num_of_columns']);
-
 
         echo '<div class="mtn-faq-section">';
         echo '<div class="row faq-row">';
 
         foreach ($terms as $key => $term) {
+
 ?>
             <div class="faq-column col-md-<?= $colNum; ?> col-sm-12">
                 <div class="faq-wrapper">
@@ -453,7 +457,7 @@ class MTN_Faqs  extends \Elementor\Widget_Base
                         <?php
                         $mtnSettings['x_terms'] = array($key);
                         $posts = postsRender($mtnSettings);
-                        print_r($posts);
+
                         foreach ($posts as $post) {
                         ?>
                             <a href="<?= $post['post-link']; ?>" class="faq-item"><?= $post['title']; ?></a>

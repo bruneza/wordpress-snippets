@@ -31,7 +31,7 @@ if (!class_exists('MTN_Faq_Cpt')) :
          //use custom fields
         public function __construct()
         {
-            add_action('init', [$this, 'register_Faq_cpt'], 0);
+            add_action('init', [$this, 'register_cpt'], 0);
 
 
         }
@@ -40,7 +40,7 @@ if (!class_exists('MTN_Faq_Cpt')) :
         /**
          * Create faqs Post Type
          */
-        public function register_Faq_cpt()
+        public function register_cpt()
         {
             /**
              * Create faqs CPT

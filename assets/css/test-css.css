@@ -420,6 +420,29 @@
     flex-direction: column;
 }
 
+
+/* vacancies */
+
+.vacancies {
+    padding: 30px;
+    box-shadow: 0px 0px 8px 0px;
+    margin: 20px 0;
+    border-radius: 20px;
+    min-height: 170px;
+    display: flex;
+}
+
+.vacancies-post {
+    align-self: center;
+    width: 100%;
+}
+
+.vacancies .col-md-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .deal-items-icon {
     background-color: #ffcc00;
     color: #000;
@@ -968,4 +991,70 @@ button {
     border-left: none!important;
     border-right: none!important;
     padding: 5px 30px!important;
+}
+
+
+/* device filter */
+
+.select-btn {
+    margin: 20px 0;
+}
+
+.select-country {
+    display: flex;
+    width: 100%;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.single-device {
+    padding: 20px;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0px 0px 8px;
+    margin-top: 30px;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+}
+
+.link-icon-sec {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    background: #ffcc00;
+    border-radius: 50%;
+}
+
+.device-details-contents h1 {
+    color: #ffcc00;
+}
+
+.device-botm-sec {
+    padding: 0!important;
+}
+
+.disactive {
+    opacity: 1;
+    display: none;
+    -webkit-animation: fadeIn 0.65s ease forwards;
+    animation: fadeIn 0.65s ease forwards;
+}
+
+.device-botm-sec {
+    padding: 20px 0!important;
+    justify-content: space-between;
+}
+
+.filter-tab-row {
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.filter-tab-row input {
+    box-shadow: 0px 0px 7px 0px;
 }

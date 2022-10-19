@@ -496,7 +496,7 @@ class MTN_Date_Bundles  extends \Elementor\Widget_Base
 													<?= $tariffInfo['ressources'] ?>
 												</td>
 												<td>
-													<?= xgetTariffValidity($tariffInfo['package']);?>
+													<?=  xgetValidity($post)['validity'];;?>
 												</td>
 											</tr>
 										<?php

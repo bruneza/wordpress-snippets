@@ -110,6 +110,45 @@ function is_associative($array = array())
 /*** End Validate Function */
 
 /*** ANCHOR: PROCESS Function */
+
+
+function term_has_posts($inoSettings, $terms)
+{
+    if (!isset($terms)) return false;
+    if (!isset($inoSettings)) return false;
+
+    $postType   =  $inoSettings['x_post_type'];
+    $NumofPosts =  1;
+    $Defterms      =  $inoSettings['x_terms'];
+    $taxonomies     =  $inoSettings['x_taxonomy'];
+    $args = [
+        'post_type' => $postType,
+        'posts_per_page' => $NumofPosts,
+    ];
+
+    echo '<br>****-$DEFterms***<br>';
+    print_r($Defterms);
+    echo '<br>***********<br>';
+    $termArgs = array();
+    if (isset($terms)) {
+        $terms  = array_merge($terms,  $Defterms);
+    }
+
+    foreach ($terms as $id) {
+        $taxonomy = get_term($id)->taxonomy;
+        $value = get_term($id)->term_id;
+
+        array_push($termArgs, array(
+            'taxonomy' => $taxonomy,
+            'field' => 'term_id',
+            'terms' => $value,
+        ));
+    }
+
+    echo '<br>****--$id***<br>';
+    print_r($termArgs);
+    echo '<br>***********<br>';
+}
 function xprocessSingleIcon($array)
 {
     $value = $array['value'];
@@ -136,9 +175,6 @@ function xprocessTerms($terms)
     $output = array();
     if (is_wp_error($terms) || !isset($terms) || !$terms) return false;
 
-    // echo '<br>-----$terms-----<br>';
-    // print_r($terms);
-    // echo '<br>----------<br>';
     foreach ($terms as $key => $term) {
 
         $taxInfo = get_taxonomy($term->taxonomy);
@@ -192,6 +228,7 @@ function xprocessArgs($additionalArgs, $conditions = null)
 
     if (isset($conditions)) {
         if (!empty($conditions['x_skip_nothumbnail'])) {
+
             $thumbnailArgs = array(
                 'meta_query' => array(
                     array(
@@ -261,6 +298,7 @@ function xprocessOutput($inputArray = null)
         // echo '<br>***$$$$$postMeta OOOUTT****<br>';
         //     print_r($postMeta);
         //     echo '<br>**************<br>';
+
 
         //ANCHOR - Process Custom Keys
 
@@ -346,6 +384,7 @@ function xprocessOutput($inputArray = null)
         array_push($finalOutput,  $selectedOutputs);
     }
 
+
     foreach (array_keys($output) as $out) {
         $label = ucfirst(str_replace(str_split('-_'), ' ', $out));
         $fields[$out] = esc_html($label);
@@ -372,10 +411,12 @@ function xgetTerms($inoSettings = null)
 
     if (isset($taxonomies)) {
         foreach ($taxonomies as $key => $taxonomy) {
-            $terms[$taxonomy] = xprocessTerms(get_terms($taxonomy));
-            // echo '<br>***$args****<br>';
-            // print_r(get_terms($taxonomy));
-            // echo '<br>**************<br>';
+            if (isset($termsArray)) {
+                $args =
+                    $terms[$taxonomy] = xprocessTerms(get_terms($taxonomy));
+            } else {
+                $terms[$taxonomy] = xprocessTerms(get_terms($taxonomy));
+            }
         }
         return $terms;
     }
@@ -411,9 +452,26 @@ function xgetPostTerms($post_id, $taxonomy = null)
 /*** End TERMS Function */
 
 /*** ANCHOR: Get Tariff Validity */
+function xgetValidity($post)
+{
+    if (isset($post['package'])) {
+        $packageValidity = xgetTariffValidity($post['package']);
+        $packageName = get_term($post['package'])->name;
+
+        return [
+            'name' => $packageName,
+            'validity' => $packageValidity,
+        ];
+    } else
+        return [
+            'name' => null,
+            'validity' => null,
+        ];;
+}
+
 function xgetTariffValidity($termID = null)
 {
-if(!isset($termID)) return false;
+    if (!isset($termID)) return false;
 
     if (is_array($termID))
         $termSlug = get_term(array_key_first($termID))->slug;
@@ -498,7 +556,7 @@ function xpostsRender($inoSettings = null)
     }
 
 
-    $args = xprocessArgs($additionalArgs);
+    $args = xprocessArgs($additionalArgs, $conditions);
 
 
 

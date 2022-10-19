@@ -333,6 +333,7 @@ final class MTN_Features
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Tariffs_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Filter_Grid());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Table_Filter());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Faqs());
 
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Vacancies());
@@ -349,7 +350,7 @@ final class MTN_Features
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_International_Filter());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Test_Widget());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Roaming_Data_Bundle_Filter());
-		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Device_Filter1());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Device_Filter1());
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Posts_Filter());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Accordion());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Amiri_Code());

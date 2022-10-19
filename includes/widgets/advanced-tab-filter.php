@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-class MTN_Filter_Grid  extends \Elementor\Widget_Base
+class MTN_Filter_Tabs  extends \Elementor\Widget_Base
 {
 
 	/**
@@ -23,7 +23,7 @@ class MTN_Filter_Grid  extends \Elementor\Widget_Base
 	 */
 	public function get_name()
 	{
-		return 'Filter Grid';
+		return 'Tab Filter';
 	}
 	/**
 	 * Get widget title.
@@ -36,7 +36,7 @@ class MTN_Filter_Grid  extends \Elementor\Widget_Base
 	 */
 	public function get_title()
 	{
-		return esc_html__('Filter Grid', 'mtn');
+		return esc_html__('Tab Filter', 'mtn');
 	}
 
 	/**
@@ -460,57 +460,47 @@ class MTN_Filter_Grid  extends \Elementor\Widget_Base
 			'x_terms' => validateEleCPT($settings, 'mtn_posts_include_term_ids'),
 			'x_show' => 'by_terms',
 		];
-		if(isset($settings['filter_data_type']) && $settings['filter_data_type']== 'devices')
-		$mtnSettings['x_conditions'] = [
-			'x_skip_nothumbnail' => true,
-		];
 
 		$taxonomies = xgetTerms($mtnSettings);
-		$taxCount = count($taxonomies);
 
 		$posts = xpostsRender($mtnSettings);
 		// foreach ($posts as $post) {
-
+			
 		// }
 
-    echo '<br>-----$terms-----<br>';
-    print_r(term_has_posts($mtnSettings,[363]));
-    echo '<br>----------<br>';
-		
 
 
+
+		// echo '<br>-----$Department-----<br>';
+		// print_r($mtnSettings);
+		// echo '<br>----------<br>';
 
 		$postMeta = array();
 
-		$tabsArray = array();
-		foreach (range(1, $taxCount) as $c) {
-			$tabsArray = array_merge($tabsArray, ['tab' . $c]);
-		}
-		
-		$tabs = implode(",", $tabsArray); ?>
+		// echo '<br>-----$Department-----<br>';
+		// 	print_r($tabTaxSlug);
+		// 	echo '<br>----------<br>';
+
+
+?>
 		<script>
 			(function($) {
 				$(document).ready(function() {
 					var filterActive;
 
-					function filterCategory(<?= $tabs; ?>) {
+					function filterCategory(tab1) {
 
 						$('.filter-content-items .filter-content-item').removeClass('active');
 
 						var selector = ".filter-grid-section .filter-content-item";
 
-						<?php
-						foreach ($tabsArray as $tab) { ?>
+						if (tab1 !== 'tab-all') {
+							selector = '[data-tab=' + tab1 + "]";
+						}
 
-							if (<?= $tab; ?> !== 'tab-all') {
-								selector = '[data-tab=' + <?= $tab; ?> + "]";
-							}
-
-						<?php } ?>
-
-						filterActive = tab1;
 						$(selector).addClass('active');
 
+						filterActive = tab1;
 					}
 
 					$('.filter-grid-section .filter-content-item').addClass('active');
@@ -561,51 +551,53 @@ class MTN_Filter_Grid  extends \Elementor\Widget_Base
 			<div class="row filter-content-items">
 				<?php
 				foreach ($posts as $post) {
-					if (isset($post['selected-tax'])) {
-						$divAttr = array();
-
-						foreach ($post['selected-tax'] as $selKey => $selectedTax) {
-							if (isset($selectedTax['terms-obj']) && is_array($selectedTax['terms-obj']))
-								$divAttr = array_merge($divAttr, ['data-tab= "tab-' . $selectedTax['terms-obj'][0]->slug . '" ']);
-						}
-						$divAttr = implode(' ', $divAttr);
+					if(isset($post['selected-tax'])){
+				// 		echo '<br>-----selected-tax-----<br>';
+                // print_r($post['selected-tax']);
+                // echo '<br>----------<br>';
+					$divAttr = array();
+	
+					foreach ($post['selected-tax'] as $selKey => $selectedTax) {
+						if(isset($selectedTax['terms-obj']) && is_array($selectedTax['terms-obj']))
+						$divAttr = array_merge($divAttr, ['data-tab= "tab-' . $selectedTax['terms-obj'][0]->slug . '" ']);
+					}
+					$divAttr = implode(' ', $divAttr);
 				?>
-						<div class="col col-md-<?php echo intval(12 / $settings['column_number']); ?> col-sm-12 filter-content-item" <?= $divAttr; ?>>
-							<?php
-							switch ($settings['filter_data_type']) {
-								case 'jobs':
-									$cardInfo = [
-										'name' => 'vancancies',
-										'department' => $selectedTax['terms-obj'][0]->name,
+					<div class="col col-md-<?php echo intval(12 / $settings['column_number']); ?> col-sm-12 filter-content-item" <?= $divAttr; ?>>
+						<?php
+						switch ($settings['filter_data_type']) {
+							case 'jobs':
+								$cardInfo = [
+									'department' => $selectedTax['terms-obj'][0]->name,
 
-									];
+								];
 
-									vancancy_card($post, $cardInfo);
-									break;
-								case 'devices':
-									$cardInfo = [
-										'name' => 'single-device',
-									];
-									devices_card($post, $cardInfo);
-									break;
-								case 'tarrif-table':
-									$cardInfo = [
-										'name' => 'bundles',
-									];
-									international_tariffs_card($post, $cardInfo, ['main_term' => $mtnSettings['x_terms']]);
-									break;
-								default:
-									echo 'Choose data type';
-									break;
-							}
-							?>
-						</div>
+								vancancy_card($cardInfo, $post);
+								break;
+							case 'tarrif-table':
+								$cardInfo = [
+									'title' => $post['title'],
+								];
+								international_tariffs_card($cardInfo, $post,['main_term' => $mtnSettings['x_terms']]);
+								break;
+							default:
+								echo 'Choose data type';
+								break;
+						}
+						?>
+					</div>
 				<?php }
-				}
+			} 
 				?>
 			</div>
 
+
+			<div class="col-md-12">
+				<div class="see-all-btn">
+					<a href="" class="">Load More</a>
+				</div>
+			</div>
 		</div>
-<?php
+<?php 
 	}
 }

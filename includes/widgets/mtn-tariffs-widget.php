@@ -148,7 +148,7 @@ class MTN_Tariffs_Widget  extends \Elementor\Widget_Base
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <?php if (isset($terms)) {
                     foreach ($terms as $key => $value) {
-                       
+
                         array_push($selectedKeys, array($key, $value['taxonomy'], $value['slug']));
                         if (array_key_first($terms) === $key) {
                 ?>
@@ -178,7 +178,9 @@ class MTN_Tariffs_Widget  extends \Elementor\Widget_Base
                             <?php
 
                             foreach ($result['posts'] as $post) {
-                                $validity = $post['tariff_package'];
+                                
+
+                                $packageValidity = xgetValidity($post)['validity'];
                             ?>
                                 <div class="bundle-card">
                                     <!-- <div class="card-header">xxxx</div> -->
@@ -195,7 +197,7 @@ class MTN_Tariffs_Widget  extends \Elementor\Widget_Base
                                     <div class="tariff-validity">
                                         <h5>Validity</h5>
                                     </div>
-                                    <p><?= getTariffValidity(array_key_first($validity), $value[1]); ?></p>
+                                    <p><?= $packageValidity; ?></p>
                                 </div>
                             <?php } ?>
                         </div>

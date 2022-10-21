@@ -21,48 +21,40 @@ if (!function_exists('vancancy_card')) {
     <?php
     }
 }
+//ANCHOR : Card for Devices Ni dilu
 if (!function_exists('devices_card')) {
     function devices_card($post, $cardInfo = null)
     {
-        if(isset($post['selected-tax']) && is_array($post['selected-tax']['product-brands']['terms-obj']))
-        $deviceBrand = ($post['selected-tax']['product-brands']['terms-obj'][0])->name;
+        if (isset($post['selected-tax']) && is_array($post['selected-tax']['product-brands']['terms-obj']))
+            $deviceBrand = ($post['selected-tax']['product-brands']['terms-obj'][0])->name;
         else
-        $deviceBrand = null;
-        		// echo '<br>-----$post-----<br>';
-				// 		print_r($post);
-				// 		echo '<br>----------<br>';
+            $deviceBrand = null;
+        // echo '<br>-----$post-----<br>';
+        // print_r($post);
+        // echo '<br>----------<br>';
     ?>
         <div class="<?= $cardInfo['name']; ?> filter-card">
-            <div class="col">
-                <div class="device-picture">
-                    <div class="col-md-4">
-                        <img src="<?=$post['thumbnail'];?>" class="img-fluid" alt="">
-                    </div>
-                </div>
-                <div class="device-details-contents">
-                    <small><?=$deviceBrand;?></small>
-                    <h4><?=$post['title'];?></h4>
-                    <h1><?=$post['mtn_reg_price'];?></h1>
-                    <hr>
-                    <div class="device-botm-sec col-md-12 d-flex">
-                        <span class="col-md-9">Comes with <?=$post['mtn_reg_price'];?> of Storage</span>
-                        <a href="<?=$post['mtn_reg_price'];?>" class="col-md-3 link-icon-sec">
-                            <i class="fa fa-chevron-right"></i>
-                        </a>
-                    </div>
-                </div>
+            <div class="filter-card-thumbnail">
+                <img src="<?= $post['thumbnail']; ?>" class="img-fluid" alt="">
+            </div>
+            <div class="device-details-contents">
+                <h4 class="title"><?= $post['title']; ?></h4>
+                <p class="meta-info"><?= $post['_storage']; ?></p>
+                <p class="price-info"><?= $post['_regular_price']; ?></p>
+                <p class="meta-info">w/ Extended Warranty: <?= $post['_ext_warranty_fee']; ?></p>
             </div>
         </div>
     <?php
     }
 }
-
+//ANCHOR : Card for International tariffs
 if (!function_exists('international_tariffs_card')) {
     function international_tariffs_card($post, $cardInfo, $condition = null)
     {
 
         $tableData = array();
         $headTitle = array();
+
         if (!isset($post['tariff_info']) || !is_array($post['tariff_info'])) return false;
 
         $tariffInfos = $post['tariff_info'];
@@ -89,7 +81,7 @@ if (!function_exists('international_tariffs_card')) {
                     <tr>
                         <?php
                         foreach ($tableTitle as $title) {
-                            echo '<th>' . $title . '</th>';
+                            echo '<th class="sub-title">' . $title . '</th>';
                         }
                         ?>
                     </tr>
@@ -98,20 +90,90 @@ if (!function_exists('international_tariffs_card')) {
                     <?php
                     foreach ($tariffInfos as $tariffInfo) {
                         echo '<tr class="bundle">';
-                        echo '<td>' . $tariffInfo['price'] . '</td>';
-                        echo '<td>' . $tariffInfo['ressources'] . '</td>';
-                        echo '<td>' .  $packageValidity . '</td>';
+                        echo '<td class="meta-info">' . $tariffInfo['price'] . '</td>';
+                        echo '<td class="meta-info">' . $tariffInfo['ressources'] . '</td>';
+                        echo '<td class="meta-info">' .  $packageValidity . '</td>';
                         echo '</tr>';
                     }
                     ?>
                 </tbody>
             </table>
         </div>
+    <?php
+    }
+}
+
+//ANCHOR - Card for ONA ROAMING
+if (!function_exists('ona_card')) {
+    function ona_card($post, $cardInfo = null)
+    {
+        if (!isset($post['tariff_info']) || !is_array($post['tariff_info'])) return false;
+        $tariffInfos = $post['tariff_info']; ?>
+        <div class=" filter-tab-item">
+            <div class="<?= $cardInfo['class']; ?> filter-card">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="sub-title"></th>
+                            <th class="sub-title">Prepaid Plan (Rwf)</th>
+                            <th class="sub-title">Postpaid Plan (Rwf)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <?php
+                        foreach ($tariffInfos as $tariffInfo) {
+                            echo '<tr class="bundle">';
+                            echo '<td class="meta-info">' . $tariffInfo['ressources'] . '</td>';
+                            echo '<td class="meta-info">' . $tariffInfo['price'] . '</td>';
+                            echo '<td class="meta-info">' . $tariffInfo['postpaid_price'] . '</td>';
+                            echo '</tr>';
+                        }
+                        ?>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <?php
+    }
+}
+
+//ANCHOR - Card for Vacancy career
+if (!function_exists('local_card')) {
+    function local_card($post, $cardInfo = null)
+    {
+
+    ?>
+        <?php
+        $tariffInfos = $post['tariff_info'];
+        foreach ($tariffInfos as $tariffInfo) {
+            // print_r($tariffInfo);
+        ?>
+            <div class=" filter-tab-item">
+                <div class="<?= $cardInfo['class']; ?> filter-card">
+                    <div class="tariff-price">
+                        <h5>Price</h5>
+                        <p><?= $tariffInfo['price']; ?> Rwf</p>
+                    </div>
+                    <hr>
+                    <div class="tariff-ressources">
+                        <h5>Ressources</h5>
+                    </div>
+                    <p><?= $tariffInfo['ressources']; ?></p>
+                    <hr>
+                    <div class="tariff-validity">
+                        <h5>Validity</h5>
+                    </div>
+                    <p><?= xgetTariffValidity($post['package']); ?></p>
+                </div>
+            </div>
+        <?php } ?>
 <?php
     }
 }
 
-
+//ANCHOR - Validate Data
 if (!function_exists('mtn_validate_data')) {
     function mtn_validate_data($data)
     {

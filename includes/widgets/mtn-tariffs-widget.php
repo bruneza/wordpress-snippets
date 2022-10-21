@@ -181,6 +181,7 @@ class MTN_Tariffs_Widget  extends \Elementor\Widget_Base
                                 
 
                                 $packageValidity = xgetValidity($post)['validity'];
+                                
                             ?>
                                 <div class="bundle-card">
                                     <!-- <div class="card-header">xxxx</div> -->

@@ -32,9 +32,9 @@ if (!class_exists('MTN_Product_Cpt')) :
         {
             add_action('init', [$this, 'register_cpt'], 0);
 
-            require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-products-cfields.php';
+            // require_once MTN_DIR . '/includes/post-types/custom-fields/mtn-products-cfields.php';
 			
-			mtn_Product_fields::instance();
+			// mtn_Product_fields::instance();
 
 
         }

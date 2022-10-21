@@ -8,6 +8,9 @@ if (!function_exists('register_vacancy_control')) {
 			[
 				'label' => esc_html__('Vacancy Content Style', 'mtn'),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+				'condition' =>[
+					'filter_data_type' => 'jobs',
+				]
 			]
 		);
 

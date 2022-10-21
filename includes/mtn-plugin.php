@@ -241,6 +241,9 @@ final class MTN_Features
 		foreach (glob(MTN_DIR . "/includes/queries/content-template/*.php") as $filename) {
 			require_once $filename;
 		}
+		foreach (glob(MTN_DIR . "/includes/queries/js-reusable/*.php") as $filename) {
+			require_once $filename;
+		}
 	}
 
 	public function cpt_activate()
@@ -328,12 +331,14 @@ final class MTN_Features
 		}
 
 		// $widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Deals_Carousel());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Filter_Grid());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Table_Filter());
+		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Filter_Tabs());
+		
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Complex_Carousel_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Complex_Filter_Widget());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Team_Grid());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Tariffs_Widget());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Filter_Grid());
-		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Table_Filter());
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Faqs());
 
 		$widgets_manager->register(new \MTN_FEATURES\Widgets\MTN_Vacancies());

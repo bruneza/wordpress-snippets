@@ -116,25 +116,23 @@ function term_has_posts($inoSettings, $terms)
 {
     if (!isset($terms)) return false;
     if (!isset($inoSettings)) return false;
-
+    $inoSettings = xvalidatedSettings($inoSettings);
     $postType   =  $inoSettings['x_post_type'];
     $NumofPosts =  1;
     $Defterms      =  $inoSettings['x_terms'];
     $taxonomies     =  $inoSettings['x_taxonomy'];
+    $conditions =  $inoSettings['x_conditions'];
     $args = [
         'post_type' => $postType,
         'posts_per_page' => $NumofPosts,
     ];
 
-    echo '<br>****-$DEFterms***<br>';
-    print_r($Defterms);
-    echo '<br>***********<br>';
     $termArgs = array();
-    if (isset($terms)) {
-        $terms  = array_merge($terms,  $Defterms);
-    }
+    if (!isset($terms) || !is_array($terms)) return false;
+    $selTerms  = array_merge($terms,  $Defterms);
 
-    foreach ($terms as $id) {
+
+    foreach ($selTerms as $id) {
         $taxonomy = get_term($id)->taxonomy;
         $value = get_term($id)->term_id;
 
@@ -144,10 +142,14 @@ function term_has_posts($inoSettings, $terms)
             'terms' => $value,
         ));
     }
+    $args['tax_query'] = $termArgs;
 
-    echo '<br>****--$id***<br>';
-    print_r($termArgs);
-    echo '<br>***********<br>';
+    $args = xprocessArgs($args, $conditions);
+
+    if (count(get_posts($args)) > 0)
+        return $terms;
+    else
+        return false;
 }
 function xprocessSingleIcon($array)
 {
@@ -170,13 +172,14 @@ function xprocessSingleIcon($array)
     return apply_filters('post_filter_icon', $output);
 }
 
-function xprocessTerms($terms)
+function xprocessTerms($terms, $mtnSettings = null)
 {
     $output = array();
     if (is_wp_error($terms) || !isset($terms) || !$terms) return false;
 
     foreach ($terms as $key => $term) {
 
+        if (isset($mtnSettings) && !term_has_posts($mtnSettings, (array) $term->term_id)) continue;
         $taxInfo = get_taxonomy($term->taxonomy);
 
         $output[$term->term_id] = [
@@ -413,9 +416,9 @@ function xgetTerms($inoSettings = null)
         foreach ($taxonomies as $key => $taxonomy) {
             if (isset($termsArray)) {
                 $args =
-                    $terms[$taxonomy] = xprocessTerms(get_terms($taxonomy));
+                    $terms[$taxonomy] = xprocessTerms(get_terms($taxonomy), $inoSettings);
             } else {
-                $terms[$taxonomy] = xprocessTerms(get_terms($taxonomy));
+                $terms[$taxonomy] = xprocessTerms(get_terms($taxonomy), $inoSettings);
             }
         }
         return $terms;
@@ -455,6 +458,7 @@ function xgetPostTerms($post_id, $taxonomy = null)
 function xgetValidity($post)
 {
     if (isset($post['package'])) {
+        $package = $post['package'];
         $packageValidity = xgetTariffValidity($post['package']);
         $packageName = get_term($post['package'])->name;
 
@@ -462,11 +466,26 @@ function xgetValidity($post)
             'name' => $packageName,
             'validity' => $packageValidity,
         ];
-    } else
+    }
+    if (isset($post['tariff_package'])) {
+        $package = $post['tariff_package'][(array_key_first($post['tariff_package']))];
+        echo '<br>-----$terms-----<br>';
+        print_r($package);
+        echo '<br>----------<br>';
+
+        $packageValidity = xgetTariffValidity($post['tariff_package']);
+        $packageName = get_term($post['package'])->name;
+
         return [
-            'name' => null,
-            'validity' => null,
-        ];;
+            'name' => $packageName,
+            'validity' => $packageValidity,
+        ];
+    }
+
+    return [
+        'name' => null,
+        'validity' => null,
+    ];
 }
 
 function xgetTariffValidity($termID = null)

@@ -30,13 +30,13 @@ if (!class_exists('MTN_Product_Fields')) :
                 'label' => 'Regular Price',
                 'id' => '_mtn_reg_price',
                 'placeholder' => 'eg: 2500 FRW',
-                'type' => 'text',
+                'type' => 'number',
             ),
             array(
                 'label' => 'Extended Warranty Fee',
                 'id' => '_mtn_warranty_fee',
                 'placeholder' => 'eg: 2500 FRW',
-                'type' => 'text',
+                'type' => 'number',
             )
         );
 

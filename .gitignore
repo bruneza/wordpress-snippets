@@ -1,0 +1,17 @@
+# ignore
+node_modules/
+plugins/
+themes/
+upgrade/
+uploads/
+themes/twenty*/
+plugins/hello.php
+*.log
+*.ftpquota
+
+# Except
+!mu-plugins/
+!plugins/elementor/
+!plugins/elementor-pro/
+!plugins/Inoventyk-Features-Addon/
+!themes/

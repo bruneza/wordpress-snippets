@@ -7,6 +7,13 @@
 # Disable Directory Browsing	
 Options -Indexes
 
+# Protect wp-config.php
+<files wp-login.php>
+order deny,allow
+allow from 105.178.119.33
+#deny from all
+</files>
+
 #Protect .htaccess
 <files ~ "^.*\.([Hh][Tt][Aa])">
 order allow,deny
@@ -31,6 +38,7 @@ deny from all
 order deny,allow
 deny from all
 </Files>
+
 
 #Block bad hackers
 SetEnvIfNoCase User-Agent "^libwww-perl*" block_bad_bots
@@ -91,7 +99,8 @@ RewriteRule .* - [F]
 
 # Disable hotlinking of images
 RewriteCond %{HTTP_REFERER} !^$
-RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?example.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?kura.rw [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?igihe.com [NC]
 RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?google.com [NC]
 RewriteRule \.(jpg|jpeg|png|gif)$ – [NC,F,L]
 

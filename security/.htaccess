@@ -99,8 +99,7 @@ RewriteRule .* - [F]
 
 # Disable hotlinking of images
 RewriteCond %{HTTP_REFERER} !^$
-RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?kura.rw [NC]
-RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?igihe.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?example.com [NC]
 RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?google.com [NC]
 RewriteRule \.(jpg|jpeg|png|gif)$ – [NC,F,L]
 

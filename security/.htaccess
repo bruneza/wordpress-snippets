@@ -127,7 +127,6 @@ RewriteRule wp-content/themes/(.*\.php)$ - [R=404,L]
  # Start Abuse Agent Blocking
  RewriteCond %{HTTP_USER_AGENT} "^Mozilla.*Indy" [NC,OR]
  RewriteCond %{HTTP_USER_AGENT} "^Mozilla.*NEWT" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^$" [NC,OR]
  RewriteCond %{HTTP_USER_AGENT} "^Maxthon$" [NC,OR]
  RewriteCond %{HTTP_USER_AGENT} "^SeaMonkey$" [NC,OR]
  RewriteCond %{HTTP_USER_AGENT} "^Acunetix" [NC,OR]

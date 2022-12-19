@@ -77,20 +77,32 @@ RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
 RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
 RewriteRule ^wp-includes/theme-compat/ - [F,L]
 
+# Blocks some XSS attacks
+RewriteCond %{QUERY_STRING} (\|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+RewriteRule .* index.php [F,L]
 
 #Protect from SQL Injection
-RewriteCond %{QUERY_STRING} DECLARE [NC]
-RewriteRule !403\.html$ - [F]
-RewriteCond %{QUERY_STRING} SELECT [NC]
-RewriteRule !403\.html$ - [F]
-RewriteCond %{QUERY_STRING} UPDATE [NC]
-RewriteRule !403\.html$ - [F]
-RewriteCond %{QUERY_STRING} DELETE [NC]
-RewriteRule !403\.html$ - [F]
-RewriteCond %{QUERY_STRING} TRUNCATE [NC]
-RewriteRule !403\.html$ - [F]
-RewriteCond %{QUERY_STRING} DROP [NC]
-RewriteRule !403\.html$ - [F]
+RewriteBase /
+RewriteCond %{REQUEST_METHOD} ^(HEAD|TRACE|DELETE|TRACK) [NC]
+RewriteRule ^(.*)$ - [F,L]
+RewriteCond %{QUERY_STRING} \.\.\/ [NC,OR]
+RewriteCond %{QUERY_STRING} boot\.ini [NC,OR]
+RewriteCond %{QUERY_STRING} tag\= [NC,OR]
+RewriteCond %{QUERY_STRING} ftp\:  [NC,OR]
+RewriteCond %{QUERY_STRING} http\:  [NC,OR]
+RewriteCond %{QUERY_STRING} https\:  [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|%3D) [NC,OR]
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
+RewriteCond %{QUERY_STRING} ^.*(\[|\]|\(|\)|<|>|ê|"|;|\?|\*|=$).* [NC,OR]
+RewriteCond %{QUERY_STRING} ^.*(%24&x).* [NC,OR]
+RewriteCond %{QUERY_STRING} ^.*(%0|%A|%B|%C|%D|%E|%F|127\.0).* [NC,OR]
+RewriteCond %{QUERY_STRING} ^.*(globals|encode|localhost|loopback).* [NC,OR]
+RewriteCond %{QUERY_STRING} ^.*(request|select|insert|union|declare).* [NC]
+RewriteCond %{HTTP_COOKIE} !^.*WordPress_logged_in_.*$
+RewriteRule ^(.*)$ - [F,L]
 
 # BEGIN block author scans
 RewriteCond %{QUERY_STRING} (author=\d+) [NC]

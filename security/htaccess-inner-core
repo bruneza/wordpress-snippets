@@ -1,7 +1,11 @@
 # Protect Against php execution from WP-includes
-<Files *.php>
-deny from all
-</Files>
+Order Allow,Deny 
+Deny from all 
+
+<FilesMatch "\.(jpg|gif|png)$">
+Order Deny,Allow
+   Allow from all
+</FilesMatch>
 
 # Disable access to all file types except the following (wp-content / Uploads)
 Order deny,allow

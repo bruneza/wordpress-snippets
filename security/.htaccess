@@ -6,6 +6,13 @@
 
 # Disable Directory Browsing	
 Options -Indexes
+RedirectMatch 409 .(htaccess|htpasswd|errordocs|logs)$
+ServerSignature Off
+
+# Redirect Server Errors
+ErrorDocument 403 /notfound
+ErrorDocument 404 /notfound
+ErrorDocument 409 /notfound
 
 # Protect wp-config.php
 <files wp-login.php>

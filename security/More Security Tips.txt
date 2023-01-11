@@ -1,0 +1,3 @@
+Protecting WordPress Against CVE-2018-6389 w/ ModSecurity
+
+https://rastating.github.io/protecting-wordpress-against-cve-2018-6389/

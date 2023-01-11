@@ -14,7 +14,7 @@ ErrorDocument 403 /notfound
 ErrorDocument 404 /notfound
 ErrorDocument 409 /notfound
 
-# Protect wp-config.php
+# Protect wp-login.php
 <files wp-login.php>
 order deny,allow
 allow from 105.178.119.33
@@ -33,6 +33,12 @@ satisfy all
 order allow,deny
 deny from all
 </files>
+
+#  Disable access to load-scripts.php and load-styles.php
+<FilesMatch "load-scripts\.php|load-styles\.php">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
 
 #Protect error_log
 <files error_log>

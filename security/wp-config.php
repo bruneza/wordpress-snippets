@@ -8,3 +8,9 @@ define('CONCATENATE_SCRIPTS', false);
 
 // Disable File edit from wordpress dashboard
 define('DISALLOW_FILE_EDIT', true);
+
+
+//Enforce the Use of ‘FTP’
+define(‘FS_METHOD’, ‘ftpext’);
+define(‘FTP_SSL’, true);
+define(‘FS_METHOD’, ‘ssh2’);

@@ -17,3 +17,9 @@ define( 'DISALLOW_FILE_MODS', true );
 define(‘FS_METHOD’, ‘ftpext’);
 define(‘FTP_SSL’, true);
 define(‘FS_METHOD’, ‘ssh2’);
+
+// Serving Wp-admin from another Domain
+if ( isset( $_SERVER['SERVER_NAME'] ) && 'admin.mtn.co.rw' === $_SERVER['SERVER_NAME'] ) {
+	define( 'WP_SITEURL', 'http://' . $_SERVER['SERVER_NAME'] );
+	define( 'WP_HOME', 'http://' . $_SERVER['SERVER_NAME'] );
+ }

@@ -12,6 +12,8 @@ define('DISALLOW_FILE_EDIT', true);
 //Disable the ability to modify files in WordPress.
 define( 'DISALLOW_FILE_MODS', true );
 
+// DIsable wp-cron
+define('DISABLE_WP_CRON', true);
 
 //Enforce the Use of ‘FTP’
 define(‘FS_METHOD’, ‘ftpext’);

@@ -21,11 +21,23 @@ allow from 105.178.119.33
 #deny from all
 </files>
 
-#Protect .htaccess
-<files ~ "^.*\.([Hh][Tt][Aa])">
+# Remove te X-Powered-By response header
+<IfModule mod_headers.c>
+<FilesMatch "\.(htaccess|htpasswd|errordocs|logs)$">
+Header unset X-Powered-By
+</FilesMatch>
+</IfModule>
+
+# remove access to upgrade.php
+<files upgrade.php>
 order allow,deny
 deny from all
-satisfy all
+</files>
+
+# remove access to wp-cron.php
+<files wp-cron.php>
+order allow,deny
+deny from all
 </files>
 
 # Protect wp-config.php

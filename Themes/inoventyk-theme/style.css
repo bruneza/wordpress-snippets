@@ -15,3 +15,51 @@ Tags: flexible-header, custom-colors, custom-menu, custom-logo, editor-style, fe
 /*
     Add your custom styles here
 */
+body{
+	position: relative;
+    max-width: 2560px;
+    margin: 0 auto;
+
+}
+
+.section-40-20{
+	padding: 40px 20px;
+}
+.section-60-20{
+	padding: 60px 20px;
+}
+.section-60b-20{
+	padding: 0 20px 60px;
+}
+.section-80-20{
+	padding: 80px 20px;
+}
+.section-80b-20{
+	padding: 0 20px 80px;
+}
+.section-120-20{
+	padding: 120px 20px;
+}
+
+@media (max-width: 768px) {
+
+.section-40-20{
+	padding: 20px 20px;
+}
+.section-60-20{
+	padding: 40px 20px;
+}
+.section-60b-20{
+	padding: 0 20px 40px;
+}
+.section-80-20{
+	padding: 40px 20px;
+}
+.section-120-20{
+	padding: 40px 20px;
+}
+    
+br{
+    display: none;
+}
+}

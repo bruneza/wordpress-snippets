@@ -1,65 +1,128 @@
-/* 
-Theme Name: Inoventyk Theme
-Theme URI: https://inoventyk.com/
-Description: just a theme from Inoventyk
-Author: Bruce Mugwaneza
-Author URI: https://bruneza.online
-Template: hello-elementor
-Version: 1.0.0
-Text Domain: inoventyk
-License: GNU General Public License v3 or later.
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
-Tags: flexible-header, custom-colors, custom-menu, custom-logo, editor-style, featured-images, rtl-language-support, threaded-comments, translation-ready
-*/
+/* ==============================
+   GLOBAL RESET & BASE STYLES
+============================== */
+html {
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+}
 
-/*
-    Add your custom styles here
-*/
-body{
+*, *::before, *::after {
+	box-sizing: inherit;
+}
+
+body {
 	position: relative;
-    max-width: 2560px;
-    margin: 0 auto;
-
+	max-width: 2560px;
+	margin: 0 auto;
+	line-height: 1.6;
+	font-family: 'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	background-color: #fff;
+	color: #111;
 }
 
-.section-40-20{
-	padding: 40px 20px;
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
 }
-.section-60-20{
-	padding: 60px 20px;
+
+:root {
+	--default-side-padding: 20px;
 }
-.section-60b-20{
-	padding: 0 20px 60px;
+
+/* ==============================
+   SECTION PADDING UTILITIES
+   Format: .section-[top/bottom]-[side-padding]
+============================== */
+.section-0-20    { padding: 0 var(--default-side-padding); }
+.section-20-20   { padding: 20px var(--default-side-padding); }
+.section-40-20   { padding: 40px var(--default-side-padding); }
+.section-60-20   { padding: 60px var(--default-side-padding); }
+.section-80-20   { padding: 80px var(--default-side-padding); }
+.section-100-20  { padding: 100px var(--default-side-padding); }
+.section-120-20  { padding: 120px var(--default-side-padding); }
+.section-140-20  { padding: 140px var(--default-side-padding); }
+.section-160-20  { padding: 160px var(--default-side-padding); }
+.section-180-20  { padding: 180px var(--default-side-padding); }
+
+/* Bottom-only padding (e.g. .section-60b-20 = padding-bottom only) */
+.section-40b-20  { padding: 0 var(--default-side-padding) 40px; }
+.section-60b-20  { padding: 0 var(--default-side-padding) 60px; }
+.section-80b-20  { padding: 0 var(--default-side-padding) 80px; }
+.section-100b-20 { padding: 0 var(--default-side-padding) 100px; }
+
+/* Top-only padding (e.g. .section-t60-20 = padding-top only) */
+.section-t40-20  { padding: 40px var(--default-side-padding) 0; }
+.section-t60-20  { padding: 60px var(--default-side-padding) 0; }
+.section-t80-20  { padding: 80px var(--default-side-padding) 0; }
+
+/* ==============================
+   RESPONSIVE ADJUSTMENTS
+============================== */
+@media (max-width: 768px) {
+	.section-40-20,
+	.section-60-20,
+	.section-80-20,
+	.section-100-20,
+	.section-120-20,
+	.section-140-20,
+	.section-160-20,
+	.section-180-20 {
+		padding: 20px var(--default-side-padding);
+	}
+
+	.section-40b-20,
+	.section-60b-20,
+	.section-80b-20,
+	.section-100b-20 {
+		padding: 0 var(--default-side-padding) 20px;
+	}
+
+	.section-t40-20,
+	.section-t60-20,
+	.section-t80-20 {
+		padding: 20px var(--default-side-padding) 0;
+	}
+
+	br {
+		display: none;
+	}
 }
-.section-80-20{
-	padding: 80px 20px;
+
+/* ==============================
+   HELPER / UTILITY CLASSES
+============================== */
+.text-center {
+	text-align: center;
 }
-.section-80b-20{
-	padding: 0 20px 80px;
+
+.hide-mobile {
+	display: none !important;
 }
-.section-120-20{
-	padding: 120px 20px;
+
+.show-mobile {
+	display: none;
 }
 
 @media (max-width: 768px) {
+	.hide-mobile {
+		display: none !important;
+	}
+	.show-mobile {
+		display: block !important;
+	}
+}
 
-.section-40-20{
-	padding: 20px 20px;
+.container {
+	width: 100%;
+	max-width: 1140px;
+	margin: 0 auto;
+	padding: 0 var(--default-side-padding);
 }
-.section-60-20{
-	padding: 40px 20px;
-}
-.section-60b-20{
-	padding: 0 20px 40px;
-}
-.section-80-20{
-	padding: 40px 20px;
-}
-.section-120-20{
-	padding: 40px 20px;
-}
-    
-br{
-    display: none;
-}
+
+.responsive-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 20px;
 }

@@ -1,339 +1,157 @@
-# SECURITY IMPROVEMENT 
-# The codes below are for improving wordpress security
-# do not delete if possible
-# Author : Bruce Mugwaneza
-#---------------------------------------------------
+# =============================
+# UNIVERSAL WORDPRESS .HTACCESS
+# Author: Bruce Mugwaneza
+# Optimized for Security, Performance, SEO, Cloudflare
+# =============================
 
-# Disable Directory Browsing	
-Options -Indexes
-RedirectMatch 409 .(htaccess|htpasswd|errordocs|logs)$
-ServerSignature Off
+# --- CANONICAL: Force HTTPS and non-www ---
+<IfModule mod_rewrite.c>
+  RewriteEngine On
 
-# Redirect Server Errors
-ErrorDocument 403 /notfound
-ErrorDocument 404 /notfound
-ErrorDocument 409 /notfound
+  # Force non-www (redirect www to non-www)
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^(.*)$ https://%1/$1 [L,R=301,NE]
 
-# Protect wp-login.php
-<files wp-login.php>
-order deny,allow
-allow from 105.178.119.33
-#deny from all
-</files>
-
-# Remove te X-Powered-By response header
-<IfModule mod_headers.c>
-<FilesMatch "\.(htaccess|htpasswd|errordocs|logs)$">
-Header unset X-Powered-By
-</FilesMatch>
+  # Force HTTPS (after non-www)
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
 </IfModule>
 
-# remove access to upgrade.php
-<files upgrade.php>
-order allow,deny
-deny from all
-</files>
+<IfModule mod_headers.c>
+  # HSTS: Instruct browsers to use HTTPS only, for 1 year
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
 
-# remove access to wp-cron.php
-<files wp-cron.php>
-order allow,deny
-deny from all
-</files>
+# --- DISABLE DIRECTORY LISTING ---
+Options -Indexes
 
-# Protect wp-config.php
-<files wp-config.php>
-order allow,deny
-deny from all
-</files>
+# --- DISABLE SERVER SIGNATURE ---
+ServerSignature Off
 
-#  Disable access to load-scripts.php and load-styles.php
-<FilesMatch "load-scripts\.php|load-styles\.php">
+# --- BLOCK ACCESS TO SENSITIVE FILES ---
+<FilesMatch "^(wp-config\.php|php\.ini|\.htaccess|\.htpasswd|error_log|readme\.html|license\.txt|install\.php|composer\.json|composer\.lock|package\.json)$">
   Order allow,deny
   Deny from all
 </FilesMatch>
 
-#Protect error_log
-<files error_log>
-order allow,deny
-deny from all
-</files>
-
-# Block WordPress xmlrpc.php requests
+# --- BLOCK XML-RPC & UNNECESSARY FILES ---
 <Files xmlrpc.php>
-order deny,allow
-deny from all
+  Order allow,deny
+  Deny from all
+</Files>
+<Files wp-cron.php>
+  Order allow,deny
+  Deny from all
+</Files>
+<Files upgrade.php>
+  Order allow,deny
+  Deny from all
+</Files>
+<Files load-scripts.php>
+  Order allow,deny
+  Deny from all
+</Files>
+<Files load-styles.php>
+  Order allow,deny
+  Deny from all
 </Files>
 
-
-#Block bad hackers
-SetEnvIfNoCase User-Agent "^libwww-perl*" block_bad_bots
-Deny from env=block_bad_bots
-
-# Mod_rewrite codes
-# The mod_rewrite module uses a rule-based rewriting engine, based on 
-# a PCRE regular-expression parser, to rewrite requested URLs on the fly.
-# -------------------------------------------------------------------
+# --- BLOCK PHP EXECUTION IN UPLOADS ---
 <IfModule mod_rewrite.c>
-
-# BEGIN WordPress HTACCESS
-# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
-# dynamically generated, and should only be modified via WordPress filters.
-# Any changes to the directives between these markers will be overwritten.
-# -------------------------------------------------------------------
-RewriteEngine On
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteBase /
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
-# END WordPress HTACCESS
-
-# Force HTTPS
-RewriteCond %{HTTPS} !=on
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
-Header always set Content-Security-Policy "upgrade-insecure-requests;"
-
-
-# Protect Include-Only files
-RewriteRule ^wp-admin/includes/ - [F,L]
-RewriteRule !^wp-includes/ - [S=3]
-RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
-RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
-RewriteRule ^wp-includes/theme-compat/ - [F,L]
-
-# Blocks some XSS attacks
-RewriteCond %{QUERY_STRING} (\|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
-RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
-RewriteRule .* index.php [F,L]
-
-# Block MySQL injections, RFI, base64, etc.
-RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
-RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
-RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC,OR]
-RewriteCond %{QUERY_STRING} \=PHP[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} [NC,OR]
-RewriteCond %{QUERY_STRING} (\.\./|\.\.) [OR]
-RewriteCond %{QUERY_STRING} ftp\: [NC,OR]
-RewriteCond %{QUERY_STRING} http\: [NC,OR]
-RewriteCond %{QUERY_STRING} https\: [NC,OR]
-RewriteCond %{QUERY_STRING} \=\|w\| [NC,OR]
-RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
-RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
-RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
-RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC,OR]
-RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
-RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
-RewriteCond %{QUERY_STRING} ^.*(\[|\]|\(|\)|<|>).* [NC,OR]
-RewriteCond %{QUERY_STRING} (NULL|OUTFILE|LOAD_FILE) [OR]
-RewriteCond %{QUERY_STRING} (\./|\../|\.../)+(motd|etc|bin) [NC,OR]
-RewriteCond %{QUERY_STRING} (localhost|loopback|127\.0\.0\.1) [NC,OR]
-RewriteCond %{QUERY_STRING} (<|>|'|%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
-RewriteCond %{QUERY_STRING} concat[^\(]*\( [NC,OR]
-RewriteCond %{QUERY_STRING} union([^s]*s)+elect [NC,OR]
-RewriteCond %{QUERY_STRING} union([^a]*a)+ll([^s]*s)+elect [NC,OR]
-RewriteCond %{QUERY_STRING} (;|<|>|'|"|\)|%0A|%0D|%22|%27|%3C|%3E|%00).*(/\*|union|select|insert|drop|delete|update|cast|create|char|convert|alter|declare|order|script|set|md5|benchmark|encode) [NC,OR]
-RewriteCond %{QUERY_STRING} (sp_executesql) [NC]
-
-RewriteRule ^(.*)$ - [F,L]
-
-# BEGIN block author scans
-RewriteCond %{QUERY_STRING} (author=\d+) [NC]
-RewriteRule .* - [F]
-# END block author scans
-
-# Disable hotlinking of images
-RewriteCond %{HTTP_REFERER} !^$
-RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?example.com [NC]
-RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?google.com [NC]
-RewriteRule \.(jpg|jpeg|png|gif)$ – [NC,F,L]
-
-# Restrict Direct Access to Plugin and Theme PHP files
-RewriteCond %{REQUEST_URI} !^/wp-content/plugins/file/to/exclude\.php
-RewriteCond %{REQUEST_URI} !^/wp-content/plugins/directory/to/exclude/
-RewriteRule wp-content/plugins/(.*\.php)$ - [R=404,L]
-RewriteCond %{REQUEST_URI} !^/wp-content/themes/file/to/exclude\.php
-RewriteCond %{REQUEST_URI} !^/wp-content/themes/directory/to/exclude/
-RewriteRule wp-content/themes/(.*\.php)$ - [R=404,L]
-
-# Start HackRepair.com Blacklist
- # Start Abuse Agent Blocking
- RewriteCond %{HTTP_USER_AGENT} "^Mozilla.*Indy" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Mozilla.*NEWT" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Maxthon$" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^SeaMonkey$" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Acunetix" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^binlar" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^BlackWidow" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Bolt 0" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^BOT for JCE" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Bot mailto\:craftbot@yahoo\.com" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^casper" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^checkprivacy" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^ChinaClaw" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^clshttp" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^cmsworldmap" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Custo" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Default Browser 0" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^diavol" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^DIIbot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^DISCo" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^dotbot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Download Demon" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^eCatch" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^EirGrabber" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^EmailCollector" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^EmailSiphon" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^EmailWolf" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Express WebPictures" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^extract" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^ExtractorPro" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^EyeNetIE" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^feedfinder" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^FHscan" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^FlashGet" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^flicky" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^g00g1e" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^GetRight" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^GetWeb\!" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Go\!Zilla" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Go\-Ahead\-Got\-It" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^grab" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^GrabNet" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Grafula" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^harvest" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^HMView" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Image Stripper" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Image Sucker" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^InterGET" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Internet Ninja" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^InternetSeer\.com" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^jakarta" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Java" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^JetCar" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^JOC Web Spider" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^kanagawa" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^kmccrew" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^larbin" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^LeechFTP" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^libwww" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Mass Downloader" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^microsoft\.url" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^MIDown tool" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^miner" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Mister PiX" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^MSFrontPage" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Navroad" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^NearSite" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Net Vampire" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^NetAnts" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^NetSpider" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^NetZIP" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^nutch" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Octopus" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Offline Explorer" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Offline Navigator" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^PageGrabber" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Papa Foto" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^pavuk" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^pcBrowser" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^PeoplePal" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^planetwork" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^psbot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^purebot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^pycurl" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^RealDownload" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^ReGet" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Rippers 0" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^sitecheck\.internetseer\.com" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^SiteSnagger" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^skygrid" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^SmartDownload" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^sucker" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^SuperBot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^SuperHTTP" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Surfbot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^tAkeOut" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Teleport Pro" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Toata dragostea mea pentru diavola" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^turnit" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^vikspider" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^VoidEYE" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Web Image Collector" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebAuto" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebBandit" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebCopier" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebFetch" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebGo IS" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebLeacher" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebReaper" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebSauger" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Website eXtractor" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Website Quester" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebStripper" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebWhacker" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WebZIP" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Widow" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WPScan" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WWW\-Mechanize" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^WWWOFFLE" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Xaldon WebSpider" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^Zeus" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "^zmeu" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "360Spider" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "CazoodleBot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "discobot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "EasouSpider" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "ecxi" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "GT\:\:WWW" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "heritrix" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "HTTP\:\:Lite" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "HTTrack" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "ia_archiver" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "id\-search" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "IDBot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "Indy Library" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "IRLbot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "ISC Systems iRc Search 2\.1" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "LinksCrawler" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "LinksManager\.com_bot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "linkwalker" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "lwp\-trivial" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "MFC_Tear_Sample" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "Microsoft URL Control" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "Missigua Locator" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "MJ12bot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "panscient\.com" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "PECL\:\:HTTP" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "PHPCrawl" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "PleaseCrawl" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "SBIder" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "SearchmetricsBot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "SeznamBot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "Snoopy" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "Steeler" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "URI\:\:Fetch" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "urllib" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "Web Sucker" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "webalta" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "WebCollage" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "Wells Search II" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "WEP Search" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "XoviBot" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "YisouSpider" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "zermelo" [NC,OR]
- RewriteCond %{HTTP_USER_AGENT} "ZyBorg" [NC,OR]
- # End Abuse Agent Blocking
- # Start Abuse HTTP Referrer Blocking
- RewriteCond %{HTTP_REFERER} "^https?://(?:[^/]+\.)?semalt\.com" [NC,OR]
- RewriteCond %{HTTP_REFERER} "^https?://(?:[^/]+\.)?kambasoft\.com" [NC,OR]
- RewriteCond %{HTTP_REFERER} "^https?://(?:[^/]+\.)?savetubevideo\.com" [NC]
- # End Abuse HTTP Referrer Blocking
- RewriteRule ^.* - [F,L]
- # End HackRepair.com Blacklist, http://pastebin.com/u/hackrepair
-
+  RewriteRule ^wp-content/uploads/.*\.(php[0-9]?|phtml)$ - [F,L]
 </IfModule>
+
+# --- HOTLINK PROTECTION (images & videos) ---
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https?://(www\.)?%{HTTP_HOST} [NC]
+RewriteCond %{HTTP_REFERER} !^https?://(www\.)?google\.com [NC]
+RewriteRule \.(jpg|jpeg|png|gif|webp|svg|mp4|webm|mov|avi)$ - [NC,F,L]
+
+# --- SET SECURITY HEADERS ---
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Content-Security-Policy "upgrade-insecure-requests;"
+  Header unset X-Powered-By
+</IfModule>
+
+# --- LEVERAGE BROWSER CACHING ---
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/x-javascript "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType application/pdf "access plus 1 year"
+  ExpiresDefault "access plus 7 days"
+</IfModule>
+
+# --- ENABLE GZIP COMPRESSION ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript application/json
+</IfModule>
+
+# --- REMOVE ETAGS FOR BETTER CACHING ---
+<IfModule mod_headers.c>
+  Header unset ETag
+</IfModule>
+FileETag None
+
+# --- LIMIT HTTP METHODS TO SAFE ONES ---
+<LimitExcept GET POST HEAD>
+  Deny from all
+</LimitExcept>
+
+# --- BLOCK BAD BOTS (SIMPLE, for efficiency) ---
+SetEnvIfNoCase User-Agent "libwww-perl" bad_bot
+SetEnvIfNoCase User-Agent "python-requests" bad_bot
+SetEnvIfNoCase User-Agent "MJ12bot" bad_bot
+Order Allow,Deny
+Allow from all
+Deny from env=bad_bot
+
+# --- BLOCK COMMON MALICIOUS QUERY STRINGS ---
+<IfModule mod_rewrite.c>
+  RewriteCond %{QUERY_STRING} (\.\.\/|\.\.\\) [NC,OR]
+  RewriteCond %{QUERY_STRING} (base64_encode|union.*select|(\<|%3C).*script.*(\>|%3E)|boot\.ini|ftp\:|http\:|https\:) [NC]
+  RewriteRule .* - [F]
+</IfModule>
+
+# --- BLOCK AUTHOR ENUMERATION SCANS (SEO & Security) ---
+<IfModule mod_rewrite.c>
+  RewriteCond %{QUERY_STRING} (author=\d+) [NC]
+  RewriteRule .* - [F]
+</IfModule>
+
+# --- BLOCK ACCESS TO .ENV FILES (if used) ---
+<FilesMatch "^\.env">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# --- ERROR DOCUMENTS (OPTIONAL, customize as needed) ---
+# ErrorDocument 404 /404
+# ErrorDocument 403 /403
+
+# --- WORDPRESS CORE REWRITE RULES (must remain) ---
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+  RewriteBase /
+  RewriteRule ^index\.php$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.php [L]
+</IfModule>
+
+# =============================
+# END UNIVERSAL .HTACCESS
+# =============================

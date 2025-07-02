@@ -41,18 +41,11 @@ ServerSignature Off
   Deny from all
 </Files>
 <Files wp-cron.php>
-  Order allow,deny
+  Order deny,allow
   Deny from all
+  Allow from 127.0.0.1
 </Files>
 <Files upgrade.php>
-  Order allow,deny
-  Deny from all
-</Files>
-<Files load-scripts.php>
-  Order allow,deny
-  Deny from all
-</Files>
-<Files load-styles.php>
   Order allow,deny
   Deny from all
 </Files>

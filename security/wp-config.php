@@ -32,13 +32,8 @@ define('FS_CHMOD_DIR', 0755);
 // Explicitly disable database repair script (best practice)
 define('WP_ALLOW_REPAIR', false);
 
-// Optional: Set memory limits (uncomment and adjust as needed)
-// define('WP_MEMORY_LIMIT', '128M');
-// define('WP_MAX_MEMORY_LIMIT', '256M');
-
-// Optional: Block external HTTP requests (advanced, may break plugins if used)
-// define('WP_HTTP_BLOCK_EXTERNAL', true);
-// define('WP_ACCESSIBLE_HOSTS', 'api.wordpress.org,*.github.com');
+//Disable default WP-Cron
+define('DISABLE_WP_CRON', true);
 
 // --- End universal HTTPS & security hardening ---
 

@@ -2,40 +2,62 @@
    GLOBAL RESET & BASE STYLES
 ============================== */
 html {
-	box-sizing: border-box;
-	scroll-behavior: smooth;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 *, *::before, *::after {
-	box-sizing: inherit;
-}
-
-body {
-	position: relative;
-	max-width: 2560px;
-	margin: 0 auto;
-	line-height: 1.6;
-	font-family: 'Helvetica Neue', sans-serif;
-	-webkit-font-smoothing: antialiased;
-	background-color: #fff;
-	color: #111;
-}
-
-img {
-	max-width: 100%;
-	height: auto;
-	display: block;
+  box-sizing: inherit;
 }
 
 :root {
-	--default-side-padding: 20px;
+  --default-side-padding: 20px;
+  --color-bg: #fff;
+  --color-text: #111;
+  --color-primary: #0055ff;
+}
+
+body {
+  position: relative;
+  max-width: 2560px;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 /* ==============================
    SECTION PADDING UTILITIES
    Format: .section-[top/bottom]-[side-padding]
 ============================== */
+
+/* All-sides padding */
 .section-0-20    { padding: 0 var(--default-side-padding); }
+.section-10-20   { padding: 10px var(--default-side-padding); }
 .section-20-20   { padding: 20px var(--default-side-padding); }
 .section-40-20   { padding: 40px var(--default-side-padding); }
 .section-60-20   { padding: 60px var(--default-side-padding); }
@@ -46,13 +68,17 @@ img {
 .section-160-20  { padding: 160px var(--default-side-padding); }
 .section-180-20  { padding: 180px var(--default-side-padding); }
 
-/* Bottom-only padding (e.g. .section-60b-20 = padding-bottom only) */
+/* Bottom-only padding */
+.section-10b-20  { padding: 0 var(--default-side-padding) 10px; }
+.section-20b-20  { padding: 0 var(--default-side-padding) 20px; }
 .section-40b-20  { padding: 0 var(--default-side-padding) 40px; }
 .section-60b-20  { padding: 0 var(--default-side-padding) 60px; }
 .section-80b-20  { padding: 0 var(--default-side-padding) 80px; }
 .section-100b-20 { padding: 0 var(--default-side-padding) 100px; }
 
-/* Top-only padding (e.g. .section-t60-20 = padding-top only) */
+/* Top-only padding */
+.section-t10-20  { padding: 10px var(--default-side-padding) 0; }
+.section-t20-20  { padding: 20px var(--default-side-padding) 0; }
 .section-t40-20  { padding: 40px var(--default-side-padding) 0; }
 .section-t60-20  { padding: 60px var(--default-side-padding) 0; }
 .section-t80-20  { padding: 80px var(--default-side-padding) 0; }
@@ -61,68 +87,71 @@ img {
    RESPONSIVE ADJUSTMENTS
 ============================== */
 @media (max-width: 768px) {
-	.section-40-20,
-	.section-60-20,
-	.section-80-20,
-	.section-100-20,
-	.section-120-20,
-	.section-140-20,
-	.section-160-20,
-	.section-180-20 {
-		padding: 20px var(--default-side-padding);
-	}
+  /* Reduce section spacing on mobile */
+  .section-10-20,
+  .section-20-20,
+  .section-40-20,
+  .section-60-20,
+  .section-80-20,
+  .section-100-20,
+  .section-120-20,
+  .section-140-20,
+  .section-160-20,
+  .section-180-20 {
+    padding: 20px var(--default-side-padding);
+  }
 
-	.section-40b-20,
-	.section-60b-20,
-	.section-80b-20,
-	.section-100b-20 {
-		padding: 0 var(--default-side-padding) 20px;
-	}
+  .section-10b-20,
+  .section-20b-20,
+  .section-40b-20,
+  .section-60b-20,
+  .section-80b-20,
+  .section-100b-20 {
+    padding: 0 var(--default-side-padding) 20px;
+  }
 
-	.section-t40-20,
-	.section-t60-20,
-	.section-t80-20 {
-		padding: 20px var(--default-side-padding) 0;
-	}
+  .section-t10-20,
+  .section-t20-20,
+  .section-t40-20,
+  .section-t60-20,
+  .section-t80-20 {
+    padding: 20px var(--default-side-padding) 0;
+  }
 
-	br {
-		display: none;
-	}
+  br {
+    display: none;
+  }
 }
 
 /* ==============================
    HELPER / UTILITY CLASSES
 ============================== */
 .text-center {
-	text-align: center;
-}
-
-.hide-mobile {
-	display: none !important;
+  text-align: center;
 }
 
 .show-mobile {
-	display: none;
+  display: none;
 }
 
 @media (max-width: 768px) {
-	.hide-mobile {
-		display: none !important;
-	}
-	.show-mobile {
-		display: block !important;
-	}
+  .hide-mobile {
+    display: none !important;
+  }
+  .show-mobile {
+    display: block !important;
+  }
 }
 
 .container {
-	width: 100%;
-	max-width: 1140px;
-	margin: 0 auto;
-	padding: 0 var(--default-side-padding);
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 var(--default-side-padding);
 }
 
 .responsive-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
 }
